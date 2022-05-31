@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-export default class JobOfferView extends Component {
+export default class CreateJobOfferView extends Component {
 
     constructor(props) {
         super(props);

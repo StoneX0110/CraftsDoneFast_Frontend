@@ -4,6 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from "axios";
+// import routes from "./router";
+// import { BrowserRouter, BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
+
+// import OverviewView from "./components/OverviewView";
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -15,11 +19,11 @@ root.render(
 
 axios.interceptors.request.use(
   request => {
-              request.headers['access-control-allow-origin'] = null;
-      return request;
+    request.headers['access-control-allow-origin'] = null;
+    return request;
   },
   error => {
-      return Promise.reject(error);
+    return Promise.reject(error);
   }
 )
 
