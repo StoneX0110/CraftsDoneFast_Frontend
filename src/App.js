@@ -1,9 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
+import JobOfferView from './components/JobOfferView';
+import "bootstrap/dist/css/bootstrap.css";
 
 function App() {
   return (
     <div className="App">
+      <JobOfferView/>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -20,6 +23,8 @@ function App() {
       </header>
     </div>
   );
+
+  
 }
 
 export default App;
