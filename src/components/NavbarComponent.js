@@ -20,7 +20,7 @@ export default class NavbarComponent extends React.Component {
                             <Nav.Link href="#link">My Messages</Nav.Link>
                             <NavDropdown title="Profile" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="#action/3.1">My Profile</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">My Job Offers</NavDropdown.Item>
+                                <NavDropdown.Item href="/myJobOffer">My Job Offers</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item href="#action/3.4">Logout</NavDropdown.Item>
                             </NavDropdown>
