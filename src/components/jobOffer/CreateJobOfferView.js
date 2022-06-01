@@ -67,6 +67,9 @@ export default class CreateJobOfferView extends Component {
                 // console.log(res);
                 // console.log(res.data);
                 // window.location = "/retrieve" //This line of code will redirect you once the submission is succeed
+                const id = res.data;
+                console.log(res.data);
+                window.location = "/jobOffer/" + id;
             })
     }
 
