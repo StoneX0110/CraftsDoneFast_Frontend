@@ -1,5 +1,5 @@
 import React from 'react';
-import  CreateJobOfferView  from './components/CreateJobOfferView';
+import  CreateJobOfferView  from './components/jobOffer/CreateJobOfferView';
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 
 // const routes = [
@@ -17,7 +17,7 @@ import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 
 const routes = (
     <Routes>
-      <Route path="/createJobOffer" exact component= {CreateJobOfferView} />
+      {/* <Route path="/createJobOffer" exact component= {CreateJobOfferView} /> */}
       {/* <Route path="/about" component={About} />
       <Route component={MissingPage} /> */}
     </Routes>
