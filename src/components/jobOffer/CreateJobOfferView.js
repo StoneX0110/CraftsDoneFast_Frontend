@@ -33,8 +33,6 @@ export default class CreateJobOfferView extends Component {
                  console.log(err);
              });
              */
-        console.log(this.state);
-
         axios({
             url:
                 "/api/jobOffer/test",
@@ -66,8 +64,8 @@ export default class CreateJobOfferView extends Component {
         event.preventDefault();
         axios.post('/api/jobOffer/insert', this.state)
             .then(res => {
-                console.log(res);
-                console.log(res.data);
+                // console.log(res);
+                // console.log(res.data);
                 // window.location = "/retrieve" //This line of code will redirect you once the submission is succeed
             })
     }
