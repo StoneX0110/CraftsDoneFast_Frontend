@@ -9,11 +9,17 @@ export default class CreateJobOfferView extends Component {
             category: "",
             postalCode: "",
             priceExpectation: "",
-            description: ""
+            description: "",
+            images: [],
+            imageURLs: [],
+            displayImages: [],
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.onImageChange = this.onImageChange.bind(this);
     }
+
+
 
     handleClick() {
         // add entity - POST
@@ -73,13 +79,42 @@ export default class CreateJobOfferView extends Component {
             })
     }
 
+    onImageChange(e) {
+        // this.setState({images: e.target.files});
+        // console.log(e.target.files);
+        this.state.images.push(e.target.files[0]);
+        // console.log(this.state.images);
+        const newImageURLs = [];
+        const image = "";
+        Array.from(this.state.images).forEach(image => newImageURLs.push(URL.createObjectURL(image)));
+        this.setState({ imageURLs: newImageURLs });
+        this.state.imageURLs = newImageURLs;
+        console.log("urls: " + this.state.imageURLs);
+        this.state.imageURLs.map(imageSrc => <img src={imageSrc} />);
+        this.setState({ imageURLs: this.state.imageURLs });
+        console.log("img: " + this.state.imageURLs);
+        this.state.imageURLs = this.state.imageURLs.map(imageSrc => <img key={imageSrc} src={imageSrc} />);
+        this.setState({ imageURLs: this.state.imageURLs });
+        console.log("display:" + this.state.imageURLs);
+        this.forceUpdate();
+    }
+
+
+
     render() {
+        const picture = {
+            width: "10px",
+            maxWidth: "30px",
+            maxHeight: "30px",
+            overflow: "hidden",
+            textOverflow: "clip",
+            whiteSpace: "nowrap"
+        };
         return (
             <div>
                 <button className="btn btn-primary" onClick={() => this.handleClick()}>Click Test
                 </button>
                 <p className="h1">Insert a Job Offer</p>
-
 
                 <form onSubmit={this.handleSubmit}>
                     <button type="submit" className="btn btn-primary">Confirm Job Offer</button>
@@ -112,13 +147,17 @@ export default class CreateJobOfferView extends Component {
                                 onChange={this.handleChange} placeholder="Price expectation" />
                         </div>
                     </div>
+                    <input className="form-control" type="file" multiple accept="image/*" onChange={this.onImageChange} />
+                    <div className="from-group col-md-3">
+                        {this.state.imageURLs}
+                    </div>
                     <div className="form-group">
                         <label>Description</label>
                         <textarea name="description" className="form-control" id="exampleFormControlTextarea1" rows="5" value={this.state.description}
                             onChange={this.handleChange}></textarea>
                     </div>
                 </form>
-            </div>
+            </div >
         );
     }
 }
