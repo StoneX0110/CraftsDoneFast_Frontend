@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Resizer from "react-image-file-resizer";
 export default class CreateJobOfferView extends Component {
 
     constructor(props) {
@@ -79,11 +80,54 @@ export default class CreateJobOfferView extends Component {
             })
     }
 
+    resizeFile = (file) => new Promise(resolve => {
+        Resizer.imageFileResizer(file, 300, 300, 'JPEG', 100, 0,
+            uri => {
+                resolve(uri);
+            }, 'base64');
+    });
+
+    resi = async (file) => {
+        await this.resizeFile(file);
+    }
+
     onImageChange(e) {
         // this.setState({images: e.target.files});
         // console.log(e.target.files);
-        this.state.images.push(e.target.files[0]);
+        // const resized = this.resizeFile(e.target.files[0]);
+        // const resized1 = this.resi(e.target.files[0]);
+        try {
+            Resizer.imageFileResizer(
+                e.target.files[0],
+                300,
+                300,
+                "JPEG",
+                100,
+                0,
+                (uri) => {
+                    // console.log(uri);
+                    // this.setState({ newImage: uri });
+                    this.state.images.push(uri);
+                    console.log("img" + this.state.images);
+                    this.state.imageURLs = this.state.images.map(imageSrc => <img className="border mb-3" key={imageSrc} src={imageSrc} />);
+                    this.setState({ imageURLs: this.state.imageURLs });
+                    console.log("content" + this.state.imageURLs);
+                    console.log("finished");
+                },
+                "base64",
+                100,
+                100
+            );
+        } catch (err) {
+            console.log(err);
+        }
+        // const resized1 = Resizer.imageFileResizer(e.target.files[0], 300, 300, 'JPEG', 100, 0, 'base64');
+        // console.log(resized1);
+        // this.state.images.push(e.target.files[0]);
+        // this.state.images.push(resized1);
+        // console.log("test");
         // console.log(this.state.images);
+        /*
         const newImageURLs = [];
         const image = "";
         Array.from(this.state.images).forEach(image => newImageURLs.push(URL.createObjectURL(image)));
@@ -97,25 +141,27 @@ export default class CreateJobOfferView extends Component {
         this.setState({ imageURLs: this.state.imageURLs });
         console.log("display:" + this.state.imageURLs);
         this.forceUpdate();
+        */
+
+
     }
 
 
 
     render() {
-        const picture = {
-            width: "10px",
-            maxWidth: "30px",
-            maxHeight: "30px",
-            overflow: "hidden",
-            textOverflow: "clip",
-            whiteSpace: "nowrap"
-        };
+        // const picture = {
+        //     width: "10px",
+        //     maxWidth: "30px",
+        //     maxHeight: "30px",
+        //     overflow: "hidden",
+        //     textOverflow: "clip",
+        //     whiteSpace: "nowrap",
+        // };
         return (
-            <div>
+            <div className="col-md-9">
                 <button className="btn btn-primary" onClick={() => this.handleClick()}>Click Test
                 </button>
                 <p className="h1">Insert a Job Offer</p>
-
                 <form onSubmit={this.handleSubmit}>
                     <button type="submit" className="btn btn-primary">Confirm Job Offer</button>
 
@@ -147,14 +193,16 @@ export default class CreateJobOfferView extends Component {
                                 onChange={this.handleChange} placeholder="Price expectation" />
                         </div>
                     </div>
-                    <input className="form-control" type="file" multiple accept="image/*" onChange={this.onImageChange} />
-                    <div className="from-group col-md-3">
-                        {this.state.imageURLs}
-                    </div>
                     <div className="form-group">
                         <label>Description</label>
                         <textarea name="description" className="form-control" id="exampleFormControlTextarea1" rows="5" value={this.state.description}
                             onChange={this.handleChange}></textarea>
+                    </div>
+                    <div  className="from-group col-md-3">
+                        <input className="form-control" type="file" multiple accept="image/*" onChange={this.onImageChange} />
+                        <div>
+                            {this.state.imageURLs}
+                        </div>
                     </div>
                 </form>
             </div >
