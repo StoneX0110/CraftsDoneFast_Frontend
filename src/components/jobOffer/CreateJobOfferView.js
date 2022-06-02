@@ -12,9 +12,8 @@ export default class CreateJobOfferView extends Component {
             priceExpectation: "",
             description: "",
             images: [],
-            imageURLs: [],
-            displayImages: [],
         };
+        this.imageURLs = [];
 
         this.handleChange = this.handleChange.bind(this);
         this.onImageChange = this.onImageChange.bind(this);
@@ -69,6 +68,8 @@ export default class CreateJobOfferView extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
+        // this.state.imageURLs = "";
+        delete this.state.imageURLs;
         axios.post('/api/jobOffer/insert', this.state)
             .then(res => {
                 // console.log(res);
@@ -108,11 +109,11 @@ export default class CreateJobOfferView extends Component {
                     // console.log(uri);
                     // this.setState({ newImage: uri });
                     this.state.images.push(uri);
-                    console.log("img" + this.state.images);
-                    this.state.imageURLs = this.state.images.map(imageSrc => <img className="border mb-3" key={imageSrc} src={imageSrc} />);
-                    this.setState({ imageURLs: this.state.imageURLs });
-                    console.log("content" + this.state.imageURLs);
-                    console.log("finished");
+                    // console.log("img" + this.state.images);
+                    this.imageURLs = this.state.images.map(imageSrc => <img className="border mb-3" key={imageSrc} src={imageSrc} />);
+                    this.setState({ imageURLs: this.imageURLs });
+                    console.log(this.imageURLs);
+                    // console.log("finished");
                 },
                 "base64",
                 100,

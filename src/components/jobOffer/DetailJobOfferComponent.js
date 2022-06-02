@@ -19,7 +19,10 @@ export default class DetailJobOfferComponent extends React.Component {
                 author: "",
                 insertionDate: "",
                 postalCode: "",
+                images: [],
+                imageurl: "",
             },
+            urls: "",
         };
         this.details = "";
         //this.formatDate = Moment(this.props.job.insertionDate).format('hh:mm DD.MM.YYYY');
@@ -27,11 +30,26 @@ export default class DetailJobOfferComponent extends React.Component {
 
     componentDidMount() {
         // console.log('/api/jobOffer/' + this.id);
-
         axios.get('/api/jobOffer/' + this.id).then(res => {
             const foo = res.data;
             // this.setState(res.data);
             this.setState({ job: res.data });
+            // console.log(res.data);
+            // console.log(res.data.images[0].data.data);
+            const imageResult = [];
+            res.data.images.forEach(element => {
+                imageResult.push("data:image/jpeg;base64," + btoa(String.fromCharCode(...new Uint8Array(element.data.data))).substring(20));
+            });
+            // const base64String = btoa(String.fromCharCode(...new Uint8Array(res.data.images[0].data.data)));
+            // console.log(base64String);
+            // console.log(this.state.job.imageurl);
+            // const test = "data:image/jpeg;base64," + base64String.substring(20);
+            // this.state.urls = imageResult.map(imageSrc => <img className="border mb-3" key={imageSrc} src={imageSrc} />);
+            // console.log(test);
+            this.setState({ urls: imageResult.map(imageSrc => <img className="border mb-3" key={imageSrc} src={imageSrc} />) });
+            // console.log(this.state.urls);
+            // this.forceUpdate();
+            // console.log(this.state.urls);
             // console.log(this.state.title);
             // this.renderJobs = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id}>{e.title} - {e.category}</JobOfferOverviewComponent>)
             // console.log(this.renderJobs);
@@ -80,7 +98,13 @@ export default class DetailJobOfferComponent extends React.Component {
                     <label>Description</label>
                     <textarea name="description" readOnly className="form-control-plaintext border-2 border-success m-4 p-2" rows="5" value={this.state.job.description}></textarea>
                 </div>
+                <div  className="from-group col-md-3">
+                        <div>
+                            {this.state.urls}
+                        </div>
+                    </div>
             </div>
+
         );
     }
 }
