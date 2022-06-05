@@ -34,7 +34,7 @@ export default class NavbarComponent extends React.Component {
                             <Dropdown.Divider/>
                             <Dropdown.Item href="#action/3.4">Logout</Dropdown.Item>
                         </DropdownButton>
-                        <Nav.Link href="#link">
+                        <Nav.Link href="/login">
                             <Button class="btn btn-primary" size="lg">Login</Button>
                         </Nav.Link>
                     </Navbar.Collapse>

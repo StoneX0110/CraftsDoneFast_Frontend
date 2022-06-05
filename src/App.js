@@ -4,6 +4,10 @@ import CreateJobOfferView from './components/jobOffer/CreateJobOfferView';
 import MyJobOfferView from './components/jobOffer/MyJobOfferView';
 import NavbarComponent from './components/NavbarComponent';
 import OverviewView from "./components/OverviewView";
+import Login from "./components/Login";
+import Registration from "./components/Registration";
+
+
 import DetailJobOfferComponent from './components/jobOffer/DetailJobOfferComponent';
 import ReactDOM from "react-dom";
 import routes from "./router";
@@ -25,7 +29,8 @@ function App() {
           <Route exact path='/createJobOffer' element={<CreateJobOfferView />} />
           <Route exact path='/myJobOffer' element={<MyJobOfferView/>} />
           <Route path="/jobOffer/:id" element={<DetailJobOfferComponent />} />
-
+          <Route exact path='/login' element={<Login/>} />
+          <Route exact path='/registration' element={<Registration/>} />
         </Routes>
       </Router>
 
