@@ -9,7 +9,7 @@ export default class NavbarComponent extends React.Component {
             <Navbar sticky="top" className="color-nav navbar-custom" expand="lg">
                 <div className="position-fixed ">
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-                    <Navbar.Collapse id="basic-navbar-nav">
+                    <Navbar.Collapse id="basic-navbar-nav"> 
                         {/* <Link to="/createJobOffer">About</Link> */}
                         {/* <Nav.Link as={Link} to="/createJobOffer" >Home</Nav.Link> */}
                         <Nav.Link href="/createJobOffer">
@@ -17,6 +17,7 @@ export default class NavbarComponent extends React.Component {
                         </Nav.Link>
                     </Navbar.Collapse>
                 </div>
+
                 <div className="position-fixed start-50 translate-middle-x">
                     <Navbar.Brand href="/"><img src={logo} height={100} alt="Company Logo"/> </Navbar.Brand>
                 </div>
@@ -27,7 +28,7 @@ export default class NavbarComponent extends React.Component {
                         <Nav.Link href="#link">
                             <Button className="btn btn-primary" size="lg">Messages</Button>
                         </Nav.Link>
-                        <DropdownButton title="Profile" id="basic-nav-dropdown" className="btn btn-primary" size="lg">
+                        <DropdownButton title="Profile" id="basic-nav-dropdown" className="btn" size="lg">
                             <Dropdown.Item href="#action/3.1">My Profile</Dropdown.Item>
                             <Dropdown.Item href="/myJobOffer">My Job Offers</Dropdown.Item>
                             <Dropdown.Divider/>
