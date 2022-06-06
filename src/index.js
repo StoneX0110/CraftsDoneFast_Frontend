@@ -19,6 +19,7 @@ root.render(
   </React.StrictMode>
 );
 
+/*
 axios.interceptors.request.use(
   request => {
     request.headers['access-control-allow-origin'] = null;
@@ -28,22 +29,53 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   }
 )
+*/
 
 axios.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
-  if (error.response.status === 403) {
+  console.log("test" + error);
+  if (typeof(error.response) === "undefined") {
+    alert(error);
+  }
+  else if (error.response.status === 403) {
     console.log("forbidden");
+    // navigate('/login', { replace: true });
     // sessionStorage.removeItem("user");
   } else {
+    const error = error;
+    console.log(error);
+    // if (typeof(error) === "undefined") {
+    //   console.log("undef");
+    // }
     console.log(error.response.data.message);
     alert(error.response.data.message);
     // router.push("/");
     // context.history.push("/");
-    var navigate = useNavigate();
-    navigate('/', { replace: true });
+    // var navigate = useNavigate();
+    // navigate('/', { replace: true });
   }
 });
+
+axios.interceptors.request.use(
+  request => {
+    const user = JSON.parse(localStorage.getItem('userData'));
+    // console.log(user);
+    if (user !== null) {
+      // console.log("add authentication");
+      // console.log(user.accessToken);
+      // console.log("add: " + JSON.parse(user.accessToken) + " ----- " + JSON.parse(user.signature));
+      request.headers['x-access-token'] = user.accessToken;
+      request.headers['x-access-signature'] = user.signature;
+      request.headers['access-control-allow-origin'] = null;
+    }
+    return request;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+)
+
 
 
 // If you want to start measuring performance in your app, pass a function
