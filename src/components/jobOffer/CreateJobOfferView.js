@@ -160,15 +160,15 @@ export default class CreateJobOfferView extends Component {
         // };
         return (
             <div className="col-md-9">
-                <button className="btn btn-primary" onClick={() => this.handleClick()}>Click Test
-                </button>
+                {/* <button className="btn btn-primary" onClick={() => this.handleClick()}>Click Test
+                </button> */}
                 <p className="h1">Insert a Job Offer</p>
                 <form onSubmit={this.handleSubmit}>
-                    <button type="submit" className="btn btn-primary">Confirm Job Offer</button>
+                    <button type="submit" className="btn btn-success">Confirm Job Offer</button>
 
                     <div className="form-group">
                         <label>Title</label>
-                        <input type="text" name="title" className="form-control" id="exampleFormControlInput1" value={this.state.title} onChange={this.handleChange}
+                        <input required type="text" name="title" className="form-control" id="exampleFormControlInput1" value={this.state.title} onChange={this.handleChange}
                             placeholder="Insert Title..." />
                     </div>
                     <div className="form-row row">

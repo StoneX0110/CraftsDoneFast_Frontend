@@ -16,7 +16,9 @@ export default class DetailJobOfferComponent extends React.Component {
                 category: "",
                 description: "",
                 priceExpectation: "",
-                author: "",
+                author: {
+                    username: "",
+                },
                 insertionDate: "",
                 postalCode: "",
                 images: [],
@@ -74,7 +76,7 @@ export default class DetailJobOfferComponent extends React.Component {
                         </div>
                         <div className="form-group col-md-6">
                             <label>Author</label>
-                            <input type="text" readOnly className="form-control-plaintext col-md-3 border-2 border-success m-4 p-2" defaultValue={this.state.job.author} />
+                            <input type="text" readOnly className="form-control-plaintext col-md-3 border-2 border-success m-4 p-2" defaultValue={this.state.job.author.username} />
                             {/* <input type="text" name="title" className="form-control" id="exampleFormControlInput1" readOnly placeholder={this.state.title} /> */}
                         </div>
                     </div>

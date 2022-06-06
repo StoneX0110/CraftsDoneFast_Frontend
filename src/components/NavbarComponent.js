@@ -14,7 +14,7 @@ export default class NavbarComponent extends React.Component {
 
     componentDidMount() {
         const user = JSON.parse(localStorage.getItem('userData'));
-        console.log(user);
+        // console.log(user);
         if (user != null) {
             this.state.loggedIn = true;
             this.setState({loggedIn: true});

@@ -34,12 +34,15 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
-  console.log("test" + error);
+  // console.log("test" + error);
   if (typeof(error.response) === "undefined") {
     alert(error);
   }
   else if (error.response.status === 403) {
-    console.log("forbidden");
+    alert("Forbidden. Please log in to use this functionality.");
+    localStorage.setItem('userData', null);
+    window.location = "/login";
+    // var navigate = useNavigate();
     // navigate('/login', { replace: true });
     // sessionStorage.removeItem("user");
   } else {
