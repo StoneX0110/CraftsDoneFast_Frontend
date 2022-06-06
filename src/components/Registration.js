@@ -2,6 +2,35 @@ import React, { Component } from "react";
 import axios from "axios";
 export default class Registration extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: "",
+            password: "",
+            repeatPassword: "",
+        };
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event) {
+        const name = event.target.name;
+        this.setState({ [name]: event.target.value });
+        // console.log(this.state);
+    }
+
+
+
+    register() {
+        axios.post('/api/auth/signup', this.state)
+            .then(res => {
+                // console.log(res);
+                // console.log(res.data);
+                // window.location = "/retrieve" //This line of code will redirect you once the submission is succeed
+                const id = res.data;
+                console.log(res.data);
+                window.location = "/login";
+            })
+    }
 
     render() {
         return (
@@ -13,13 +42,12 @@ export default class Registration extends Component {
                                 <div className="card shadow-2-strong card-registration">
                                     <div className="card-body p-4 p-md-5">
                                         <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3>
-                                        <form>
-
+                                        {/* <form onSubmit={this.register}> */}
                                             <div className="row">
                                                 <div className="col-md-12 mb-4">
 
                                                     <div className="form-outline">
-                                                        <input type="text" id="firstName" className="form-control form-control-lg" />
+                                                        <input type="text" name="username" value={this.state.username} onChange={this.handleChange} className="form-control form-control-lg" />
                                                         <label className="form-label">Enter Username</label>
                                                     </div>
 
@@ -27,11 +55,11 @@ export default class Registration extends Component {
                                                 <div className="col-md-12 mb-4">
 
                                                     <div className="form-outline">
-                                                        <input type="password" id="lastName" className="form-control form-control-lg" />
+                                                        <input type="password" name="password" value={this.state.password} onChange={this.handleChange} className="form-control form-control-lg" />
                                                         <label className="form-label">Enter Password</label>
                                                     </div>
                                                     <div className="form-outline">
-                                                        <input type="password" id="lastName" className="form-control form-control-lg" />
+                                                        <input type="password" name="repeatPassword" value={this.state.repeatPassword} onChange={this.handleChange} className="form-control form-control-lg" />
                                                         <label className="form-label">Re-enter Password</label>
                                                     </div>
 
@@ -39,10 +67,10 @@ export default class Registration extends Component {
                                                 </div>
                                             </div>                                                                           
                                             <div className="mt-0 pt-2">
-                                                <input className="btn btn-success btn-lg" type="submit" value="Register" />
+                                                <button className="btn btn-success btn-lg" onClick={() => this.register()}>Register</button>
                                             </div>
 
-                                        </form>
+                                        {/* </form> */}
                                     </div>
                                 </div>
                             </div>

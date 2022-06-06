@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from "axios";
+import context from 'react-bootstrap/esm/AccordionContext';
+import { useNavigate } from "react-router-dom";
 // import routes from "./router";
 // import { BrowserRouter, BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 
@@ -26,6 +28,23 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   }
 )
+
+axios.interceptors.response.use(function (response) {
+  return response;
+}, function (error) {
+  if (error.response.status === 403) {
+    console.log("forbidden");
+    // sessionStorage.removeItem("user");
+  } else {
+    console.log(error.response.data.message);
+    alert(error.response.data.message);
+    // router.push("/");
+    // context.history.push("/");
+    var navigate = useNavigate();
+    navigate('/', { replace: true });
+  }
+});
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

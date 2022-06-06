@@ -38,6 +38,8 @@ export default class MyJobOfferView extends Component {
             this.renderJobs = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job = {e}/>)
             // console.log(this.renderJobs);
             this.forceUpdate();
+            const user = JSON.parse(localStorage.getItem('userData'));
+            console.log(user);
         })
     }
 

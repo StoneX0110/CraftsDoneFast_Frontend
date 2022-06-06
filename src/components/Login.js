@@ -9,6 +9,29 @@ var Link = Router.Link;
  */
 export default class Login extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: "",
+            password: "",
+        };
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event) {
+        const name = event.target.name;
+        this.setState({ [name]: event.target.value });
+    }
+
+    login(){
+        axios.post('/api/auth/signin', this.state)
+        .then(res => {
+            console.log(res.data);
+            localStorage.setItem('userData', JSON.stringify(res.data));
+            // console.log(res.data);
+            window.location = "/";
+        })
+    }
 
     render() {
         return (
@@ -20,13 +43,13 @@ export default class Login extends Component {
                                 <div className="card shadow-2-strong card-login">
                                     <div className="card-body p-4 p-md-5">
                                         <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">Login Form</h3>
-                                        <form>
+                                        {/* <form> */}
 
                                             <div className="row">
                                                 <div className="col-md-12 mb-4">
 
                                                     <div className="form-outline">
-                                                        <input type="text" id="firstName" className="form-control form-control-lg" />
+                                                    <input type="text" name="username" value={this.state.username} onChange={this.handleChange} className="form-control form-control-lg" />
                                                         <label className="form-label">Username</label>
                                                     </div>
 
@@ -34,7 +57,7 @@ export default class Login extends Component {
                                                 <div className="col-md-12 mb-4">
 
                                                     <div className="form-outline">
-                                                        <input type="password" id="lastName" className="form-control form-control-lg" />
+                                                        <input type="password" name="password" value={this.state.password} onChange={this.handleChange} className="form-control form-control-lg" />
                                                         <label className="form-label">Password</label>
                                                     </div>
 
@@ -43,13 +66,13 @@ export default class Login extends Component {
                                 
 
                                             <div className="mt-4 pt-2">
-                                                <input className="btn btn-success btn-lg " type="submit" value="Login" />
+                                            <button className="btn btn-success btn-lg" onClick={() => this.login()}>Login</button>
                                             </div>
 
                                             <div>
                                             <label>Not a member? <Link to="/registration">Sign Up</Link></label>
                                             </div>
-                                        </form>
+                                        {/* </form> */}
                                     </div>
                                 </div>
                             </div>
