@@ -1,9 +1,8 @@
-import logo from './logo.svg';
 import './App.css';
 import CreateJobOfferView from './components/jobOffer/CreateJobOfferView';
 import MyJobOfferView from './components/jobOffer/MyJobOfferView';
 import NavbarComponent from './components/NavbarComponent';
-import OverviewView from "./components/OverviewView";
+import Homepage from "./components/Homepage";
 import Login from "./components/Login";
 import Registration from "./components/Registration";
 
@@ -22,13 +21,13 @@ function App() {
     <div className="App">
 
       <Router>
-        <NavbarComponent />
+        <NavbarComponent/>
         {/* <CreateJobOfferView/> */}
         <Routes>
-          <Route exact path='/' element={<OverviewView />} />
-          <Route exact path='/createJobOffer' element={<CreateJobOfferView />} />
-          <Route exact path='/myJobOffer' element={<MyJobOfferView/>} />
-          <Route path="/jobOffer/:id" element={<DetailJobOfferComponent />} />
+          <Route exact path='/' element={<Homepage/>} />
+          <Route exact path='/createJobOffer' element={<CreateJobOfferView/>} />
+          <Route exact path='/myJobOffers' element={<MyJobOfferView/>} />
+          <Route path="/jobOffer/:id" element={<DetailJobOfferComponent/>} />
           <Route exact path='/login' element={<Login/>} />
           <Route exact path='/registration' element={<Registration/>} />
         </Routes>

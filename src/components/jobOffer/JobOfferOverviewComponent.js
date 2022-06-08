@@ -20,12 +20,12 @@ export default class JobOfferOverviewComponent extends React.Component {
                     <div className="card border-success mb-3">
                         {/* <h5 className="card-header">Job Offer created at {this.props.job.insertionDate}</h5> */}
                         <div className="card-body">
-                            <p className="card-text">Job Offer created at {this.formatDate}</p>
                             <p className="card-title">{this.props.job.title}</p>
                             <p className="card-text">
                                 Zip {this.props.job.postalCode} - {this.props.job.priceExpectation === "" ?
-                                ("No Price Expectation") : (`Price Expectation: ${this.props.job.priceExpectation} €`)}
+                                ("No price expectation") : (`Price expectation: ${this.props.job.priceExpectation} €`)}
                             </p>
+                            <p className="card-text">Job offer created at {this.formatDate}</p>
                             {/* <a href="#" class="btn btn-primary">Go somewhere</a> */}
                             {/* <a href="/jobOffer/${this.props.job._id}" className="btn btn-success stretched-link">View Offer</a> */}
                         </div>
