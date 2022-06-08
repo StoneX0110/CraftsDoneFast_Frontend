@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import axios from "axios";
 import JobOfferOverviewComponent from "./JobOfferOverviewComponent";
+
 export default class MyJobOfferView extends Component {
 
     constructor(props) {
@@ -35,7 +36,7 @@ export default class MyJobOfferView extends Component {
             this.jobs = res.data;
             console.log(this.jobs);
             // this.renderJobs = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id}>{e.title} - {e.category}</JobOfferOverviewComponent>)
-            this.renderJobs = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job = {e}/>)
+            this.renderJobs = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job={e}/>)
             // console.log(this.renderJobs);
             this.forceUpdate();
         })
@@ -43,9 +44,11 @@ export default class MyJobOfferView extends Component {
 
     render() {
         return (
-            <div className="col-md-9">
-                <p className="h1">My Job Offers</p>
-                {this.renderJobs}
+            <div>
+                <div style={{backgroundColor: "rgb(41, 118, 74)", color: "rgb(240,245,215)"}}>
+                    <p className="h1">My Job Offers</p>
+                    {this.renderJobs}
+                </div>
             </div>
         );
     }
