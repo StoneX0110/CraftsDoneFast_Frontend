@@ -18,7 +18,6 @@ export default class Homepage extends Component {
             this.jobs = this.jobs.data.sort((a, b) => {
                 return b.insertionDate.localeCompare(a.insertionDate);
             });
-            this.jobs.splice(10)
             // this.renderJobs = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id}>{e.title} - {e.category}</JobOfferOverviewComponent>)
             this.renderJobs = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job={e}/>)
             // console.log(this.renderJobs);
