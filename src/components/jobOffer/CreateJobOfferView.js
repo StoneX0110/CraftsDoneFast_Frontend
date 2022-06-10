@@ -19,62 +19,16 @@ export default class CreateJobOfferView extends Component {
         this.onImageChange = this.onImageChange.bind(this);
     }
 
-
-
-    handleClick() {
-        // add entity - POST
-        // creates entity
-        /*
-         fetch("http://127.0.0.1:5000/api/jobOffer/test", {
-             "method": "GET",
-             headers: {
-                         'Access-Control-Allow-Origin': '*',
-                     }
-         })
-            
-             .then(response => {
-                 console.log(response)
-             })
-             .catch(err => {
-                 console.log(err);
-             });
-             */
-        axios({
-            url:
-                "/api/jobOffer/test",
-            method: "GET",
-            // headers: {
-            //     'Access-Control-Allow-Origin': '*',
-            // }
-        })
-            .then(response => {
-                console.log(response)
-            })
-            .catch(err => {
-                console.log(err);
-            });
-        // axios.get(`localhost:5000/api/jobOffer/test`)
-        //     .then(res => {
-        //         const resp = res.data;
-        //         console.log(resp);
-        //     })
-    }
-
     handleChange(event) {
         const name = event.target.name;
-        //console.log([name] + " - " + event.target.value);
         this.setState({ [name]: event.target.value });
     }
 
     handleSubmit = event => {
         event.preventDefault();
-        // this.state.imageURLs = "";
         delete this.state.imageURLs;
         axios.post('/api/jobOffer/insert', this.state)
             .then(res => {
-                // console.log(res);
-                // console.log(res.data);
-                // window.location = "/retrieve" //This line of code will redirect you once the submission is succeed
                 const id = res.data;
                 console.log(res.data);
                 window.location = "/jobOffer/" + id;
@@ -93,10 +47,6 @@ export default class CreateJobOfferView extends Component {
     }
 
     onImageChange(e) {
-        // this.setState({images: e.target.files});
-        // console.log(e.target.files);
-        // const resized = this.resizeFile(e.target.files[0]);
-        // const resized1 = this.resi(e.target.files[0]);
         try {
             Resizer.imageFileResizer(
                 e.target.files[0],
@@ -106,14 +56,10 @@ export default class CreateJobOfferView extends Component {
                 100,
                 0,
                 (uri) => {
-                    // console.log(uri);
-                    // this.setState({ newImage: uri });
                     this.state.images.push(uri);
-                    // console.log("img" + this.state.images);
                     this.imageURLs = this.state.images.map(imageSrc => <img className="border mb-3" key={imageSrc} src={imageSrc} />);
                     this.setState({ imageURLs: this.imageURLs });
                     console.log(this.imageURLs);
-                    // console.log("finished");
                 },
                 "base64",
                 100,
@@ -122,50 +68,16 @@ export default class CreateJobOfferView extends Component {
         } catch (err) {
             console.log(err);
         }
-        // const resized1 = Resizer.imageFileResizer(e.target.files[0], 300, 300, 'JPEG', 100, 0, 'base64');
-        // console.log(resized1);
-        // this.state.images.push(e.target.files[0]);
-        // this.state.images.push(resized1);
-        // console.log("test");
-        // console.log(this.state.images);
-        /*
-        const newImageURLs = [];
-        const image = "";
-        Array.from(this.state.images).forEach(image => newImageURLs.push(URL.createObjectURL(image)));
-        this.setState({ imageURLs: newImageURLs });
-        this.state.imageURLs = newImageURLs;
-        console.log("urls: " + this.state.imageURLs);
-        this.state.imageURLs.map(imageSrc => <img src={imageSrc} />);
-        this.setState({ imageURLs: this.state.imageURLs });
-        console.log("img: " + this.state.imageURLs);
-        this.state.imageURLs = this.state.imageURLs.map(imageSrc => <img key={imageSrc} src={imageSrc} />);
-        this.setState({ imageURLs: this.state.imageURLs });
-        console.log("display:" + this.state.imageURLs);
-        this.forceUpdate();
-        */
-
-
     }
 
 
 
     render() {
-        // const picture = {
-        //     width: "10px",
-        //     maxWidth: "30px",
-        //     maxHeight: "30px",
-        //     overflow: "hidden",
-        //     textOverflow: "clip",
-        //     whiteSpace: "nowrap",
-        // };
         return (
             <div className="col-md-9">
-                {/* <button className="btn btn-primary" onClick={() => this.handleClick()}>Click Test
-                </button> */}
                 <p className="h1">Insert a Job Offer</p>
                 <form onSubmit={this.handleSubmit}>
                     <button type="submit" className="btn btn-success">Confirm Job Offer</button>
-
                     <div className="form-group">
                         <label>Title</label>
                         <input required type="text" name="title" className="form-control" id="exampleFormControlInput1" value={this.state.title} onChange={this.handleChange}

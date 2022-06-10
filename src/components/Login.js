@@ -23,13 +23,15 @@ export default class Login extends Component {
         this.setState({ [name]: event.target.value });
     }
 
-    login(){
+    login() {
         axios.post('/api/auth/signin', this.state)
-        .then(res => {
-            localStorage.setItem('userData', JSON.stringify(res.data));
-            // console.log(res.data);
-            window.location = "/";
-        })
+            .then(res => {
+                localStorage.setItem('userData', JSON.stringify(res.data));
+                window.location = "/";
+            }).catch(error => {
+                console.log(error);
+            });
+
     }
 
     render() {
@@ -44,33 +46,33 @@ export default class Login extends Component {
                                         <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">Login Form</h3>
                                         {/* <form> */}
 
-                                            <div className="row">
-                                                <div className="col-md-12 mb-4">
+                                        <div className="row">
+                                            <div className="col-md-12 mb-4">
 
-                                                    <div className="form-outline">
+                                                <div className="form-outline">
                                                     <input type="text" name="username" value={this.state.username} onChange={this.handleChange} className="form-control form-control-lg" />
-                                                        <label className="form-label">Username</label>
-                                                    </div>
-
+                                                    <label className="form-label">Username</label>
                                                 </div>
-                                                <div className="col-md-12 mb-4">
 
-                                                    <div className="form-outline">
-                                                        <input type="password" name="password" value={this.state.password} onChange={this.handleChange} className="form-control form-control-lg" />
-                                                        <label className="form-label">Password</label>
-                                                    </div>
+                                            </div>
+                                            <div className="col-md-12 mb-4">
 
+                                                <div className="form-outline">
+                                                    <input type="password" name="password" value={this.state.password} onChange={this.handleChange} className="form-control form-control-lg" />
+                                                    <label className="form-label">Password</label>
                                                 </div>
-                                            </div>                  
-                                
 
-                                            <div className="mt-4 pt-2">
+                                            </div>
+                                        </div>
+
+
+                                        <div className="mt-4 pt-2">
                                             <button className="btn btn-success btn-lg" onClick={() => this.login()}>Login</button>
-                                            </div>
+                                        </div>
 
-                                            <div>
+                                        <div>
                                             <label>Not a member? <Link to="/registration">Sign Up</Link></label>
-                                            </div>
+                                        </div>
                                         {/* </form> */}
                                     </div>
                                 </div>

@@ -10,34 +10,12 @@ export default class MyJobOfferView extends Component {
         this.renderJobs = "";
     }
 
-    // getMyJobOffers() {
-    //     console.log("fetch job offers");
-    //     axios.get('/api/jobOffer/myJobOffers').then(res => {
-    //         console.log(res);
-    //         // console.log(res.data);
-    //     })
-    //     // axios({
-    //     //     url:
-    //     //         "/api/jobOffer/myJobOffers",
-    //     //     method: "GET",
-    //     // })
-    //     //     .then(response => {
-    //     //         console.log(response)
-    //     //         this.jobs = response;
-    //     //     })y
-    //     //     .catch(err => {
-    //     //         console.log(err);
-    //     //     });
-    // }
-
     componentDidMount() {
         console.log("fetch job offers");
         axios.get('/api/jobOffer/myJobOffers').then(res => {
             this.jobs = res.data;
             console.log(this.jobs);
-            // this.renderJobs = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id}>{e.title} - {e.category}</JobOfferOverviewComponent>)
             this.renderJobs = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job={e}/>)
-            // console.log(this.renderJobs);
             this.forceUpdate();
         })
     }

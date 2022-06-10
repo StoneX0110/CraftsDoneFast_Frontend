@@ -9,7 +9,6 @@ import Registration from "./components/Registration";
 
 import DetailJobOfferComponent from './components/jobOffer/DetailJobOfferComponent';
 import ReactDOM from "react-dom";
-import routes from "./router";
 import { BrowserRouter, BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 
@@ -22,7 +21,6 @@ function App() {
 
       <Router>
         <NavbarComponent/>
-        {/* <CreateJobOfferView/> */}
         <Routes>
           <Route exact path='/' element={<Homepage/>} />
           <Route exact path='/createJobOffer' element={<CreateJobOfferView/>} />
@@ -32,22 +30,6 @@ function App() {
           <Route exact path='/registration' element={<Registration/>} />
         </Routes>
       </Router>
-
-      {/* <CreateJobOfferView /> */}
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
     </div>
   );
 
