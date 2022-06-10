@@ -176,11 +176,12 @@ export default class CreateJobOfferView extends Component {
                             <label>Category</label>
                             <select required name="category" className="form-control" id="exampleFormControlSelect1" value={this.state.category} onChange={this.handleChange}>
                                 <option defaultValue disabled value="">Choose...</option>
-                                <option>Electrican</option>
-                                <option>Garden</option>
-                                <option>Building House</option>
-                                <option>Plumber</option>
-                                <option>Woodworker</option>
+                                <option>Electrics</option>
+                                <option>Gardening</option>
+                                <option>Painting</option>
+                                <option>Plumbing</option>
+                                <option>Woodworking</option>
+                                <option>Other</option>
                             </select>
                         </div>
                         <div className="form-group col-md-4">

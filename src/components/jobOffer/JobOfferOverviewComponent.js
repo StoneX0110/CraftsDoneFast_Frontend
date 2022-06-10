@@ -15,10 +15,9 @@ export default class JobOfferOverviewComponent extends React.Component {
     render() {
         return (
             <div>
-                <Link to={"/jobOffer/" + this.props.job._id} style={{textDecoration: 'none'}}>
-
-                    <div className="card border-success mb-3">
-                        {/* <h5 className="card-header">Job Offer created at {this.props.job.insertionDate}</h5> */}
+                <div className="card border-success mb-3">
+                    {/* <h5 className="card-header">Job Offer created at {this.props.job.insertionDate}</h5> */}
+                    <Link to={"/jobOffer/" + this.props.job._id} style={{textDecoration: 'none', color: "rgb(41, 118, 74)"}}>
                         <div className="card-body">
                             <p className="card-title">{this.props.job.title}</p>
                             <p className="card-text">
@@ -29,8 +28,8 @@ export default class JobOfferOverviewComponent extends React.Component {
                             {/* <a href="#" class="btn btn-primary">Go somewhere</a> */}
                             {/* <a href="/jobOffer/${this.props.job._id}" className="btn btn-success stretched-link">View Offer</a> */}
                         </div>
-                    </div>
-                </Link>
+                    </Link>
+                </div>
             </div>
         );
     }
