@@ -1,0 +1,16 @@
+.search-wrapper{
+    background-color: white;
+    width: 60%;
+    margin: 0 auto;
+}
+.btn-enabled{
+    color: rgb(240,245,215)!important;
+    background-color: rgb(41, 118, 74)!important;
+}
+.btn-outline-success{
+    color: rgb(41, 118, 74)!important;
+    outline: rgb(41, 118, 74) !important;
+}
+.form-group{
+    margin-bottom: 5px;
+}
