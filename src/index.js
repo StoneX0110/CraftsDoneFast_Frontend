@@ -21,7 +21,7 @@ axios.interceptors.response.use(function (response) {
   }
   else if (error.response.status === 403) {
     alert("Forbidden. Please log in to use this functionality.");
-    localStorage.setItem('userData', null);
+    sessionStorage.setItem('userData', null);
     window.location = "/login";
   }
   else {
@@ -32,7 +32,7 @@ axios.interceptors.response.use(function (response) {
 
 axios.interceptors.request.use(
   request => {
-    const user = JSON.parse(localStorage.getItem('userData'));
+    const user = JSON.parse(sessionStorage.getItem('userData'));
     if (user !== null) {
       request.headers['x-access-token'] = user.accessToken;
       request.headers['x-access-signature'] = user.signature;

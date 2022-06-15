@@ -13,7 +13,7 @@ export default class NavbarComponent extends React.Component {
     }
 
     componentDidMount() {
-        const user = JSON.parse(localStorage.getItem('userData'));
+        const user = JSON.parse(sessionStorage.getItem('userData'));
         // console.log(user);
         if (user != null) {
             this.state.loggedIn = true;
@@ -22,7 +22,7 @@ export default class NavbarComponent extends React.Component {
     }
 
     logout() {
-        localStorage.setItem('userData', null);
+        sessionStorage.setItem('userData', null);
         this.setState({loggedIn: false});
         window.location = "/login";
     }

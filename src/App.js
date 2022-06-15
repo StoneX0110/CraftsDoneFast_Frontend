@@ -9,13 +9,16 @@ import Registration from "./components/Registration";
 
 import DetailJobOfferComponent from './components/jobOffer/DetailJobOfferComponent';
 import ReactDOM from "react-dom";
-import { BrowserRouter, BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 
 
 import "bootstrap/dist/css/bootstrap.css";
 
 function App() {
+
+  var isLoggedIn = sessionStorage.getItem("userData");
+
   return (
     <div className="App">
 
@@ -24,10 +27,10 @@ function App() {
         <Routes>
           <Route exact path='/' element={<Homepage/>} />
           <Route exact path='/createJobOffer' element={<CreateJobOfferView/>} />
-          <Route exact path='/myJobOffers' element={<MyJobOfferView/>} />
+          <Route exact path='/myJobOffers' element={isLoggedIn ? <MyJobOfferView/> : <Navigate to={{pathname: "/"}}/>}/>
           <Route path="/jobOffer/:id" element={<DetailJobOfferComponent/>} />
-          <Route exact path='/login' element={<Login/>} />
-          <Route exact path='/registration' element={<Registration/>} />
+          <Route exact path='/login' element={isLoggedIn ? <Navigate to={{pathname: "/"}}/> :<Login/>} />
+          <Route exact path='/registration' element={isLoggedIn ? <Navigate to={{pathname: "/"}}/> : <Registration/>} />
         </Routes>
       </Router>
     </div>

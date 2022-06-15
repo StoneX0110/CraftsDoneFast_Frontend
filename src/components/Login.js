@@ -26,7 +26,7 @@ export default class Login extends Component {
     login() {
         axios.post('/api/auth/signin', this.state)
             .then(res => {
-                localStorage.setItem('userData', JSON.stringify(res.data));
+                sessionStorage.setItem('userData', JSON.stringify(res.data));
                 window.location = "/";
             }).catch(error => {
                 console.log(error);
