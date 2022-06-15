@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import ImageComponent from "./ImageComponent";
 import './JobOffer.css'
+import BackButtonComponent from "../BackButtonComponent";
 
 
 
@@ -40,7 +41,7 @@ export default class DetailJobOfferComponent extends React.Component {
             res.data.images.forEach(element => {
                 imageResult.push("data:image/jpeg;base64," + btoa(String.fromCharCode(...new Uint8Array(element.data.data))).substring(20));
             });
-            this.setState({ urls: imageResult.map(imageSrc => <ImageComponent imageSrc={imageSrc}/>) });
+            this.setState({ urls: imageResult.map(imageSrc => <ImageComponent imageSrc={imageSrc} key={imageSrc}/>) });
         })
     }
 
@@ -48,6 +49,7 @@ export default class DetailJobOfferComponent extends React.Component {
     render() {
         return (
             <div className="col-md-9 m-3">
+                <BackButtonComponent text="Overview Page"/>
                 <p className="h1">Detail Job Offer</p>
                 <div className="form-group">
                     <div className="form-row row">
@@ -78,7 +80,7 @@ export default class DetailJobOfferComponent extends React.Component {
                 </div>
                 <div className="form-group">
                     <label>Description</label>
-                    <textarea name="description" readOnly className="form-control-plaintext border-2 border-success m-4 p-2" rows="5" value={this.state.job.description}></textarea>
+                    <textarea type="text" name="description" readOnly className="form-control-plaintext border-2 border-success m-4 p-2" rows="5" value={this.state.job.description}></textarea>
                 </div>
                 <div  className="from-group col-md-3">
                         <div>
