@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Resizer from "react-image-file-resizer";
+import './JobOffer.css'
+import ImageComponent from "./ImageComponent";
+
 export default class CreateJobOfferView extends Component {
 
     constructor(props) {
@@ -35,17 +38,6 @@ export default class CreateJobOfferView extends Component {
             })
     }
 
-    resizeFile = (file) => new Promise(resolve => {
-        Resizer.imageFileResizer(file, 300, 300, 'JPEG', 100, 0,
-            uri => {
-                resolve(uri);
-            }, 'base64');
-    });
-
-    resi = async (file) => {
-        await this.resizeFile(file);
-    }
-
     onImageChange(e) {
         try {
             Resizer.imageFileResizer(
@@ -53,17 +45,17 @@ export default class CreateJobOfferView extends Component {
                 300,
                 300,
                 "JPEG",
-                100,
+                70,
                 0,
                 (uri) => {
                     this.state.images.push(uri);
-                    this.imageURLs = this.state.images.map(imageSrc => <img className="border mb-3" key={imageSrc} src={imageSrc} />);
+                    this.imageURLs = this.state.images.map(imageSrc => <ImageComponent imageSrc={imageSrc}/>);
+                    // <span><div className="photo border border-1 mb-3"><img className="image" key={imageSrc} src={imageSrc} /></div></span>);
                     this.setState({ imageURLs: this.imageURLs });
-                    console.log(this.imageURLs);
                 },
                 "base64",
-                100,
-                100
+                10,
+                10
             );
         } catch (err) {
             console.log(err);

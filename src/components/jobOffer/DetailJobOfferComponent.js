@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import Moment from 'moment';
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import ImageComponent from "./ImageComponent";
+import './JobOffer.css'
+
 
 
 
@@ -37,7 +40,7 @@ export default class DetailJobOfferComponent extends React.Component {
             res.data.images.forEach(element => {
                 imageResult.push("data:image/jpeg;base64," + btoa(String.fromCharCode(...new Uint8Array(element.data.data))).substring(20));
             });
-            this.setState({ urls: imageResult.map(imageSrc => <img className="border mb-3" key={imageSrc} src={imageSrc} />) });
+            this.setState({ urls: imageResult.map(imageSrc => <ImageComponent imageSrc={imageSrc}/>) });
         })
     }
 

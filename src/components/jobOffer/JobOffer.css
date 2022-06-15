@@ -1,0 +1,11 @@
+.photo {
+  object-fit:cover;
+}
+
+.image {
+    object-fit:cover;
+}
+
+html, body {
+    color: rgb(240,245,215)!important;
+}
