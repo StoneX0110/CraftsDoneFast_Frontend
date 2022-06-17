@@ -17,7 +17,7 @@ import "bootstrap/dist/css/bootstrap.css";
 
 function App() {
 
-  var isLoggedIn = sessionStorage.getItem("userData");
+  var isLoggedIn = sessionStorage.getItem("userData") === null;
 
   return (
     <div className="App">
