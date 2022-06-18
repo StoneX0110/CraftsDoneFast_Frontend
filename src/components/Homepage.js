@@ -50,15 +50,18 @@ export default class Homepage extends Component {
     }
 
     handleSubmit(event) {
-        //console.log(this.state)
-        event.preventDefault();
-        console.log("Fetching matching job offers...");
-        axios.get('/api/jobOffer/matchingJobOffers', { params: { state: this.state } }).then(res => {
-            this.jobs = res.data;
-            let jobComponents = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job={e}/>);
-            this.renderJobs = <div><h4>Results:</h4>{jobComponents}</div>;
-            this.forceUpdate();
-        })
+        if (this.state.searchJobs) {
+            event.preventDefault();
+            console.log("Fetching matching job offers...");
+            axios.get('/api/jobOffer/matchingJobOffers', {params: {state: this.state}}).then(res => {
+                this.jobs = res.data;
+                let jobComponents = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job={e}/>);
+                this.renderJobs = <div><h4>Results:</h4>{jobComponents}</div>;
+                this.forceUpdate();
+            })
+        } else {
+
+        }
     }
 
     render() {
