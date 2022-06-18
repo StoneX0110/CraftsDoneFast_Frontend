@@ -16,8 +16,8 @@ import { BrowserRouter, BrowserRouter as Router, Routes, Route, Navigate } from 
 import "bootstrap/dist/css/bootstrap.css";
 
 function App() {
-
-  var isLoggedIn = sessionStorage.getItem("userData") !== null;
+  var isLoggedIn = JSON.parse(sessionStorage.getItem('userData')) !== null;
+  console.log(sessionStorage)
 
   return (
     <div className="App">
