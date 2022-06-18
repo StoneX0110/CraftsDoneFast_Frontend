@@ -18,13 +18,15 @@ export default class Homepage extends Component {
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
         console.log("Fetching 10 most recent job offers...");
         axios.get('/api/jobOffer/recentJobOffers').then(res => {
             this.jobs = res.data;
-            this.renderJobs = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job={e}/>)
+            let jobComponents = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job={e}/>);
+            this.renderJobs = <div><h4>Recent Jobs:</h4>{jobComponents}</div>;
             this.forceUpdate();
         })
     }
@@ -45,6 +47,18 @@ export default class Homepage extends Component {
 
     handleChange(event) {
         this.setState({[event.target.name]: event.target.value});
+    }
+
+    handleSubmit(event) {
+        //console.log(this.state)
+        event.preventDefault();
+        console.log("Fetching matching job offers...");
+        axios.get('/api/jobOffer/matchingJobOffers', { params: { state: this.state } }).then(res => {
+            this.jobs = res.data;
+            let jobComponents = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job={e}/>);
+            this.renderJobs = <div><h4>Results:</h4>{jobComponents}</div>;
+            this.forceUpdate();
+        })
     }
 
     render() {
@@ -107,7 +121,6 @@ export default class Homepage extends Component {
                     </form>
                 </div>
                 <br/>
-                <h4>Recent Jobs:</h4>
                 {this.renderJobs}
             </div>
         );
