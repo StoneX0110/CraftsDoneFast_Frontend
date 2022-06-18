@@ -53,7 +53,7 @@ export default class NavbarComponent extends React.Component {
                         </Nav.Link>
                         {this.state.loggedIn ? (
                         <DropdownButton title="Profile" id="basic-nav-dropdown" className="btn" size="lg">
-                            {this.state.loggedIn && <Dropdown.Item href="#action/3.1">My Profile</Dropdown.Item>}
+                            {this.state.loggedIn && <Dropdown.Item href="/profile">My Profile</Dropdown.Item>}
                             <Dropdown.Item href="/myJobOffers">My Job Offers</Dropdown.Item>
                             <Dropdown.Divider />
                             <Dropdown.Item onClick={() => this.logout()}>Logout</Dropdown.Item>

@@ -5,6 +5,7 @@ import NavbarComponent from './components/NavbarComponent';
 import Homepage from "./components/Homepage";
 import Login from "./components/Login";
 import Registration from "./components/Registration";
+import ProfileComponent from './components/ProfileComponent';
 
 
 import DetailJobOfferComponent from './components/jobOffer/DetailJobOfferComponent';
@@ -31,6 +32,8 @@ function App() {
           <Route path="/jobOffer/:id" element={<DetailJobOfferComponent/>} />
           <Route exact path='/login' element={isLoggedIn ? <Navigate to={{pathname: "/"}}/> :<Login/>} />
           <Route exact path='/registration' element={isLoggedIn ? <Navigate to={{pathname: "/"}}/> : <Registration/>} />
+          <Route exact path='/profile' element={isLoggedIn ?  <ProfileComponent/> : <Navigate to={{pathname: "/"}}/>} />
+
         </Routes>
       </Router>
     </div>
