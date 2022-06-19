@@ -14,4 +14,12 @@ export default class Category {
     static returnSelection() {
         return this.categories.map((e) => <option>{e}</option>)
     }
+
+    static returnOptions() {
+        let options = [];
+        this.categories.forEach(o => {
+            options.push({value: o, label: o});
+        });
+        return options;
+    }
 }
