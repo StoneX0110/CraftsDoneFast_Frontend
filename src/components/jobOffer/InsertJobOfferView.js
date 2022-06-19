@@ -3,8 +3,9 @@ import axios from "axios";
 import Resizer from "react-image-file-resizer";
 import './JobOffer.css'
 import ImageComponent from "./ImageComponent";
+import Category from "../Categories";
 
-export default class CreateJobOfferView extends Component {
+export default class InsertJobOfferView extends Component {
 
     constructor(props) {
         super(props);
@@ -66,7 +67,7 @@ export default class CreateJobOfferView extends Component {
 
     render() {
         return (
-            <div className="col-md-9">
+            <div className="col-md-9 jobOffer">
                 <p className="h1">Insert a Job Offer</p>
                 <form onSubmit={this.handleSubmit}>
                     <button type="submit" className="btn btn-success">Confirm Job Offer</button>
@@ -80,12 +81,7 @@ export default class CreateJobOfferView extends Component {
                             <label>Category</label>
                             <select required name="category" className="form-control" id="exampleFormControlSelect1" value={this.state.category} onChange={this.handleChange}>
                                 <option defaultValue disabled value="">Choose...</option>
-                                <option>Electrics</option>
-                                <option>Gardening</option>
-                                <option>Painting</option>
-                                <option>Plumbing</option>
-                                <option>Woodworking</option>
-                                <option>Other</option>
+                                {Category.returnSelection()}
                             </select>
                         </div>
                         <div className="form-group col-md-4">
@@ -104,7 +100,8 @@ export default class CreateJobOfferView extends Component {
                         <textarea name="description" className="form-control" id="exampleFormControlTextarea1" rows="5" value={this.state.description}
                             onChange={this.handleChange}></textarea>
                     </div>
-                    <div  className="from-group col-md-3">
+                    <div  className="from-group col-md-4">
+                        <label>Insert Pictures*</label>
                         <input className="form-control" type="file" multiple accept="image/*" onChange={this.onImageChange} />
                         <div>
                             {this.state.imageURLs}

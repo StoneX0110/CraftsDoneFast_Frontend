@@ -1,5 +1,6 @@
 .search-wrapper{
     background-color: white;
+    color: rgb(41, 118, 74);
     width: 60%;
     margin: 0 auto;
 }
@@ -13,4 +14,8 @@
 }
 .form-group{
     margin-bottom: 5px;
+}
+
+.zipField {
+    background-color: white!important;
 }

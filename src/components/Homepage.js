@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import JobOfferOverviewComponent from "./jobOffer/JobOfferOverviewComponent";
+import Category from "./Categories"
 import axios from "axios";
 import './Homepage.css'
 
@@ -71,16 +72,20 @@ export default class Homepage extends Component {
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-row row justify-content-center">
                             <div className="form-group col-md-2">
-                                <label>Search for</label>
-                                <div className="btn-group btn-toggle">
-                                    <button type="button" onClick={() => this.handleClick("Jobs")}
-                                            className={`btn ${this.state.searchJobs ? 'btn-enabled' : 'btn-outline-success'}`}>
-                                        Jobs
-                                    </button>
-                                    <button type="button" onClick={() => this.handleClick("Craftsmen")}
-                                            className={`btn ${this.state.searchCraftsmen ? 'btn-enabled' : 'btn-outline-success'}`}>
-                                        Craftsmen
-                                    </button>
+                                <div className="form-row row">
+                                    <label>Search for</label>
+                                </div>
+                                <div className="form-row row">
+                                    <div className="btn-group btn-toggle">
+                                        <button type="button" onClick={() => this.handleClick("Jobs")}
+                                                className={`btn ${this.state.searchJobs ? 'btn-enabled' : 'btn-outline-success'}`}>
+                                            Jobs
+                                        </button>
+                                        <button type="button" onClick={() => this.handleClick("Craftsmen")}
+                                                className={`btn ${this.state.searchCraftsmen ? 'btn-enabled' : 'btn-outline-success'}`}>
+                                            Craftsmen
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div className="form-group col-md-2">
@@ -88,17 +93,12 @@ export default class Homepage extends Component {
                                 <select name="category" className="form-control" id="category"
                                         value={this.state.category} onChange={this.handleChange}>
                                     <option defaultValue disabled value="">Choose...</option>
-                                    <option>Electrics</option>
-                                    <option>Gardening</option>
-                                    <option>Painting</option>
-                                    <option>Plumbing</option>
-                                    <option>Woodworking</option>
-                                    <option>Other</option>
+                                    {Category.returnSelection()}
                                 </select>
                             </div>
                             <div className="form-group col-md-2">
                                 <label>Postal Code</label>
-                                <input name="postalCode" type="text" className="form-control"
+                                <input name="postalCode" type="text" className="form-control zipField"
                                        id="postalCode" value={this.state.postalCode}
                                        onChange={this.handleChange} placeholder="Insert ZIP"/>
                             </div>
@@ -116,8 +116,12 @@ export default class Homepage extends Component {
                                 </select>
                             </div>
                             <div className="form-group col-md-2">
+                                <div className="form-row row">
                                 <label>Submit Search</label>
+                                </div>
+                                <div className="form-row row">
                                 <button type="submit" className="btn btn-success submission">Submit</button>
+                                </div>
                             </div>
                         </div>
 

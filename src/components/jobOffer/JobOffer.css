@@ -1,3 +1,8 @@
+.jobOffer {
+    margin: 0 auto;
+    width: 40%!important;
+}
+
 .photo {
   object-fit:cover;
 }
@@ -7,5 +12,5 @@
 }
 
 input[type="text"], textarea[type="text"] {
-    background-color: rgb(240,245,215);
+    background-color: white;
 }
