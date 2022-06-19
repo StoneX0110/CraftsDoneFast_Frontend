@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
+import "./UserView.css"
 
 export default class UserView extends Component {
 
@@ -52,7 +53,7 @@ export default class UserView extends Component {
 
     render() {
         return (
-            <div>
+            <div className="profile">
                 <p className="h1">Profile</p>
                 {this.user === this.username && !this.state.edit &&
                 <button type="button" className="btn btn-primary" onClick={(e) => this.setState({edit: true})}>Edit
@@ -60,7 +61,7 @@ export default class UserView extends Component {
                 {this.user === this.username && this.state.edit &&
                 <button type="button" className="btn btn-info" onClick={this.updateUser}>Save Profile</button>}
 
-                <div className="form-group">
+                <div className="form-group settings">
                     <div className="form-row row">
                         <label>Short Description</label>
                         <input name="shortDescription" type="text" readOnly={this.state.edit ? false : true}
@@ -68,22 +69,24 @@ export default class UserView extends Component {
                                value={this.state.shortDescription} onChange={this.handleChange}/>
                     </div>
                     <div className="form-row row">
-                        <label>Name</label>
-                        <input name="name" type="text" readOnly={this.state.edit ? false : true}
-                               className="form-control-plaintext col-md-3 border-2 border-success m-4 p-2"
-                               value={this.state.name} onChange={this.handleChange}/>
-                    </div>
-                    <div className="form-row row">
-                        <label>Postal Code</label>
-                        <input name="postalCode" type="text" readOnly={this.state.edit ? false : true}
-                               className="form-control-plaintext col-md-3 border-2 border-success m-4 p-2"
-                               value={this.state.postalCode} onChange={this.handleChange}/>
+                        <div className="form-group col-md-6">
+                            <label>Name</label>
+                            <input name="name" type="text" readOnly={this.state.edit ? false : true}
+                                   className="form-control-plaintext border-2 border-success m-3 p-2"
+                                   value={this.state.name} onChange={this.handleChange}/>
+                        </div>
+                        <div className="form-group col-md-6">
+                            <label>Postal Code</label>
+                            <input name="postalCode" type="text" readOnly={this.state.edit ? false : true}
+                                   className="form-control-plaintext col-md-3 border-2 border-success m-3 p-2"
+                                   value={this.state.postalCode} onChange={this.handleChange}/>
+                        </div>
                     </div>
                     <div className="form-row row">
                         <label>Full Description</label>
-                        <input name="description" type="text" readOnly={this.state.edit ? false : true}
-                               className="form-control-plaintext col-md-3 border-2 border-success m-4 p-2"
-                               value={this.state.description} onChange={this.handleChange}/>
+                        <textarea name="description" type="text" readOnly={this.state.edit ? false : true}
+                                  className="form-control-plaintext col-md-3 border-2 border-success m-4 p-2"
+                                  value={this.state.description} onChange={this.handleChange}/>
                     </div>
                 </div>
             </div>
