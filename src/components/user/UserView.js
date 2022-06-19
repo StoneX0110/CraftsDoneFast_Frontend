@@ -20,13 +20,11 @@ export default class UserView extends Component {
             description: '',
             edit: false,
             skills: [],
-            selectedChoices: []
         }
         this.options = [];
         this.handleChange = this.handleChange.bind(this);
         this.updateUser = this.updateUser.bind(this);
         this.handleSelectionChange = this.handleSelectionChange.bind(this);
-        this.skillsToOptions = this.skillsToOptions.bind(this);
         this.render = this.render.bind(this);
         if (sessionStorage.getItem('userData') && JSON.parse(sessionStorage.getItem('userData')) !== null) {
             this.user = JSON.parse(sessionStorage.getItem('userData')).username;
@@ -41,25 +39,6 @@ export default class UserView extends Component {
 
         //fill options
         this.options = Category.returnOptions();
-        //
-        let ch = this.skillsToOptions();
-        this.state.selectedChoices = ch;
-    }
-
-    skillsToOptions() {
-        let defOptions = []
-        this.state.skills.forEach(skill => {
-            defOptions.push({value: skill, label: skill});
-        });
-        return defOptions;
-    }
-
-    optionsToSkills() {
-        let skills = [];
-        this.state.selectedChoices.forEach(ob => {
-            skills.push(ob.value);
-        })
-        return skills;
     }
 
     handleChange(event) {
@@ -68,13 +47,9 @@ export default class UserView extends Component {
     }
 
     updateUser() {
-        //map selected choices to skills
-        let s = this.optionsToSkills();
-        this.state.skills = s;
         this.setState({edit: false});
         const userState = this.state;
         delete userState.edit;
-        delete userState.selectedChoices;
         const user = {state: userState, id: JSON.parse(sessionStorage.getItem('userData')).id}
 
         //console.log(user);
@@ -84,12 +59,12 @@ export default class UserView extends Component {
             })
     }
 
-    handleSelectionChange = selectedChoices => {
-        this.setState({selectedChoices});
+    handleSelectionChange = skills => {
+        this.setState({skills});
     };
 
-    displaySelected(selectedChoices) {
-        return selectedChoices.map(choice => {
+    displaySelected(skills) {
+        return skills.map(choice => {
             return choice.value + ", ";
         });
     }
@@ -100,7 +75,7 @@ export default class UserView extends Component {
             <div className="profile">
                 <p className="h1">Profile</p>
                 {this.user === this.username && !this.state.edit &&
-                <button type="button" className="btn btn-primary" onClick={(e) => this.setState({edit: true, selectedChoices: []})}>Edit
+                <button type="button" className="btn btn-primary" onClick={(e) => this.setState({edit: true})}>Edit
                     Profile</button>}
                 {this.user === this.username && this.state.edit &&
                 <button type="button" className="btn btn-info" onClick={this.updateUser}>Save Profile</button>}
@@ -133,21 +108,16 @@ export default class UserView extends Component {
                                   value={this.state.description} onChange={this.handleChange}/>
                     </div>
                     <div className="form-row row">
+                        Skills : {this.displaySelected(this.state.skills)}
                         {this.user === this.username && this.state.edit &&
-                        <div>
-                            Skills : {this.displaySelected(this.state.selectedChoices)}
                             <Select className="basic-multi-select"
+                                    closeMenuOnSelect={false}
                                     classNamePrefix="select"
-                                    value={this.state.selectedChoices}
+                                    value={this.state.skills}
                                     options={this.options}
                                     isMulti={true}
                                     onChange={this.handleSelectionChange}
                             />
-                        </div>}
-                        {!this.state.edit &&
-                        <div>
-                            Skills: {this.state.skills.toString()}
-                        </div>
                         }
                     </div>
                 </div>
