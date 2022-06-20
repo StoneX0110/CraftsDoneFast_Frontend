@@ -16,6 +16,7 @@ export default class Homepage extends Component {
             category: "",
             postalCode: "",
             range: "",
+            zips_in_range: [],
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -54,16 +55,28 @@ export default class Homepage extends Component {
         if (this.state.searchJobs) {
             event.preventDefault();
             console.log("Fetching matching job offers...");
-            axios.get('/api/jobOffer/matchingJobOffers', {params: {state: this.state}}).then(res => {
-                this.jobs = res.data;
-                let jobComponents = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job={e}/>);
-                this.renderJobs = <div><h4>Results:</h4>{jobComponents}</div>;
-                this.forceUpdate();
-            })
+            const dist = this.state.range.match(/\d+/);
+
+            axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/ow5HhsCp3yPQIYqVA1IKEiGHjWLsF2TlFKhHkjdR3SIAO9QpNFwDYyVxXVoVlcIQ/radius.json/${this.state.postalCode}/${dist}/km?minimal`)
+                .then(res => {
+                    this.state.zips_in_range = res.data.zip_codes;
+                    axios.get('/api/jobOffer/matchingJobOffers', {params: {state: this.state}}).then(res => {
+                        this.jobs = res.data;
+                        let jobComponents = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job={e}/>);
+                        this.renderJobs = <div><h4>Results:</h4>{jobComponents}</div>;
+                        this.forceUpdate();
+                    })
+                });
         } else {
 
         }
     }
+
+    /*
+    TODO
+    - implement sorting (by date (only jobs), rating, distance)
+    - implement searching for craftsmen profiles
+     */
 
     render() {
         return (
@@ -90,21 +103,22 @@ export default class Homepage extends Component {
                             </div>
                             <div className="form-group col-md-2">
                                 <label>Category</label>
-                                <select name="category" className="form-control" id="category"
+                                <select required name="category" className="form-control" id="category"
                                         value={this.state.category} onChange={this.handleChange}>
                                     <option defaultValue disabled value="">Choose...</option>
+                                    <option>Any</option>
                                     {Category.returnSelection()}
                                 </select>
                             </div>
                             <div className="form-group col-md-2">
                                 <label>Postal Code</label>
-                                <input name="postalCode" type="text" className="form-control zipField"
+                                <input required name="postalCode" type="number" className="form-control zipField"
                                        id="postalCode" value={this.state.postalCode}
                                        onChange={this.handleChange} placeholder="Insert ZIP"/>
                             </div>
                             <div className="form-group col-md-2">
                                 <label>Range</label>
-                                <select name="range" className="form-control" id="range"
+                                <select required name="range" className="form-control" id="range"
                                         value={this.state.range} onChange={this.handleChange}>
                                     <option defaultValue disabled value="">Choose...</option>
                                     <option>5 km</option>
@@ -112,15 +126,15 @@ export default class Homepage extends Component {
                                     <option>25 km</option>
                                     <option>50 km</option>
                                     <option>100 km</option>
-                                    <option>Any</option>
+                                    <option>200 km</option>
                                 </select>
                             </div>
                             <div className="form-group col-md-2">
                                 <div className="form-row row">
-                                <label>Submit Search</label>
+                                    <label>Submit Search</label>
                                 </div>
                                 <div className="form-row row">
-                                <button type="submit" className="btn btn-success submission">Submit</button>
+                                    <button type="submit" className="btn btn-success submission">Submit</button>
                                 </div>
                             </div>
                         </div>
