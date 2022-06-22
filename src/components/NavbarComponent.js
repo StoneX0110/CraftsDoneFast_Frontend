@@ -30,26 +30,26 @@ export default class NavbarComponent extends React.Component {
     render() {
         return (
             <Navbar sticky="top" className="color-nav navbar-custom" expand="lg">
-                <div className="position-fixed ">
+                <div className="col-4">
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                     <Navbar.Collapse id="basic-navbar-nav">
                         {/* <Link to="/createJobOffer">About</Link> */}
                         {/* <Nav.Link as={Link} to="/createJobOffer" >Home</Nav.Link> */}
                         <Nav.Link href="/createJobOffer">
-                            <Button className="btn btn-primary" size="lg">Insert New Job Offer</Button>
+                            <Button size="lg">Insert New Job Offer</Button>
                         </Nav.Link>
                     </Navbar.Collapse>
                 </div>
 
-                <div className="position-fixed start-50 translate-middle-x">
-                    <Navbar.Brand href="/"><img src={logo} height={100} alt="Company Logo"/> </Navbar.Brand>
+                <div className="col-4">
+                    <a href={"/"}> <img src={logo} height={100} alt="Company Logo"/></a>
                 </div>
 
-                <div className="position-fixed end-0">
-                    <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-                    <Navbar.Collapse id="basic-navbar-nav">
+                <div className="col-4">
+                    <Navbar.Toggle aria-controls="basic-navbar-nav2"/>
+                    <Navbar.Collapse id="basic-navbar-nav2" className="float-end">
                         <Nav.Link href="#link">
-                            <Button className="btn btn-primary" size="lg">Messages</Button>
+                            <Button size="lg">Messages</Button>
                         </Nav.Link>
                         {this.state.loggedIn ? (
                             <DropdownButton title="Profile" id="basic-nav-dropdown" className="btn" size="lg">
@@ -63,7 +63,7 @@ export default class NavbarComponent extends React.Component {
                             </DropdownButton>
                         ) : (
                             <Nav.Link href="/login">
-                                <Button className="btn btn-primary" size="lg">Login</Button>
+                                <Button size="lg">Login</Button>
                             </Nav.Link>
                         )}
                     </Navbar.Collapse>
