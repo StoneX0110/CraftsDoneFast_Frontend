@@ -1,5 +1,7 @@
 import React, {Component, useState} from "react";
 import Select from 'react-select'
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 import axios from "axios";
 import "./UserView.css"
 import Category from "../Categories";
@@ -79,7 +81,26 @@ export default class UserView extends Component {
                     Profile</button>}
                 {this.user === this.username && this.state.edit &&
                 <button type="button" className="btn btn-info" onClick={this.updateUser}>Save Profile</button>}
-
+                {/*TODO: CSS für Schönheit noch definieren*/}
+                {this.user !== this.username && (this.state.skills.length > 0) &&
+                <Popup
+                    trigger={<button type="button" className="btn btn-primary"> Contact </button>}
+                    modal
+                >
+                    {close => (
+                        <div className>
+                            <button className="close" onClick={close}>
+                                &times;
+                            </button>
+                            <div className="header"> Contact {this.state.name} </div>
+                            <div className="content">
+                                {' '}
+                                Test
+                            </div>
+                        </div>
+                    )}
+                </Popup>
+                }
                 <div className="form-group settings">
                     <div className="form-row row">
                         <label>Short Description</label>
@@ -110,14 +131,14 @@ export default class UserView extends Component {
                     <div className="form-row row">
                         Skills : {this.displaySelected(this.state.skills)}
                         {this.user === this.username && this.state.edit &&
-                            <Select className="basic-multi-select"
-                                    closeMenuOnSelect={false}
-                                    classNamePrefix="select"
-                                    value={this.state.skills}
-                                    options={this.options}
-                                    isMulti={true}
-                                    onChange={this.handleSelectionChange}
-                            />
+                        <Select className="basic-multi-select"
+                                closeMenuOnSelect={false}
+                                classNamePrefix="select"
+                                value={this.state.skills}
+                                options={this.options}
+                                isMulti={true}
+                                onChange={this.handleSelectionChange}
+                        />
                         }
                     </div>
                 </div>
@@ -125,4 +146,5 @@ export default class UserView extends Component {
 
         );
     }
+
 }
