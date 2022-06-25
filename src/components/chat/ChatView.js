@@ -23,7 +23,7 @@ export default class UserView extends Component {
 
     componentDidMount() {
         //console.log("fetch user");
-        //axios.get('/api/user/' + this.username).then(res => {
+        //axios.get('/api/user/profile/' + this.username).then(res => {
         //    this.setState(res.data.settings);
         //})
 
