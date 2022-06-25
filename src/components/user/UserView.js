@@ -24,6 +24,8 @@ export default class UserView extends Component {
             skills: [],
         }
         this.options = [];
+        this.jobs = [];
+        this.jobNames = [];
         this.handleChange = this.handleChange.bind(this);
         this.updateUser = this.updateUser.bind(this);
         this.handleSelectionChange = this.handleSelectionChange.bind(this);
@@ -42,6 +44,12 @@ export default class UserView extends Component {
 
         //fill options
         this.options = Category.returnOptions();
+        axios.get('/api/jobOffer/myJobOffers').then(res => {
+            this.jobs =  res.data;
+            console.log(this.jobs)
+            this.jobNames = this.jobs.map((e) => e.title);
+            this.forceUpdate();
+        }).then()
     }
 
     handleChange(event) {
@@ -75,7 +83,12 @@ export default class UserView extends Component {
     handleChatCreation() {
         console.log("test chat creation")
         console.log(this.state)
-        console.log(this.title)
+        console.log("Title: " + this.state.title)
+        console.log("Job: " + this.state.job)
+    }
+
+    returnSelected() {
+        return this.jobNames.map((e) => <option>{e}</option>)
     }
 
     render() {
@@ -101,6 +114,13 @@ export default class UserView extends Component {
                                 &times;
                             </button>
                             <div className="header"> Contact {this.state.name} </div>
+                            <label>Select Job Offer</label>
+                            <select required name="job" className="form-control" id="job"
+                                    value={this.state.job} onChange={this.handleChange}>
+                                <option defaultValue disabled value="">Choose...</option>
+                                <option>Any</option>
+                                {this.returnSelected()}
+                            </select>
                             <div className="form-group">
                                 <label>Title</label>
                                 <input required type="text" name="title" className="form-control" id="exampleFormControlInput1"
@@ -134,7 +154,7 @@ export default class UserView extends Component {
                         </div>
                         <div className="form-group col-md-6">
                             <label>Postal Code</label>
-                            <input name="postalCode" type="text" readOnly={!this.state.edit}
+                            <input type="number" name="postalCode" readOnly={!this.state.edit}
                                    className="form-control-plaintext col-md-3 border-2 border-success m-3 p-2"
                                    value={this.state.postalCode} onChange={this.handleChange}/>
                         </div>
