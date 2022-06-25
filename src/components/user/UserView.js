@@ -27,6 +27,7 @@ export default class UserView extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.updateUser = this.updateUser.bind(this);
         this.handleSelectionChange = this.handleSelectionChange.bind(this);
+        this.handleChatCreation = this.handleChatCreation.bind(this)
         this.render = this.render.bind(this);
         if (sessionStorage.getItem('userData') && JSON.parse(sessionStorage.getItem('userData')) !== null) {
             this.user = JSON.parse(sessionStorage.getItem('userData')).username;
@@ -71,6 +72,12 @@ export default class UserView extends Component {
         });
     }
 
+    handleChatCreation() {
+        console.log("test chat creation")
+        console.log(this.state)
+        console.log(this.title)
+    }
+
     render() {
         const def = this.state.skills;
         return (
@@ -88,14 +95,23 @@ export default class UserView extends Component {
                     modal
                 >
                     {close => (
-                        <div className>
+                        <div>
                             <button className="close" onClick={close}>
                                 &times;
                             </button>
                             <div className="header"> Contact {this.state.name} </div>
-                            <div className="content">
-                                {' '}
-                                Test
+                            <div className="form-group">
+                                <label>Title</label>
+                                <input required type="text" name="title" className="form-control" id="exampleFormControlInput1"
+                                       value={this.state.title} onChange={this.handleChange}
+                                       placeholder="Insert Title..."/>
+                            </div>
+                            <div>
+                                <button type="button" /*className="btn btn-primary"*/ onClick={() => {
+                                    console.log('modal closed ');
+                                    close();
+                                    this.handleChatCreation();
+                                }}>Contact</button>
                             </div>
                         </div>
                     )}
