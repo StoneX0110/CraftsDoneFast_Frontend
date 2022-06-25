@@ -54,7 +54,7 @@ export default class NavbarComponent extends React.Component {
                         {this.state.loggedIn ? (
                             <DropdownButton title="Profile" id="basic-nav-dropdown" className="btn" size="lg">
                                 {this.state.loggedIn && <Dropdown.Item
-                                    href={"/user/" + JSON.parse(sessionStorage.getItem('userData')).username}>My
+                                    href={"/user/profile/" + JSON.parse(sessionStorage.getItem('userData')).username}>My
                                     Profile</Dropdown.Item>}
                                 <Dropdown.Item href="/myJobOffers">My Job Offers</Dropdown.Item>
                                 <Dropdown.Divider/>

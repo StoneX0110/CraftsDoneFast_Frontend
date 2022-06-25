@@ -35,7 +35,7 @@ export default class UserView extends Component {
 
     componentDidMount() {
         console.log("fetch user");
-        axios.get('/api/user/' + this.username).then(res => {
+        axios.get('/api/user/profile/' + this.username).then(res => {
             this.setState(res.data.settings);
         })
 
@@ -77,68 +77,69 @@ export default class UserView extends Component {
             <div className="profile">
                 <p className="h1">Profile</p>
                 {this.user === this.username && !this.state.edit &&
-                <button type="button" className="btn btn-primary" onClick={(e) => this.setState({edit: true})}>Edit
-                    Profile</button>}
+                    <button type="button" className="btn btn-primary" onClick={(e) => this.setState({edit: true})}>
+                        Edit Profile
+                    </button>}
                 {this.user === this.username && this.state.edit &&
-                <button type="button" className="btn btn-info" onClick={this.updateUser}>Save Profile</button>}
+                    <button type="button" className="btn btn-info" onClick={this.updateUser}>Save Profile</button>}
                 {/*TODO: CSS für Schönheit noch definieren*/}
                 {this.user !== this.username && (this.state.skills.length > 0) &&
-                <Popup
-                    trigger={<button type="button" className="btn btn-primary"> Contact </button>}
-                    modal
-                >
-                    {close => (
-                        <div className>
-                            <button className="close" onClick={close}>
-                                &times;
-                            </button>
-                            <div className="header"> Contact {this.state.name} </div>
-                            <div className="content">
-                                {' '}
-                                Test
+                    <Popup
+                        trigger={<button type="button" className="btn btn-primary"> Contact </button>}
+                        modal
+                    >
+                        {close => (
+                            <div className>
+                                <button className="close" onClick={close}>
+                                    &times;
+                                </button>
+                                <div className="header"> Contact {this.state.name} </div>
+                                <div className="content">
+                                    {' '}
+                                    Test
+                                </div>
                             </div>
-                        </div>
-                    )}
-                </Popup>
+                        )}
+                    </Popup>
                 }
                 <div className="form-group settings">
                     <div className="form-row row">
                         <label>Short Description</label>
-                        <input name="shortDescription" type="text" readOnly={this.state.edit ? false : true}
+                        <input name="shortDescription" type="text" readOnly={!this.state.edit}
                                className="form-control-plaintext col-md-3 border-2 border-success m-4 p-2"
                                value={this.state.shortDescription} onChange={this.handleChange}/>
                     </div>
                     <div className="form-row row">
                         <div className="form-group col-md-6">
                             <label>Name</label>
-                            <input name="name" type="text" readOnly={this.state.edit ? false : true}
+                            <input name="name" type="text" readOnly={!this.state.edit}
                                    className="form-control-plaintext border-2 border-success m-3 p-2"
                                    value={this.state.name} onChange={this.handleChange}/>
                         </div>
                         <div className="form-group col-md-6">
                             <label>Postal Code</label>
-                            <input name="postalCode" type="text" readOnly={this.state.edit ? false : true}
+                            <input name="postalCode" type="text" readOnly={!this.state.edit}
                                    className="form-control-plaintext col-md-3 border-2 border-success m-3 p-2"
                                    value={this.state.postalCode} onChange={this.handleChange}/>
                         </div>
                     </div>
                     <div className="form-row row">
                         <label>Full Description</label>
-                        <textarea name="description" type="text" readOnly={this.state.edit ? false : true}
+                        <textarea name="description" type="text" readOnly={!this.state.edit}
                                   className="form-control-plaintext col-md-3 border-2 border-success m-4 p-2"
                                   value={this.state.description} onChange={this.handleChange}/>
                     </div>
                     <div className="form-row row">
                         Skills : {this.displaySelected(this.state.skills)}
                         {this.user === this.username && this.state.edit &&
-                        <Select className="basic-multi-select"
-                                closeMenuOnSelect={false}
-                                classNamePrefix="select"
-                                value={this.state.skills}
-                                options={this.options}
-                                isMulti={true}
-                                onChange={this.handleSelectionChange}
-                        />
+                            <Select className="basic-multi-select"
+                                    closeMenuOnSelect={false}
+                                    classNamePrefix="select"
+                                    value={this.state.skills}
+                                    options={this.options}
+                                    isMulti={true}
+                                    onChange={this.handleSelectionChange}
+                            />
                         }
                     </div>
                 </div>
