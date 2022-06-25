@@ -10,6 +10,15 @@ export default class JobOfferOverviewComponent extends React.Component {
     constructor(props) {
         super(props);
         this.formatDate = Moment(this.props.job.insertionDate).format('DD.MM.YYYY hh:mm');
+        this.cityAndDist = this.cityAndDist.bind(this);
+    }
+
+    cityAndDist(){
+        if (this.props.city === undefined){
+                   return "";
+        } else {
+            return `${this.props.city} (${this.props.dist} km)`;
+        }
     }
 
     render() {
@@ -20,7 +29,7 @@ export default class JobOfferOverviewComponent extends React.Component {
                         <div className="card-body">
                             <p className="card-title">{this.props.job.title}</p>
                             <p className="card-text">
-                                Zip {this.props.job.postalCode} - {this.props.job.priceExpectation === "" ?
+                                {this.props.job.postalCode} {this.cityAndDist()} - {this.props.job.priceExpectation === "" ?
                                 ("No price expectation") : (`Price expectation: ${this.props.job.priceExpectation} €`)}
                             </p>
                             <p className="card-text">Job offer created at {this.formatDate}</p>

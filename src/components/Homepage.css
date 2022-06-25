@@ -15,7 +15,9 @@
 .form-group{
     margin-bottom: 5px;
 }
-
+.submitButton{
+    width: 100%!important;
+}
 .zipField {
     background-color: white!important;
 }
