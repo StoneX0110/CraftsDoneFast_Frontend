@@ -7,6 +7,7 @@ export default class PopupCreateChat extends Component {
 
     constructor(props) {
         super(props);
+        this.username = window.location.pathname.split("/").pop();
         this.state = {
             open: false,
             job: "",
@@ -15,6 +16,10 @@ export default class PopupCreateChat extends Component {
             jobSelection: "",
             title: "",
             name: props.username,
+        }
+
+        if (sessionStorage.getItem('userData') && JSON.parse(sessionStorage.getItem('userData')) !== null) {
+            this.user = JSON.parse(sessionStorage.getItem('userData')).username;
         }
 
         this.handleOpen = this.handleOpen.bind(this);
@@ -35,7 +40,6 @@ export default class PopupCreateChat extends Component {
             this.state.jobNames = this.state.jobs.map((e) => e.title);
             this.state.jobSelection = this.state.jobNames.map((e) => <option>{e}</option>);
             this.state.open = true;
-            console.log(this.state.jobSelection);
             this.forceUpdate();
         });
     }
@@ -45,11 +49,26 @@ export default class PopupCreateChat extends Component {
         this.setState({[name]: event.target.value});
     }
 
-    handleChatCreation() {
+    async handleChatCreation() {
         console.log("test chat creation")
-        console.log(this.state.title)
-        console.log(this.state)
-        console.log(this.state.job)
+
+        let chatToCreate = {};
+        //create chat
+        //define title & set connected job offer if present
+        if (this.state.title !== '') {
+            chatToCreate.title = this.state.title;
+        } else {
+            chatToCreate.title = this.state.job;
+            chatToCreate.jobOffer = this.state.jobs.find(oneJob => oneJob.title === this.state.job)._id;
+        }
+
+        chatToCreate.users = [this.user, this.username];
+
+        //post to db
+        let createdChatId = '';
+        await axios.post('/api/chat/create', chatToCreate).then(res => {
+            createdChatId = res.data;
+        });
     }
 
     render() {
@@ -81,8 +100,7 @@ export default class PopupCreateChat extends Component {
                         <div>
                             <button type="button" /*className="btn btn-primary"*/ onClick={() => {
                                 console.log('modal closed');
-                                this.handleChatCreation();
-                                this.handleClose();
+                                this.handleChatCreation().then(this.handleClose());
                             }}>Contact
                             </button>
                         </div>
