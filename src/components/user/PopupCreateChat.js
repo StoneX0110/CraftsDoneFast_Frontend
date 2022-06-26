@@ -4,6 +4,7 @@ import axios from "axios";
 
 
 export default class PopupCreateChat extends Component {
+    noJobOffer = "No Job Offer";
 
     constructor(props) {
         super(props);
@@ -81,13 +82,13 @@ export default class PopupCreateChat extends Component {
                             &times;
                         </button>
                         <div className="header">Contact {this.state.name}</div>
-                        <label>Select Job Offer</label>
+                        <label>Select Job Offer or</label>
                         <select required name="job" className="form-control" id="job"
                                 value={this.state.job} onChange={this.handleChange}>
                             /*
                             <option defaultValue disabled value="">Choose...</option>
                             */
-                            <option>Any</option>
+                            <option>{this.noJobOffer}</option>
                             {this.state.jobSelection}
                         </select>
                         <div className="form-group">
@@ -95,7 +96,9 @@ export default class PopupCreateChat extends Component {
                             <input required type="text" name="title" className="form-control"
                                    id="exampleFormControlInput1"
                                    value={this.state.title} onChange={this.handleChange}
-                                   placeholder="Insert Title..."/>
+                                   placeholder="Insert Title..."
+                                   disabled={this.state.job !== this.noJobOffer}
+                            />
                         </div>
                         <div>
                             <button type="button" /*className="btn btn-primary"*/ onClick={() => {
