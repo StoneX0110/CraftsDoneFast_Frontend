@@ -6,7 +6,7 @@ import Homepage from "./components/Homepage";
 import Login from "./components/Login";
 import Registration from "./components/Registration";
 import UserView from "./components/user/UserView";
-import MessageView from "./components/chat/ChatView";
+import {ChatView} from "./components/chat/ChatView";
 
 
 import DetailJobOfferComponent from './components/jobOffer/DetailJobOfferComponent';
@@ -34,7 +34,7 @@ function App() {
           <Route path="/jobOffer/:id" element={<DetailJobOfferComponent/>} />
           <Route exact path='/login' element={isLoggedIn ? <Navigate to={{pathname: "/"}}/> :<Login/>} />
           <Route exact path='/registration' element={isLoggedIn ? <Navigate to={{pathname: "/"}}/> : <Registration/>} />
-          <Route exact path='/messages' element={isLoggedIn ? <MessageView/> : <Navigate to={{pathname: "/login"}}/>}/>
+          <Route exact path='/messages' element={isLoggedIn ? <ChatView/> : <Navigate to={{pathname: "/login"}}/>}/>
         </Routes>
       </Router>
     </div>

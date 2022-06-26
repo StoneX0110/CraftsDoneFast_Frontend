@@ -1,10 +1,6 @@
-import React, {Component} from "react";
-import Select from 'react-select'
-import axios from "axios";
-import "../user/UserView.css"
-import Category from "../Categories";
-//import {Button} from "react-bootstrap";
+import React, {useRef, useState} from "react";
 import Popup from "reactjs-popup";
+import "./ChatView.css"
 
 import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import {
@@ -22,142 +18,136 @@ import {
     SendButton
 } from '@chatscope/chat-ui-kit-react';
 
-export default class UserView extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            chats: [],
-            messages: [],
-            message: '',
-            price: null,
-            startingDate: null
-        }
-        this.handleChange = this.handleChange.bind(this);
-        this.render = this.render.bind(this);
-        if (sessionStorage.getItem('userData') && JSON.parse(sessionStorage.getItem('userData')) !== null) {
-            this.user = JSON.parse(sessionStorage.getItem('userData')).username;
-        }
+export function ChatView() {
+
+    const state = {
+        chats: [],
+        //messages: [],
+        message: '',
+        price: null,
+        startingDate: null
+    }
+    let user = '';
+    if (sessionStorage.getItem('userData') && JSON.parse(sessionStorage.getItem('userData')) !== null) {
+        user = JSON.parse(sessionStorage.getItem('userData')).username;
     }
 
-    componentDidMount() {
-        //console.log("fetch user");
-        //axios.get('/api/user/profile/' + this.username).then(res => {
-        //    this.setState(res.data.settings);
-        //})
+    const inputRef = useRef();
+    const [msgInputValue, setMsgInputValue] = useState("");
+    const [messages, setMessages] = useState([]);
+    const [priceValue, setPriceValue] = useState("");
+    const [startingDateValue, setStartingDateValue] = useState("");
 
-        //fill options
-        //this.options = Category.returnOptions();
-    }
+    const handleSend = message => {
+        console.log(message);
+        setMessages([...messages, {
+            message,
+            direction: 'outgoing'
+        }]);
+        setMsgInputValue("");
+        inputRef.current?.focus();
+    };
 
-    handleChange(event) {
-        const name = event.target.name;
-        this.setState({[name]: event.target.value});
-    }
-
-    handleSend() {
-        console.log(this.state.message)
-        console.log(MessageInput)
-    }
-
-    handlePayment() {
+    function handlePayment() {
         console.log(`Start payment: \n
-        Price: ${this.state.price}\n
-        Starting Date: ${this.state.startDate}`)
-
+        Price: ${state.price}\n
+        Starting Date: ${state.startingDate}`)
     }
 
+    return (
+        <div>
+            <label>My Messages</label>
+            <div className="chatContainer">
+                <MainContainer>
+                    <Sidebar position="left" scrollable={false}>
+                        <Search placeholder="Search..."/>
+                        <ConversationList>
+                            <Conversation name="Lilly" lastSenderName="Lilly" info="Yes i can do it for you">
+                                <Avatar src={"defaultAvatar.png"} name="Lilly" status="available"/>
+                                <Conversation.Operations onClick={() => console.log('Operations clicked Lilly')}/>
+                            </Conversation>
 
-    render() {
-        return (
-            <div className="Messages">
-                <label>Hello Messages</label>
-                <div style={{position: "relative", height: "500px"}}>
-                    <MainContainer>
-                        <Sidebar position="left" scrollable={false}>
-                            <Search placeholder="Search..."/>
-                            <ConversationList>
-                                <Conversation name="Lilly" lastSenderName="Lilly" info="Yes i can do it for you">
-                                    <Avatar src={"defaultAvatar.png"} name="Lilly" status="available" />
-                                    <Conversation.Operations onClick={() => console.log('Operations clicked Lilly')}/>
-                                </Conversation>
+                            <Conversation name="Joe" lastSenderName="Joe" info="Yes i can do it for you">
+                                <Avatar src={"defaultAvatar.png"} name="Joe" status="dnd"/>
+                                <Conversation.Operations onClick={() => console.log('Operations clicked Joe')}/>
+                            </Conversation>
 
-                                <Conversation name="Joe" lastSenderName="Joe" info="Yes i can do it for you">
-                                    <Avatar src={"defaultAvatar.png"} name="Joe" status="dnd" />
-                                    <Conversation.Operations onClick={() => console.log('Operations clicked Joe')}/>
-                                </Conversation>
-
-                                <Conversation name="Emily" lastSenderName="Emily" info="Yes i can do it for you" unreadCnt={3}>
-                                    <Avatar src={"defaultAvatar.png"} name="Emily" status="available"/>
-                                    <Conversation.Operations onClick={() => console.log('Operations clicked Emily')}/>
-                                </Conversation>
-                            </ConversationList>
-                        </Sidebar>
-                        <ChatContainer>
-                            <MessageList>
-                                <Message model={{
-                                    message: "Hello my friend",
-                                    sentTime: "just now",
-                                    sender: "Joe"
-                                }}/>
-                            </MessageList>
-                            <div as={MessageInput} onSend={this.handleSend} style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                borderTop: "1px dashed #d1dbe4"
-                            }}>
-                                <Popup
-                                    trigger={
-                                        <Button border onClick={this.handlePayment} style={{
-                                            fontSize: "1.2em",
-                                            paddingLeft: "0.2em",
-                                            paddingRight: "0.2em"
-                                        }}>Start Payment</Button>}
-                                    modal
-                                >
-                                    {close => (
-                                        <div>
-                                            <button className="close" onClick={close}>
-                                                &times;
-                                            </button>
-                                            <div className="header"> Define Contract Details {this.state.name} </div>
-                                            <div className="form-group">
-                                                <label>Price</label>
-                                                <input required type="number" name="price" className="form-control"
-                                                       id="exampleFormControlInput1"
-                                                       value={this.state.price} onChange={this.handleChange}
-                                                       placeholder="Insert Price..."/>
-                                                <label>Date</label>
-                                                <input required type="date" name="startingDate" className="form-control"
-                                                       id="exampleFormControlInput1"
-                                                       value={this.state.startingDate} onChange={this.handleChange}
-                                                       placeholder="Insert Starting Date..."/>
-                                            </div>
-                                            <div>
-                                                <button type="button" /*className="btn btn-primary"*/ onClick={() => {
-                                                    close();
-                                                    this.handlePayment();
-                                                }}>Confirm Details
-                                                </button>
-                                            </div>
+                            <Conversation name="Emily" lastSenderName="Emily" info="Yes i can do it for you"
+                                          unreadCnt={3}>
+                                <Avatar src={"defaultAvatar.png"} name="Emily" status="available"/>
+                                <Conversation.Operations onClick={() => console.log('Operations clicked Emily')}/>
+                            </Conversation>
+                        </ConversationList>
+                    </Sidebar>
+                    <ChatContainer>
+                        <MessageList>
+                            {messages.map((m, i) => <Message key={i} model={m}/>)}
+                        </MessageList>
+                        <div as={MessageInput} style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            borderTop: "1px dashed #d1dbe4"
+                        }}>
+                            <Popup
+                                trigger={
+                                    <Button border onClick={handlePayment} style={{
+                                        fontSize: "1.2em",
+                                        paddingLeft: "0.2em",
+                                        paddingRight: "0.2em"
+                                    }}>Start Payment</Button>}
+                                modal
+                            >
+                                {close => (
+                                    <div>
+                                        <button className="close" onClick={close}>
+                                            &times;
+                                        </button>
+                                        <div className="header"> Define Contract Details {state.name} </div>
+                                        <div className="form-group">
+                                            <label>Price</label>
+                                            <input required type="number" name="price" className="form-control"
+                                                   id="exampleFormControlInput1"
+                                                   value={state.price} onChange={() => {
+                                                setPriceValue(state.price)
+                                            }}
+                                                   placeholder="Insert Price..."/>
+                                            <label>Date</label>
+                                            <input required type="date" name="startingDate" className="form-control"
+                                                   id="exampleFormControlInput1"
+                                                   value={state.startingDate} onChange={() => {
+                                                setStartingDateValue(state.startingDate)
+                                            }}
+                                                   placeholder="Insert Starting Date..."/>
                                         </div>
-                                    )}
-                                </Popup>
-                                <MessageInput value={this.state.message} onChange={this.handleChange} placeholder="Type message here" attachButton={false} sendButton={false} style={{
-                                    flexGrow: 1,
-                                    borderTop: 0,
-                                    flexShrink: "initial"
-                                }}/>
-                                <SendButton onClick={() => this.handleSend(this.state.message)} disabled={this.state.message === 0} style={{
-                                    fontSize: "1.2em",
-                                    marginLeft: 0,
-                                    paddingLeft: "0.2em",
-                                    paddingRight: "0.2em"
-                                }} />
-                            </div>
-                        </ChatContainer>
-                    </MainContainer>
-                </div>
+                                        <div>
+                                            <button type="button" /*className="btn btn-primary"*/ onClick={() => {
+                                                close();
+                                                handlePayment();
+                                            }}>Confirm Details
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </Popup>
+                            <MessageInput value={msgInputValue} onChange={setMsgInputValue} onSend={handleSend}
+                                          placeholder="Type message here" attachButton={false} sendButton={false}
+                                          style={{
+                                              flexGrow: 1,
+                                              borderTop: 0,
+                                              flexShrink: "initial"
+                                          }}/>
+                            <SendButton onClick={() => handleSend(msgInputValue)}
+                                        disabled={msgInputValue.length === 0} style={{
+                                fontSize: "1.2em",
+                                marginLeft: 0,
+                                paddingLeft: "0.2em",
+                                paddingRight: "0.2em"
+                            }}/>
+                        </div>
+                    </ChatContainer>
+                </MainContainer>
             </div>
-        );
-    }
+        </div>
+    );
+
 }
