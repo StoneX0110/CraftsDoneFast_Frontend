@@ -21,3 +21,11 @@
 .zipField {
     background-color: white!important;
 }
+.flex-row{
+    display: flex;
+    width: 40%;
+    margin: 0 auto;
+    align-items: center;
+    height: 70px;
+    flex-wrap: wrap;
+}

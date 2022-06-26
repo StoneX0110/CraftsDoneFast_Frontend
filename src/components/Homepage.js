@@ -4,13 +4,15 @@ import UserOverviewComponent from "./user/UserOverviewComponent";
 import Category from "./Categories"
 import axios from "axios";
 import './Homepage.css'
+import {DropdownButton} from "react-bootstrap";
+import DropdownItem from "react-bootstrap/DropdownItem";
 
 export default class Homepage extends Component {
 
     constructor(props) {
         super(props);
-        this.jobs = [];
-        this.renderResults = "";
+        this.results = [];
+        this.renderedResults = "";
         this.state = {
             searchJobs: true,
             searchCraftsmen: false,
@@ -24,14 +26,14 @@ export default class Homepage extends Component {
         this.handleClick = this.handleClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.createResults = this.createResults.bind(this);
+        this.handleSort = this.handleSort.bind(this);
     }
 
     componentDidMount() {
         console.log("Fetching 10 most recent job offers...");
         axios.get('/api/jobOffer/recentJobOffers').then(res => {
-            this.jobs = res.data;
-            let jobComponents = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job={e}/>);
-            this.renderResults = <div><h4>Recent Jobs:</h4>{jobComponents}</div>;
+            this.results = res.data;
+            this.renderedResults = this.results.map((e) => <JobOfferOverviewComponent key={e._id} job={e}/>);
             this.forceUpdate();
         })
     }
@@ -85,8 +87,8 @@ export default class Homepage extends Component {
                     category: this.state.category
                 }
             }).then(res => {
-                this.jobs = res.data;
-                let jobComponents = this.jobs.map((e) => {
+                this.results = res.data;
+                this.renderedResults = this.results.map((e) => {
                     var cityAndDist = inRange ?
                         this.state.zips_with_distance.find(elem => parseInt(elem.zip_code) === e.postalCode) : {
                             city: undefined,
@@ -95,7 +97,6 @@ export default class Homepage extends Component {
                     return <JobOfferOverviewComponent key={e._id} job={e} city={cityAndDist.city}
                                                       dist={cityAndDist.distance}/>
                 });
-                this.renderResults = <div><h4>Results:</h4>{jobComponents}</div>;
                 this.forceUpdate();
             })
         } else {
@@ -106,26 +107,48 @@ export default class Homepage extends Component {
                     category: this.state.category
                 }
             }).then(res => {
-                this.jobs = res.data;
-                let jobComponents = this.jobs.map((user) => {
+                this.results = res.data;
+                this.renderedResults = this.results.map((user) => {
                     var cityAndDist = inRange ?
-                        this.state.zips_with_distance.find(elem => parseInt(elem.zip_code) === user.settings.postalCode) : {
+                        this.state.zips_with_distance.find(elem => parseInt(elem.zip_code) === user.settings.postalCode)
+                        : {
                             city: undefined,
                             distance: undefined
                         };
                     return <UserOverviewComponent key={user._id} user={user} city={cityAndDist.city}
                                                   dist={cityAndDist.distance}/>
                 });
-                this.renderResults = <div><h4>Results:</h4>{jobComponents}</div>;
                 this.forceUpdate();
             })
         }
     }
 
-    /*
-    TODO
-    - implement sorting (by date (only jobs), rating)
-     */
+    handleSort = (type) => {
+        if (type === "distance" && (this.state.postalCode === "" || this.state.range === "" || this.state.range === "Any"))
+            return; // sort by distance not possible if no postalCode and range is specified
+
+        switch (type) {
+            case "insertionDate":
+                if (this.state.searchCraftsmen)
+                    return; // search by date not possible for craftsmen
+                console.log("Sorting by insertionDate...")
+                this.renderedResults = this.renderedResults.sort((a, b) => {
+                    return b.props.job.insertionDate.localeCompare(a.props.job.insertionDate);
+                });
+                break;
+            case "distance":
+                console.log("Sorting by distance...")
+                this.renderedResults = this.renderedResults.sort((a, b) => {
+                    return a.props.dist > b.props.dist ? 1 : -1;
+                })
+                break;
+            case "rating":
+                // TODO
+                console.log("Sorting by rating...")
+                break;
+        }
+        this.forceUpdate();
+    }
 
     render() {
         return (
@@ -186,14 +209,25 @@ export default class Homepage extends Component {
                                 <div className="form-row row">
                                     <label>Submit Search</label>
                                 </div>
-                                <button type="submit" className="btn btn-success submission submitButton">Submit
+                                <button type="submit" className="btn btn-success submission submitButton">
+                                    Submit
                                 </button>
                             </div>
                         </div>
                     </form>
                 </div>
-                <br/>
-                {this.renderResults}
+                <div className="flex-row">
+                    <div className="col"/>
+                    <h4 className="col">Results</h4>
+                    <div className="col">
+                        <DropdownButton title="Sort by" className="float-end">
+                            <DropdownItem onClick={() => this.handleSort("insertionDate")}>Date</DropdownItem>
+                            <DropdownItem onClick={() => this.handleSort("distance")}>Distance</DropdownItem>
+                            <DropdownItem onClick={() => this.handleSort("rating")}>Rating</DropdownItem>
+                        </DropdownButton>
+                    </div>
+                </div>
+                <div>{this.renderedResults}</div>
             </div>
         );
     }
