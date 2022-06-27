@@ -1,6 +1,7 @@
 import React, {useRef, useState} from "react";
-import Popup from "reactjs-popup";
 import "./ChatView.css"
+import {ContractPopup} from "./ContractPopup"
+import {PaymentPopup} from "./PaymentPopup";
 
 import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import {
@@ -17,6 +18,9 @@ import {
     Avatar,
     SendButton
 } from '@chatscope/chat-ui-kit-react';
+import {AcceptContractPopup} from "./AcceptContractPopup";
+import {ConfirmJobCompletionPopup} from "./ConfirmJobCompletionPopup";
+import {RatingPopup} from "./RatingPopup";
 
 export function ChatView() {
 
@@ -25,18 +29,22 @@ export function ChatView() {
         //messages: [],
         message: '',
         price: null,
-        startingDate: null
+        startingDate: null,
+        isCraftman: false,
+        //TODO: we need the chatPartnerID for rating somewhere here
+        chatPartnerID: null
     }
     let user = '';
     if (sessionStorage.getItem('userData') && JSON.parse(sessionStorage.getItem('userData')) !== null) {
         user = JSON.parse(sessionStorage.getItem('userData')).username;
     }
 
+    //TODO: differenciate between craftman and user
     const inputRef = useRef();
     const [msgInputValue, setMsgInputValue] = useState("");
     const [messages, setMessages] = useState([]);
-    const [priceValue, setPriceValue] = useState("");
-    const [startingDateValue, setStartingDateValue] = useState("");
+    const [contractState, setContractState] = useState("noPayment")
+    //test states are: "noPayment", "openContract", "contractEstablished", "paymentDone", "jobCompleted"
 
     const handleSend = message => {
         console.log(message);
@@ -47,12 +55,6 @@ export function ChatView() {
         setMsgInputValue("");
         inputRef.current?.focus();
     };
-
-    function handlePayment() {
-        console.log(`Start payment: \n
-        Price: ${state.price}\n
-        Starting Date: ${state.startingDate}`)
-    }
 
     return (
         <div>
@@ -88,47 +90,21 @@ export function ChatView() {
                             flexDirection: "row",
                             borderTop: "1px dashed #d1dbe4"
                         }}>
-                            <Popup
-                                trigger={
-                                    <Button border onClick={handlePayment} style={{
-                                        fontSize: "1.2em",
-                                        paddingLeft: "0.2em",
-                                        paddingRight: "0.2em"
-                                    }}>Start Payment</Button>}
-                                modal
-                            >
-                                {close => (
-                                    <div>
-                                        <button className="close" onClick={close}>
-                                            &times;
-                                        </button>
-                                        <div className="header"> Define Contract Details {state.name} </div>
-                                        <div className="form-group">
-                                            <label>Price</label>
-                                            <input required type="number" name="price" className="form-control"
-                                                   id="exampleFormControlInput1"
-                                                   value={state.price} onChange={() => {
-                                                setPriceValue(state.price)
-                                            }}
-                                                   placeholder="Insert Price..."/>
-                                            <label>Date</label>
-                                            <input required type="date" name="startingDate" className="form-control"
-                                                   id="exampleFormControlInput1"
-                                                   value={state.startingDate} onChange={() => {
-                                                setStartingDateValue(state.startingDate)
-                                            }}
-                                                   placeholder="Insert Starting Date..."/>
-                                        </div>
-                                        <div>
-                                            <button type="button" /*className="btn btn-primary"*/ onClick={() => {
-                                                close();
-                                                handlePayment();
-                                            }}>Confirm Details
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
-                            </Popup>
+                            {!state.isCraftman && (contractState === "noPayment" || contractState === "openContract") &&
+                            <ContractPopup/>
+                            }
+                            {!state.isCraftman && contractState === "contractEstablished" &&
+                            <PaymentPopup price={state.price}/>
+                            }
+                            {!state.isCraftman && contractState === "paymentDone" &&
+                            <ConfirmJobCompletionPopup/>
+                            }
+                            {state.isCraftman && contractState === "openContract" &&
+                            <AcceptContractPopup price={state.price} date={state.startingDate}/>
+                            }
+                            {contractState === "jobCompleted" &&
+                            <RatingPopup chatPartnerID={state.chatPartnerID}/>
+                            }
                             <MessageInput value={msgInputValue} onChange={setMsgInputValue} onSend={handleSend}
                                           placeholder="Type message here" attachButton={false} sendButton={false}
                                           style={{
