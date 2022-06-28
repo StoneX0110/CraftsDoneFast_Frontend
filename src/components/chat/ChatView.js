@@ -2,25 +2,23 @@ import React, {useRef, useState} from "react";
 import "./ChatView.css"
 import {ContractPopup} from "./ContractPopup"
 import {PaymentPopup} from "./PaymentPopup";
-
-import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import {
-    MainContainer,
+    Avatar,
     ChatContainer,
-    MessageList,
-    Message,
-    MessageInput,
-    Button,
     Conversation,
     ConversationList,
-    Sidebar,
+    MainContainer,
+    Message,
+    MessageInput,
+    MessageList,
     Search,
-    Avatar,
-    SendButton
+    SendButton,
+    Sidebar
 } from '@chatscope/chat-ui-kit-react';
 import {AcceptContractPopup} from "./AcceptContractPopup";
 import {ConfirmJobCompletionPopup} from "./ConfirmJobCompletionPopup";
 import {RatingPopup} from "./RatingPopup";
+import axios from "axios";
 
 export function ChatView() {
 
@@ -39,12 +37,30 @@ export function ChatView() {
         user = JSON.parse(sessionStorage.getItem('userData')).username;
     }
 
-    //TODO: differenciate between craftman and user
     const inputRef = useRef();
     const [msgInputValue, setMsgInputValue] = useState("");
     const [messages, setMessages] = useState([]);
-    const [contractState, setContractState] = useState("noPayment")
+    const [contractState, setContractState] = useState("noPayment");
+    const [chats, setChats] = useState([]);
+
     //test states are: "noPayment", "openContract", "contractEstablished", "paymentDone", "jobCompleted"
+
+
+    function getChats() {
+        axios.get('/api/chat/getMyChats').then(res => {
+            //console.log(res.data);
+            let chatTemp = res.data.map(chat => {
+                return <Conversation name={chat.chat.title} info={"Chat partner: " + chat.partnerUsername}>
+                    <Avatar src={"defaultAvatar.png"} name={chat.partnerUsername}/>
+                    <Conversation.Operations
+                        onClick={() => console.log('Operations clicked ' + chat.partnerUsername)}/>
+                </Conversation>;
+            });
+            if (chats.length === 0) {
+                setChats([chatTemp])
+            }
+        })
+    }
 
     const handleSend = message => {
         console.log(message);
@@ -68,17 +84,8 @@ export function ChatView() {
                                 <Avatar src={"defaultAvatar.png"} name="Lilly" status="available"/>
                                 <Conversation.Operations onClick={() => console.log('Operations clicked Lilly')}/>
                             </Conversation>
-
-                            <Conversation name="Joe" lastSenderName="Joe" info="Yes i can do it for you">
-                                <Avatar src={"defaultAvatar.png"} name="Joe" status="dnd"/>
-                                <Conversation.Operations onClick={() => console.log('Operations clicked Joe')}/>
-                            </Conversation>
-
-                            <Conversation name="Emily" lastSenderName="Emily" info="Yes i can do it for you"
-                                          unreadCnt={3}>
-                                <Avatar src={"defaultAvatar.png"} name="Emily" status="available"/>
-                                <Conversation.Operations onClick={() => console.log('Operations clicked Emily')}/>
-                            </Conversation>
+                            {getChats()}
+                            {chats}
                         </ConversationList>
                     </Sidebar>
                     <ChatContainer>
@@ -91,19 +98,19 @@ export function ChatView() {
                             borderTop: "1px dashed #d1dbe4"
                         }}>
                             {!state.isCraftman && (contractState === "noPayment" || contractState === "openContract") &&
-                            <ContractPopup/>
+                                <ContractPopup/>
                             }
                             {!state.isCraftman && contractState === "contractEstablished" &&
-                            <PaymentPopup price={state.price}/>
+                                <PaymentPopup price={state.price}/>
                             }
                             {!state.isCraftman && contractState === "paymentDone" &&
-                            <ConfirmJobCompletionPopup/>
+                                <ConfirmJobCompletionPopup/>
                             }
                             {state.isCraftman && contractState === "openContract" &&
-                            <AcceptContractPopup price={state.price} date={state.startingDate}/>
+                                <AcceptContractPopup price={state.price} date={state.startingDate}/>
                             }
                             {contractState === "jobCompleted" &&
-                            <RatingPopup chatPartnerID={state.chatPartnerID}/>
+                                <RatingPopup chatPartnerID={state.chatPartnerID}/>
                             }
                             <MessageInput value={msgInputValue} onChange={setMsgInputValue} onSend={handleSend}
                                           placeholder="Type message here" attachButton={false} sendButton={false}
