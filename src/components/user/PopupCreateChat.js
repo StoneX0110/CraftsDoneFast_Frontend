@@ -63,7 +63,7 @@ export default class PopupCreateChat extends Component {
             chatToCreate.jobOffer = this.state.jobs.find(oneJob => oneJob.title === this.state.job)._id;
         }
 
-        chatToCreate.users = [this.user, this.username];
+        chatToCreate.users = {craftsman: this.username, client: this.user};
 
         //post to db
         let createdChatId = '';
