@@ -23,13 +23,13 @@ export function ConfirmJobCompletionPopup() {
         <div>
             <Button border onClick={handleOpen}>Confirm Job Completion</Button>
             <Popup open={open} closeOnDocumentClick onClose={handleClose}>
-                <div>
+                <div className="popupMainContainer">
                     <button className="close" onClick={handleClose}>
                         &times;
                     </button>
                     <div className="header">Do you wish to confirm the job Completion?</div>
-                    <div>
-                        <button type="button" /*className="btn btn-primary"*/ onClick={() => {
+                    <div className="popupButtonContainer">
+                        <button type="button" className="btn popupButton"/*className="btn btn-primary"*/ onClick={() => {
                             handleClose();
                             confirmJobCompletion();
                         }}>Confirm Job Completion
