@@ -26,16 +26,16 @@ export function PaymentPopup(props) {
         <div>
             <Button border onClick={handleOpen}>Pay Secure</Button>
             <Popup open={open} closeOnDocumentClick onClose={handleClose}>
-                <div>
+                <div className="popupMainContainer">
                     <button className="close" onClick={handleClose}>
                         &times;
                     </button>
                     <div className="header">Pay Securely</div>
-                    <div>
+                    <div className="popupInputContainer">
                         <h2>Price: {price}</h2>
                     </div>
-                    <div>
-                        <button type="button" /*className="btn btn-primary"*/ onClick={() => {
+                    <div className="popupButtonContainer">
+                        <button type="button" className="btn popupButton"/*className="btn btn-primary"*/ onClick={() => {
                             handleClose();
                             conductPayment();
                         }}>Pay with Stripe
