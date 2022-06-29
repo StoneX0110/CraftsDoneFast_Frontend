@@ -38,12 +38,12 @@ export function RatingPopup(props) {
         <div>
             <Button border onClick={handleOpen}>Rate User</Button>
             <Popup open={open} closeOnDocumentClick onClose={handleClose}>
-                <div>
+                <div className="popupMainContainer">
                     <button className="close" onClick={handleClose}>
                         &times;
                     </button>
                     <div className="header">Rate User</div>
-                    <div className="form-group">
+                    <div className="form-group popupInputContainer">
                         <label>Stars</label>
                         <input required type="number" name="price" className="form-control"
                                value={stars} onChange={handleChangeStars}
@@ -54,8 +54,8 @@ export function RatingPopup(props) {
                                value={comment} onChange={handleChangeComment}
                                id="dateInput"/>
                     </div>
-                    <div>
-                        <button type="button" /*className="btn btn-primary"*/ onClick={() => {
+                    <div className="popupButtonContainer">
+                        <button type="button" className="btn popupButton" /*className="btn btn-primary"*/ onClick={() => {
                             handleClose();
                             rateUser();
                         }}>Confirm Rating
