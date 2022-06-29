@@ -1,0 +1,25 @@
+.popupMainContainer{
+    background-color: rgb(240,245,215);
+}
+
+.popupButtonContainer{
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+.popupButton{
+    color: rgb(240,245,215)!important;
+    background-color: rgb(41, 118, 74)!important;
+    border-color: rgb(240,245,215)!important;
+}
+
+.popupInputContainer{
+    width: 50%;
+    margin: 0 auto;
+}
+
+.popupHeader{
+    width: 70%;
+    margin: 0 auto;
+}
