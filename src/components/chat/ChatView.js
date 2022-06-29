@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "./ChatView.css"
 import {ContractPopup} from "./ContractPopup"
 import {PaymentPopup} from "./PaymentPopup";
@@ -33,43 +33,92 @@ export function ChatView() {
         chatPartnerID: null
     }
     let user = '';
+    let userId = '';
     if (sessionStorage.getItem('userData') && JSON.parse(sessionStorage.getItem('userData')) !== null) {
         user = JSON.parse(sessionStorage.getItem('userData')).username;
+        userId = JSON.parse(sessionStorage.getItem('userData')).id;
     }
 
     const inputRef = useRef();
     const [msgInputValue, setMsgInputValue] = useState("");
     const [messages, setMessages] = useState([]);
     const [contractState, setContractState] = useState("noPayment");
+    //chatscope.io conversations
+    const [conversations, setConversations] = useState([]);
     const [chats, setChats] = useState([]);
+    const [activeChatId, setActiveChatId] = useState('');
 
     //test states are: "noPayment", "openContract", "contractEstablished", "paymentDone", "jobCompleted"
 
-
     function getChats() {
+        //gets called 4 times for some reason
         axios.get('/api/chat/getMyChats').then(res => {
-            //console.log(res.data);
-            let chatTemp = res.data.map(chat => {
-                return <Conversation name={chat.chat.title} info={"Chat partner: " + chat.partnerUsername}>
-                    <Avatar src={"defaultAvatar.png"} name={chat.partnerUsername}/>
-                    <Conversation.Operations
-                        onClick={() => console.log('Operations clicked ' + chat.partnerUsername)}/>
-                </Conversation>;
-            });
-            if (chats.length === 0) {
-                setChats([chatTemp])
+            if (conversations.length === 0) {
+                let chatTemp = res.data.map(chatWithPartner => {
+                    return <Conversation name={chatWithPartner.chat.title} info={"Chat partner: " + chatWithPartner.partnerUsername}
+                                         onClick={() => {
+                                             setActiveChatId(chatWithPartner.chat._id);
+                                         }}>
+                        <Avatar src={"defaultAvatar.png"} name={chatWithPartner.partnerUsername}/>
+                        <Conversation.Operations
+                            onClick={() => console.log('Operations clicked ' + chatWithPartner.partnerUsername)}/>
+                    </Conversation>;
+                });
+                setConversations([chatTemp]);
+                setChats(res.data);
             }
         })
     }
 
+    useEffect(() => {
+        if (activeChatId === '') return;
+
+        let chatToLoad = chats.find(chatWithPartner => chatWithPartner.chat._id === activeChatId);
+        let tempMessages = [];
+        chatToLoad.chat.messages.forEach(message => {
+            let tempMessage = {};
+            tempMessage.message = message.content;
+            tempMessage.sentTime = message.createdAt.toString();
+            if (message.author === userId) {
+                tempMessage.direction = 'outgoing';
+            } else {
+                tempMessage.direction = 'incoming';
+            }
+            tempMessages.push(tempMessage);
+        });
+        //sort by date
+        setMessages(tempMessages.sort(
+            (objA, objB) => Number(objA.sentTime) - Number(objB.sentTime),
+        ));
+    }, [activeChatId])
+
     const handleSend = message => {
-        console.log(message);
         setMessages([...messages, {
             message,
             direction: 'outgoing'
         }]);
         setMsgInputValue("");
         inputRef.current?.focus();
+
+        //write message to db
+        let tempMessage = {
+            content: message,
+            author: userId,
+            chat: activeChatId,
+            isSystemMessage: false,
+            createdAt: new Date()
+        }
+        axios.post('/api/chat/postMessageToChat', tempMessage);
+
+        //write message to local copy of chats
+        let newChats = chats;
+        newChats.map(chatWithPartner => {
+            if (chatWithPartner.chat._id === activeChatId) {
+                chatWithPartner.chat.messages.push(tempMessage);
+            }
+            return chatWithPartner;
+        })
+        setChats(newChats);
     };
 
     return (
@@ -85,7 +134,7 @@ export function ChatView() {
                                 <Conversation.Operations onClick={() => console.log('Operations clicked Lilly')}/>
                             </Conversation>
                             {getChats()}
-                            {chats}
+                            {conversations}
                         </ConversationList>
                     </Sidebar>
                     <ChatContainer>
