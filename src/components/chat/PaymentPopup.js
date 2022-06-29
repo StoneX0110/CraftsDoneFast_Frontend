@@ -3,6 +3,7 @@ import {Button} from "@chatscope/chat-ui-kit-react";
 import Popup from "reactjs-popup";
 import axios from "axios";
 import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import { StripePaymentForm } from "../payment/PaymentComponent";
 
 export function PaymentPopup(props) {
     let user = '';
@@ -39,6 +40,7 @@ export function PaymentPopup(props) {
                             conductPayment();
                         }}>Pay with Stripe
                         </button>
+                        <StripePaymentForm/>
                     </div>
                 </div>
             </Popup>
