@@ -50,10 +50,13 @@ export function ChatView() {
 
     //test states are: "noPayment", "openContract", "contractEstablished", "paymentDone", "jobCompleted"
 
+    //gets chats & messages; creates conversations bar; called once when loading the page
     function getChats() {
-        //gets called 4 times for some reason
+        //get chats with messages from db
         axios.get('/api/chat/getMyChats').then(res => {
+            //only continue if conversations are not set already
             if (conversations.length === 0) {
+                //create chatscope.io Conversation UI components from received chats
                 let chatTemp = res.data.map(chatWithPartner => {
                     return <Conversation name={chatWithPartner.chat.title} info={"Chat partner: " + chatWithPartner.partnerUsername}
                                          onClick={() => {
@@ -65,15 +68,19 @@ export function ChatView() {
                     </Conversation>;
                 });
                 setConversations([chatTemp]);
+                //save received chats in local copy
                 setChats(res.data);
             }
         })
     }
 
+    //display messages of other chat when active chat is changed
     useEffect(() => {
+        //don't load anything on activeChat initialization
         if (activeChatId === '') return;
-
+        //find chat with id of active chat from local storage
         let chatToLoad = chats.find(chatWithPartner => chatWithPartner.chat._id === activeChatId);
+        //create message objects for frontend framework
         let tempMessages = [];
         chatToLoad.chat.messages.forEach(message => {
             let tempMessage = {};
@@ -86,13 +93,15 @@ export function ChatView() {
             }
             tempMessages.push(tempMessage);
         });
-        //sort by date
+        //sort messages by date & set state
         setMessages(tempMessages.sort(
             (objA, objB) => Number(objA.sentTime) - Number(objB.sentTime),
         ));
     }, [activeChatId])
 
+    //called when message is sent from UI
     const handleSend = message => {
+        //update UI
         setMessages([...messages, {
             message,
             direction: 'outgoing'
