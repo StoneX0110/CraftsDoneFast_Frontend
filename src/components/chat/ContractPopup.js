@@ -1,8 +1,7 @@
 import React, {useRef, useState} from "react";
 import {Button} from "@chatscope/chat-ui-kit-react";
 import Popup from "reactjs-popup";
-import axios from "axios";
-import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import "./Popup.css"
 
 export function ContractPopup() {
     let user = '';
@@ -35,12 +34,12 @@ export function ContractPopup() {
             <div>
                 <Button border onClick={handleOpen}>Start Payment</Button>
                 <Popup open={open} closeOnDocumentClick onClose={handleClose}>
-                        <div>
+                        <div className="popupMainContainer">
                             <button className="close" onClick={handleClose}>
                                 &times;
                             </button>
                             <div className="header">Define Contract Details</div>
-                            <div className="form-group">
+                            <div className="form-group popupInputContainer">
                                 <label>Price</label>
                                 <input required type="number" name="price" className="form-control"
                                        value={price} onChange={handleChangePrice}
@@ -51,8 +50,8 @@ export function ContractPopup() {
                                        value={startingDate} onChange={handleChangeDate}
                                        id="dateInput"/>
                             </div>
-                            <div>
-                                <button type="button" /*className="btn btn-primary"*/ onClick={() => {
+                            <div className="popupButtonContainer">
+                                <button type="button" className="btn popupButton"/*className="btn btn-primary"*/ onClick={() => {
                                     handleClose();
                                     contractCreation();
                                 }}>Confirm Details
