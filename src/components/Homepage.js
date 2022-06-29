@@ -88,15 +88,25 @@ export default class Homepage extends Component {
                 }
             }).then(res => {
                 this.results = res.data;
-                this.renderedResults = this.results.map((e) => {
+                this.renderedResults = [];
+                var averageRatings = [];
+                this.results.map((e) => {
+                    axios.get('/api/user/getAverageRating', {params: {author: e.author}}).then(res => {
+                        averageRatings.push(res.data.averageRating);
+                    })
+                });
+                this.results.map((e, index) => {
                     var cityAndDist = inRange ?
                         this.state.zips_with_distance.find(elem => parseInt(elem.zip_code) === e.postalCode) : {
                             city: undefined,
                             distance: undefined
                         };
-                    return <JobOfferOverviewComponent key={e._id} job={e} city={cityAndDist.city}
-                                                      dist={cityAndDist.distance}/>
-                });
+                    console.log(averageRatings.at(index))
+                    this.renderedResults.push(<JobOfferOverviewComponent key={e._id} job={e} city={cityAndDist.city}
+                                                                         dist={cityAndDist.distance}
+                                                                         rating={averageRatings[index]}/>)
+                })
+                console.log("Update")
                 this.forceUpdate();
             })
         } else {

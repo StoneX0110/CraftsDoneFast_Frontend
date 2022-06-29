@@ -32,7 +32,7 @@ export default class JobOfferOverviewComponent extends React.Component {
                                 {this.props.job.postalCode} {this.cityAndDist()} - {this.props.job.priceExpectation === "" ?
                                 ("No price expectation") : (`Price expectation: ${this.props.job.priceExpectation} €`)}
                             </p>
-                            <p className="card-text">Job offer created at {this.formatDate}</p>
+                            <p className="card-text">{this.props.rating} Job offer created at {this.formatDate}</p>
                         </div>
                     </Link>
                 </div>
