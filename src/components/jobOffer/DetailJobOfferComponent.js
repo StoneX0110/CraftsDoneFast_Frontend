@@ -6,6 +6,7 @@ import ImageComponent from "./ImageComponent";
 import './JobOffer.css'
 import BackButtonComponent from "../BackButtonComponent";
 import { isLoggedIn } from "../logic/authentication";
+import PopupCreateChatJobOffer from "./PopupCreateChatJobOffer";
 
 
 
@@ -35,8 +36,8 @@ export default class DetailJobOfferComponent extends React.Component {
         this.deleteJobOffer = this.deleteJobOffer.bind(this);
         if (sessionStorage.getItem('userData') && JSON.parse(sessionStorage.getItem('userData')) !== null) {
             this.user = JSON.parse(sessionStorage.getItem('userData')).username;
+            this.skills = JSON.parse(sessionStorage.getItem('userData')).settings.skills;
         }
-
     }
 
     componentDidMount() {
@@ -95,6 +96,8 @@ export default class DetailJobOfferComponent extends React.Component {
                     <button type="button" className="btn btn-danger" onClick={this.deleteJobOffer}>
                         Delete Job Offer
                     </button>}
+                {this.user !== this.state.author.username && this.skills.length > 0 &&
+                <PopupCreateChatJobOffer username={this.state.author.username} id={this.id} title={this.state.title}/>}
 
                 <div className="form-group">
                     <div className="form-row row">
