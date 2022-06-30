@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Select from 'react-select'
-import Popup from './PopupCreateChat';
+import PopupCreateChat from './PopupCreateChat';
 import 'reactjs-popup/dist/index.css';
 import axios from "axios";
 import "./UserView.css"
@@ -85,7 +85,7 @@ export default class UserView extends Component {
                 <button type="button" className="btn btn-info" onClick={this.updateUser}>Save Profile</button>}
                 {/*TODO: CSS für Schönheit noch definieren*/}
                 {this.user !== this.username && (this.state.skills.length > 0) &&
-                    <Popup username={this.state.name}/>
+                    <PopupCreateChat username={this.state.name}/>
                 }
                 <div className="form-group settings">
                     <div className="form-row row">
