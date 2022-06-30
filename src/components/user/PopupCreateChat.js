@@ -77,11 +77,12 @@ export default class PopupCreateChat extends Component {
             <div>
                 <button type="button" className="btn btn-primary" onClick={this.handleOpen}> Contact</button>
                 <Popup open={this.state.open} closeOnDocumentClick onClose={this.handleClose}>
-                    <div>
+                    <div className="popupMainContainer">
                         <button className="close" onClick={this.handleClose}>
                             &times;
                         </button>
                         <div className="header">Contact {this.state.name}</div>
+                        <div className="form-group popupInputContainer">
                         <label>Select Job Offer or</label>
                         <select required name="job" className="form-control" id="job"
                                 value={this.state.job} onChange={this.handleChange}>
@@ -91,7 +92,6 @@ export default class PopupCreateChat extends Component {
                             <option>{this.noJobOffer}</option>
                             {this.state.jobSelection}
                         </select>
-                        <div className="form-group">
                             <label>Title</label>
                             <input required type="text" name="title" className="form-control"
                                    id="exampleFormControlInput1"
@@ -100,8 +100,8 @@ export default class PopupCreateChat extends Component {
                                    disabled={this.state.job !== this.noJobOffer}
                             />
                         </div>
-                        <div>
-                            <button type="button" /*className="btn btn-primary"*/ onClick={() => {
+                        <div className="popupButtonContainer">
+                            <button type="button" className="btn popupButton" onClick={() => {
                                 console.log('modal closed');
                                 this.handleChatCreation().then(this.handleClose());
                             }}>Contact
