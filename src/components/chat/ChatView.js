@@ -48,6 +48,7 @@ export function ChatView() {
     //chatscope.io conversations
     const [conversations, setConversations] = useState([]);
     const [chats, setChats] = useState([]);
+    const chatsRef = useRef([]);
     const [activeChatId, setActiveChatId] = useState('');
     //added because activeChatId state could not be accessed from useEffect
     const activeChatIdRef = useRef('');
@@ -77,6 +78,7 @@ export function ChatView() {
                 });
                 setConversations([chatTemp]);
                 //save received chats in local copy
+                chatsRef.current = res.data;
                 setChats(res.data);
             }
         })
@@ -99,15 +101,13 @@ export function ChatView() {
             //set up code to execute when message is received
             socket.current.on("receiveMessage", (message) => {
                 //write message to local copy of chats
-                console.log('receive: ' + message.content);
-                console.log(chats);
-                let newChats = chats;
-                newChats.map(chatWithPartner => {
+                let newChats = [...chatsRef.current];
+                newChats.forEach(chatWithPartner => {
                     if (chatWithPartner.chat._id === message.chat) {
                         chatWithPartner.chat.messages.push(message);
                     }
-                    return chatWithPartner;
-                });
+                })
+                chatsRef.current = newChats;
                 setChats(newChats);
                 //if chat of incoming message is active, show in UI
                 if (message.chat === activeChatIdRef.current) {
@@ -171,13 +171,13 @@ export function ChatView() {
         axios.post('/api/chat/postMessageToChat', tempMessage);
 
         //write message to local copy of chats
-        let newChats = chats;
-        newChats.map(chatWithPartner => {
+        let newChats = [...chatsRef.current];
+        newChats.forEach(chatWithPartner => {
             if (chatWithPartner.chat._id === activeChatId) {
                 chatWithPartner.chat.messages.push(tempMessage);
             }
-            return chatWithPartner;
         })
+        chatsRef.current = newChats;
         setChats(newChats);
 
         //send message using websocket for live chat
