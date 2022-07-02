@@ -31,6 +31,7 @@ export default class UserView extends Component {
         this.jobs = [];
         this.jobNames = [];
         this.profilePictureURL = "";
+        this.profileDefault = false;
         this.handleChange = this.handleChange.bind(this);
         this.onImageChange = this.onImageChange.bind(this);
         this.updateUser = this.updateUser.bind(this);
@@ -44,14 +45,21 @@ export default class UserView extends Component {
         console.log("fetch user");
         axios.get('/api/user/profile/' + this.username).then(res => {
             this.setState(res.data.settings);
-            this.state.profilePicture = ("data:image/jpeg;base64," + btoa(String.fromCharCode(...new Uint8Array(res.data.profilePicture.data.data))).substring(20));
-            const pictureSplitArray = this.state.profilePicture.split(",");
-            console.log(pictureSplitArray)
-            if (pictureSplitArray[1] === '') {
+            if (res.data.profilePicture !== undefined) {
+                this.state.profilePicture = ("data:image/jpeg;base64," + btoa(String.fromCharCode(...new Uint8Array(res.data.profilePicture.data.data))).substring(20));
+                this.profileDefault = true;
+                const myPictureArray = this.state.profilePicture.split(",");
+                if (myPictureArray[1] === '') {
+                    this.state.profilePicture = defaultProfilePicture;
+                }
+            } else {
                 this.state.profilePicture = defaultProfilePicture;
+                console.log("default loaded")
             }
-            const transformedPictureURL = <ImageComponent imageSrc={this.state.profilePicture} key={this.state.profilePicture} />
-            this.setState({ profilePictureURL: transformedPictureURL });
+            const transformedPictureURL = <ImageComponent imageSrc={this.state.profilePicture} key={this.state.profilePicture}/>
+            this.setState({profilePictureURL: transformedPictureURL});
+            console.log("Picture URL: ")
+            console.log(this.state.profilePictureURL)
         })
 
         //fill options
@@ -66,15 +74,23 @@ export default class UserView extends Component {
     updateUser() {
         this.setState({edit: false});
         const userState = this.state;
-        const profilePicture = this.state.profilePicture;
+        const profilePicture = ''
+        if (!this.profileDefault) {
+            const profilePicture = this.state.profilePicture;
+        }
         console.log("this.state.profilePicture: " + this.state.profilePicture);
         delete userState.edit;
-        const user = {state: userState, id: JSON.parse(sessionStorage.getItem('userData')).id, profilePicture: profilePicture}
+        const user = {
+            state: userState,
+            id: JSON.parse(sessionStorage.getItem('userData')).id,
+            profilePicture: profilePicture
+        }
         console.log("profilePicture: " + profilePicture);
         //console.log(user);
         axios.post('/api/user/update', user)
             .then(res => {
                 const id = res.data;
+                //sessionStorage.setItem('userData', JSON.stringify(res.data));
             })
     }
 
@@ -89,6 +105,7 @@ export default class UserView extends Component {
     }
 
     onImageChange(e) {
+        console.log("changes to image")
         try {
             Resizer.imageFileResizer(
                 e.target.files[0],
@@ -99,7 +116,8 @@ export default class UserView extends Component {
                 0,
                 (uri) => {
                     this.state.profilePicture = uri;
-                    this.profilePictureURL = <ImageComponent imageSrc={this.state.profilePicture} key={this.state.profilePicture}/>;
+                    this.profilePictureURL =
+                        <ImageComponent imageSrc={this.state.profilePicture} key={this.state.profilePicture}/>;
                     // <span><div className="photo border border-1 mb-3"><img className="image" key={imageSrc} src={imageSrc} /></div></span>);
                     this.setState({profilePictureURL: this.profilePictureURL});
                 },
@@ -125,14 +143,14 @@ export default class UserView extends Component {
                 <button type="button" className="btn btn-info" onClick={this.updateUser}>Save Profile</button>}
                 {/*TODO: CSS für Schönheit noch definieren*/}
                 {this.user !== this.username && (this.state.skills.length > 0) &&
-                    <PopupCreateChat username={this.state.name}/>
+                <PopupCreateChat username={this.state.name}/>
                 }
                 <div className="form-group settings">
                     <div className="from-group col-md-4">
                         {this.user === this.username && this.state.edit &&
                         <label>Insert Pictures*</label> &&
-                            <input className="form-control" type="file" multiple accept="image/*" readOnly={!this.state.edit}
-                            onChange={this.onImageChange}/>
+                        <input className="form-control" type="file" multiple accept="image/*"
+                               onChange={this.onImageChange}/>
                         }
                         <div>
                             <label>Profile Picture</label>
