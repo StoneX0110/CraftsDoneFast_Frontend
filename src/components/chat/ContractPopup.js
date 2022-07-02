@@ -2,8 +2,9 @@ import React, {useRef, useState} from "react";
 import {Button} from "@chatscope/chat-ui-kit-react";
 import Popup from "reactjs-popup";
 import "./Popup.css"
+import axios from "axios";
 
-export function ContractPopup() {
+export function ContractPopup(props) {
     let user = '';
     if (sessionStorage.getItem('userData') && JSON.parse(sessionStorage.getItem('userData')) !== null) {
         user = JSON.parse(sessionStorage.getItem('userData')).username;
@@ -20,6 +21,17 @@ export function ContractPopup() {
         console.log(`Propose Contract: \n
         Price: ${price}\n
         Starting Date: ${startingDate}`)
+        const state = {
+            price: price,
+            startingDate: startingDate,
+            paymentStatus: "openContract",
+            chatID: props.chatID,
+        }
+        axios.post('/api/chat/createContract', state)
+            .then(res => {
+                const id = res.data;
+                console.log(id);
+            })
     }
 
     function handleChangePrice(event) {
