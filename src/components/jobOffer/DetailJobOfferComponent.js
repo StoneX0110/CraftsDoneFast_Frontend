@@ -29,6 +29,7 @@ export default class DetailJobOfferComponent extends React.Component {
             imageurl: "",
             urls: "",
             edit: false,
+            popup: "",
         };
         this.details = "";
         this.handleChange = this.handleChange.bind(this);
@@ -49,7 +50,8 @@ export default class DetailJobOfferComponent extends React.Component {
                 imageResult.push("data:image/jpeg;base64," + btoa(String.fromCharCode(...new Uint8Array(element.data.data))).substring(20));
             });
             this.setState({ urls: imageResult.map(imageSrc => <ImageComponent imageSrc={imageSrc} key={imageSrc} />) });
-        })
+            this.setState({popup: <PopupCreateChatJobOffer username={res.data.author.username} id={this.id} title={res.data.title}/>});
+        });
     }
 
     handleChange(event) {
@@ -98,9 +100,7 @@ export default class DetailJobOfferComponent extends React.Component {
                     <button type="button" className="btn btn-danger" onClick={this.deleteJobOffer}>
                         Delete Job Offer
                     </button>}
-                {this.user !== this.state.author.username && this.skills.length > 0 &&
-                <PopupCreateChatJobOffer username={this.state.author.username} id={this.id} title={this.state.title}/>}
-
+                {this.user !== this.state.author.username && this.skills.length > 0 && this.state.popup}
                 <div className="form-group">
                     <div className="form-row row">
                         <div className="form-group col-md-6">
