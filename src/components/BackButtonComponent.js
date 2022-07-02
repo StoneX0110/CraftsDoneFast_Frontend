@@ -7,7 +7,7 @@ export default function BackButtonComponent(props) {
 
     return (
         <div className="image border-success mb-3 text-left">
-            <label onClick={() => navigate(-1)} className="">{props.text ? "Go back to " + props.text : "Go back"}</label>
+            <label onClick={() => {props.to ? navigate(props.to) : navigate(-1)}} className="">{props.text ? "Go back to " + props.text : "Go back"}</label>
         </div>
     );
 }
