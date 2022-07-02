@@ -205,7 +205,7 @@ export function ChatView() {
                             borderTop: "1px dashed #d1dbe4"
                         }}>
                             {!state.isCraftman && (contractState === "noPayment" || contractState === "openContract") &&
-                                <ContractPopup/>
+                                <ContractPopup chatID={activeChatId}/>
                             }
                             {!state.isCraftman && contractState === "contractEstablished" &&
                                 <PaymentPopup price={state.price}/>
