@@ -60,9 +60,11 @@ export default class DetailJobOfferComponent extends React.Component {
     updateJobOffer() {
         console.log("as");
         this.setState({ edit: false });
-        const jobOffer = this.state;
+        const jobOffer = Object.create(this.state);
         delete jobOffer.urls;
         delete jobOffer.edit;
+        delete jobOffer.images;
+        delete jobOffer.imageurl;
         axios.post('/api/jobOffer/update', this.state)
             .then(res => {
                 const id = res.data;
@@ -82,7 +84,7 @@ export default class DetailJobOfferComponent extends React.Component {
     render() {
         return (
             <div className="col-md-9 m-3">
-                <BackButtonComponent text="Overview Page" />
+                <BackButtonComponent text="Overview Page" to="/" />
                 <p className="h1">Detail Job Offer</p>
                 {this.user === this.state.author.username && !this.state.edit &&
                     <button type="button" className="btn btn-primary" onClick={(e) => this.setState({ edit: true })}>
@@ -137,7 +139,7 @@ export default class DetailJobOfferComponent extends React.Component {
                 </div>
                 <div className="form-group">
                     <label>Description</label>
-                    <textarea name="description" type="text" name="description" readOnly={!this.state.edit} className="form-control-plaintext border-2 border-success m-4 p-2" rows="5" value={this.state.description} onChange={this.handleChange}></textarea>
+                    <textarea name="description" type="text" readOnly={!this.state.edit} className="form-control-plaintext border-2 border-success m-4 p-2" rows="5" value={this.state.description} onChange={this.handleChange}></textarea>
                 </div>
                 <div className="from-group col-md-3">
                     <div>
