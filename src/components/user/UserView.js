@@ -6,6 +6,8 @@ import axios from "axios";
 import "./UserView.css"
 import Category from "../Categories";
 import {Button} from "react-bootstrap";
+import Resizer from "react-image-file-resizer";
+import ImageComponent from "../jobOffer/ImageComponent";
 
 export default class UserView extends Component {
 
@@ -22,11 +24,14 @@ export default class UserView extends Component {
             description: '',
             edit: false,
             skills: [],
+            profilePicture: '',
         }
         this.options = [];
         this.jobs = [];
         this.jobNames = [];
+        this.profilePictureURL = "";
         this.handleChange = this.handleChange.bind(this);
+        this.onImageChange = this.onImageChange.bind(this);
         this.updateUser = this.updateUser.bind(this);
         this.render = this.render.bind(this);
         if (sessionStorage.getItem('userData') && JSON.parse(sessionStorage.getItem('userData')) !== null) {
@@ -38,6 +43,9 @@ export default class UserView extends Component {
         console.log("fetch user");
         axios.get('/api/user/profile/' + this.username).then(res => {
             this.setState(res.data.settings);
+            this.state.profilePicture = ("data:image/jpeg;base64," + btoa(String.fromCharCode(...new Uint8Array(res.data.profilePicture.data.data))).substring(20));
+            const transformedPictureURL = <ImageComponent imageSrc={this.state.profilePicture} key={this.state.profilePicture} />
+            this.setState({ profilePictureURL: transformedPictureURL });
         })
 
         //fill options
@@ -52,9 +60,11 @@ export default class UserView extends Component {
     updateUser() {
         this.setState({edit: false});
         const userState = this.state;
+        const profilePicture = this.state.profilePicture;
+        console.log("this.state.profilePicture: " + this.state.profilePicture);
         delete userState.edit;
-        const user = {state: userState, id: JSON.parse(sessionStorage.getItem('userData')).id}
-
+        const user = {state: userState, id: JSON.parse(sessionStorage.getItem('userData')).id, profilePicture: profilePicture}
+        console.log("profilePicture: " + profilePicture);
         //console.log(user);
         axios.post('/api/user/update', user)
             .then(res => {
@@ -70,6 +80,30 @@ export default class UserView extends Component {
         return skills.map(choice => {
             return choice.value + ", ";
         });
+    }
+
+    onImageChange(e) {
+        try {
+            Resizer.imageFileResizer(
+                e.target.files[0],
+                300,
+                300,
+                "JPEG",
+                70,
+                0,
+                (uri) => {
+                    this.state.profilePicture = uri;
+                    this.profilePictureURL = <ImageComponent imageSrc={this.state.profilePicture} key={this.state.profilePicture}/>;
+                    // <span><div className="photo border border-1 mb-3"><img className="image" key={imageSrc} src={imageSrc} /></div></span>);
+                    this.setState({profilePictureURL: this.profilePictureURL});
+                },
+                "base64",
+                10,
+                10
+            );
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     render() {
@@ -88,6 +122,17 @@ export default class UserView extends Component {
                     <PopupCreateChat username={this.state.name}/>
                 }
                 <div className="form-group settings">
+                    <div className="from-group col-md-4">
+                        {this.user === this.username && this.state.edit &&
+                        <label>Insert Pictures*</label> &&
+                            <input className="form-control" type="file" multiple accept="image/*" readOnly={!this.state.edit}
+                            onChange={this.onImageChange}/>
+                        }
+                        <div>
+                            <label>Profile Picture</label>
+                            {this.state.profilePictureURL}
+                        </div>
+                    </div>
                     <div className="form-row row">
                         <label>Short Description</label>
                         <input name="shortDescription" type="text" readOnly={!this.state.edit}
