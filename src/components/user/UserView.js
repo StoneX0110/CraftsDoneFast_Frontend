@@ -8,6 +8,7 @@ import Category from "../Categories";
 import {Button} from "react-bootstrap";
 import Resizer from "react-image-file-resizer";
 import ImageComponent from "../jobOffer/ImageComponent";
+import defaultProfilePicture from "./defaultProfilePicture.png";
 
 export default class UserView extends Component {
 
@@ -44,6 +45,11 @@ export default class UserView extends Component {
         axios.get('/api/user/profile/' + this.username).then(res => {
             this.setState(res.data.settings);
             this.state.profilePicture = ("data:image/jpeg;base64," + btoa(String.fromCharCode(...new Uint8Array(res.data.profilePicture.data.data))).substring(20));
+            const pictureSplitArray = this.state.profilePicture.split(",");
+            console.log(pictureSplitArray)
+            if (pictureSplitArray[1] === '') {
+                this.state.profilePicture = defaultProfilePicture;
+            }
             const transformedPictureURL = <ImageComponent imageSrc={this.state.profilePicture} key={this.state.profilePicture} />
             this.setState({ profilePictureURL: transformedPictureURL });
         })
