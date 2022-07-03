@@ -61,26 +61,25 @@ export function ChatView() {
         //get chats with messages from db
         axios.get('/api/chat/getMyChats').then(res => {
             //only continue if conversations are not set already
-            if (conversations.length === 0) {
-                //create chatscope.io Conversation UI components from received chats
-                //TODO: mark active chat; hint: Conversation can have 'active' attribute
-                let chatTemp = res.data.map(chatWithPartner => {
-                    return <Conversation name={chatWithPartner.chat.title} active={false}
-                                         info={"Chat partner: " + chatWithPartner.partnerUsername}
-                                         onClick={() => {
-                                             setActiveChatId(chatWithPartner.chat._id);
-                                             activeChatIdRef.current = chatWithPartner.chat._id;
-                                         }}>
-                        <Avatar src={"defaultAvatar.png"} name={chatWithPartner.partnerUsername}/>
-                        <Conversation.Operations
-                            onClick={() => console.log('Operations clicked ' + chatWithPartner.partnerUsername)}/>
-                    </Conversation>;
-                });
-                setConversations([chatTemp]);
-                //save received chats in local copy
-                chatsRef.current = res.data;
-                setChats(res.data);
-            }
+            if (conversations.length !== 0) return;
+            //create chatscope.io Conversation UI components from received chats
+            //TODO: mark active chat; hint: Conversation can have 'active' attribute
+            let chatTemp = res.data.map(chatWithPartner => {
+                return <Conversation name={chatWithPartner.chat.title} active={false}
+                                     info={"Chat partner: " + chatWithPartner.partnerUsername}
+                                     onClick={() => {
+                                         setActiveChatId(chatWithPartner.chat._id);
+                                         activeChatIdRef.current = chatWithPartner.chat._id;
+                                     }}>
+                    <Avatar src={"defaultAvatar.png"} name={chatWithPartner.partnerUsername}/>
+                    <Conversation.Operations
+                        onClick={() => console.log('Operations clicked ' + chatWithPartner.partnerUsername)}/>
+                </Conversation>;
+            });
+            setConversations([chatTemp]);
+            //save received chats in local copy
+            chatsRef.current = res.data;
+            setChats(res.data);
         })
     }
 
@@ -88,33 +87,34 @@ export function ChatView() {
     const chatCount = useRef(0);
     useEffect(() => {
         //check so execution only happens when chats are loaded from database
-        if (chats.length !== chatCount.current) {
-            chatCount.current = chats.length;
-            setActiveChatId(chats[0].chat._id);
-            activeChatIdRef.current = chats[0].chat._id;
-            //once chats are loaded, create websocket
-            socket.current = io("ws://localhost:3002");
-            //join room for each chat
-            chats.forEach(chatOb => {
-                socket.current.emit("create", chatOb.chat._id);
-            })
-            //set up code to execute when message is received
-            socket.current.on("receiveMessage", (message) => {
-                //write message to local copy of chats
-                let newChats = [...chatsRef.current];
-                newChats.forEach(chatWithPartner => {
-                    if (chatWithPartner.chat._id === message.chat) {
-                        chatWithPartner.chat.messages.push(message);
-                    }
-                })
-                chatsRef.current = newChats;
-                setChats(newChats);
-                //if chat of incoming message is active, show in UI
-                if (message.chat === activeChatIdRef.current) {
-                    updateActiveChat(message.chat, newChats);
+        if (chats.length === chatCount.current) return;
+        //chats are loaded
+        chatCount.current = chats.length;
+        setActiveChatId(chats[0].chat._id);
+        activeChatIdRef.current = chats[0].chat._id;
+        //once chats are loaded, create websocket
+        socket.current = io("ws://localhost:3002");
+        //join room for each chat
+        chats.forEach(chatOb => {
+            socket.current.emit("create", chatOb.chat._id);
+        })
+        //set up code to execute when message is received
+        socket.current.on("receiveMessage", (message) => {
+            //write message to local copy of chats
+            let newChats = [...chatsRef.current];
+            newChats.forEach(chatWithPartner => {
+                if (chatWithPartner.chat._id === message.chat) {
+                    chatWithPartner.chat.messages.push(message);
                 }
             })
-        }
+            chatsRef.current = newChats;
+            setChats(newChats);
+            //if chat of incoming message is active, show in UI
+            if (message.chat === activeChatIdRef.current) {
+                updateActiveChat(message.chat, newChats);
+            }
+        })
+
     }, [chats])
 
     /*
