@@ -21,16 +21,13 @@ export function ContractPopup(props) {
         console.log(`Propose Contract: \n
         Price: ${price}\n
         Starting Date: ${startingDate}`)
-        const state = {
-            price: price,
-            startingDate: startingDate,
-            paymentStatus: "openContract",
-            chatID: props.chatID,
-        }
-        axios.post('/api/chat/createContract', state)
+        let state = JSON.parse(JSON.stringify(props.contract));
+        state.price = price;
+        state.startingDate = startingDate;
+        state.paymentStatus = 'openContract';
+        axios.post('/api/chat/updateContract', state)
             .then(res => {
-                const id = res.data;
-                console.log(id);
+                console.log(res.data);
             })
     }
 
