@@ -27,14 +27,23 @@ export default class Homepage extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.createResults = this.createResults.bind(this);
         this.handleSort = this.handleSort.bind(this);
+        this.getUserRatings = this.getUserRatings.bind(this);
     }
 
     componentDidMount() {
         console.log("Fetching 10 most recent job offers...");
         axios.get('/api/jobOffer/recentJobOffers').then(res => {
-            this.results = res.data;
-            this.renderedResults = this.results.map((e) => <JobOfferOverviewComponent key={e._id} job={e}/>);
-            this.forceUpdate();
+            const __ret = this.getUserRatings(res);
+            var averageRatings = __ret.averageRatings;
+            const requests = __ret.requests;
+            return Promise.all(requests).then(() => {
+                var rR = [];
+                this.results.map((e, index) => {
+                    return rR.push(<JobOfferOverviewComponent key={e._id} job={e} rating={averageRatings[index]}/>);
+                });
+                this.renderedResults = rR;
+                this.forceUpdate();
+            })
         })
     }
 
@@ -87,27 +96,23 @@ export default class Homepage extends Component {
                     category: this.state.category
                 }
             }).then(res => {
-                this.results = res.data;
-                this.renderedResults = [];
-                var averageRatings = [];
-                this.results.map((e) => {
-                    axios.get('/api/user/getAverageRating', {params: {author: e.author}}).then(res => {
-                        averageRatings.push(res.data.averageRating);
+                const __ret = this.getUserRatings(res);
+                var averageRatings = __ret.averageRatings;
+                const requests = __ret.requests;
+                return Promise.all(requests).then(() => {
+                    var rR = [];
+                    this.results.map((e, index) => {
+                        var cityAndDist = inRange
+                            ? this.state.zips_with_distance.find(elem => parseInt(elem.zip_code) === e.postalCode)
+                            : {city: undefined, distance: undefined};
+                        return rR.push(<JobOfferOverviewComponent key={e._id} job={e}
+                                                                  city={cityAndDist.city}
+                                                                  dist={cityAndDist.distance}
+                                                                  rating={averageRatings[index]}/>)
                     })
-                });
-                this.results.map((e, index) => {
-                    var cityAndDist = inRange ?
-                        this.state.zips_with_distance.find(elem => parseInt(elem.zip_code) === e.postalCode) : {
-                            city: undefined,
-                            distance: undefined
-                        };
-                    console.log(averageRatings.at(index))
-                    this.renderedResults.push(<JobOfferOverviewComponent key={e._id} job={e} city={cityAndDist.city}
-                                                                         dist={cityAndDist.distance}
-                                                                         rating={averageRatings[index]}/>)
+                    this.renderedResults = rR;
+                    this.forceUpdate();
                 })
-                console.log("Update")
-                this.forceUpdate();
             })
         } else {
             console.log("Fetching matching craftsmen profiles...");
@@ -117,20 +122,32 @@ export default class Homepage extends Component {
                     category: this.state.category
                 }
             }).then(res => {
+                console.log(res.data)
                 this.results = res.data;
                 this.renderedResults = this.results.map((user) => {
-                    var cityAndDist = inRange ?
-                        this.state.zips_with_distance.find(elem => parseInt(elem.zip_code) === user.settings.postalCode)
-                        : {
-                            city: undefined,
-                            distance: undefined
-                        };
-                    return <UserOverviewComponent key={user._id} user={user} city={cityAndDist.city}
-                                                  dist={cityAndDist.distance}/>
+                    var cityAndDist = inRange
+                        ? this.state.zips_with_distance.find(elem => parseInt(elem.zip_code) === user.settings.postalCode)
+                        : {city: undefined, distance: undefined};
+                    return <UserOverviewComponent user={user} city={cityAndDist.city} dist={cityAndDist.distance}
+                                                  rating={user.averageRating}/>
                 });
                 this.forceUpdate();
+
             })
         }
+    }
+
+    getUserRatings(res) {
+        this.results = res.data;
+        this.renderedResults = [];
+        var averageRatings = [];
+
+        const requests = this.results.map((e) => {
+            return axios.get('/api/user/getAverageRating', {params: {id: e.author}}).then(res => {
+                averageRatings.push(res.data.averageRating);
+            })
+        });
+        return {averageRatings, requests};
     }
 
     handleSort = (type) => {
@@ -153,8 +170,10 @@ export default class Homepage extends Component {
                 })
                 break;
             case "rating":
-                // TODO
                 console.log("Sorting by rating...")
+                this.renderedResults = this.renderedResults.sort((a, b) => {
+                    return a.props.rating > b.props.rating ? -1 : 1;
+                })
                 break;
         }
         this.forceUpdate();
@@ -228,7 +247,7 @@ export default class Homepage extends Component {
                 </div>
                 <div className="flex-row">
                     <div className="col"/>
-                    <h4 className="col">Results</h4>
+                    <h3 className="col">Results</h3>
                     <div className="col">
                         <DropdownButton title="Sort by" className="float-end">
                             <DropdownItem onClick={() => this.handleSort("insertionDate")}>Date</DropdownItem>

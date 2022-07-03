@@ -13,9 +13,9 @@ export default class JobOfferOverviewComponent extends React.Component {
         this.cityAndDist = this.cityAndDist.bind(this);
     }
 
-    cityAndDist(){
-        if (this.props.city === undefined){
-                   return "";
+    cityAndDist() {
+        if (this.props.city === undefined) {
+            return "";
         } else {
             return `${this.props.city} (${this.props.dist} km)`;
         }
@@ -25,14 +25,19 @@ export default class JobOfferOverviewComponent extends React.Component {
         return (
             <div>
                 <div className="card border-success mb-3">
-                    <Link to={"/jobOffer/" + this.props.job._id} style={{textDecoration: 'none', color: "rgb(41, 118, 74)"}}>
+                    <Link to={"/jobOffer/" + this.props.job._id}
+                          style={{textDecoration: 'none', color: "rgb(41, 118, 74)"}}>
                         <div className="card-body">
+                            <div className="row">
+                                <div className="card-text col-auto">{this.props.job.postalCode} {this.cityAndDist()}</div>
+                            <div className="card-text col" style={{textAlign: "right"}}>{this.formatDate}</div>
+                            </div>
                             <p className="card-title">{this.props.job.title}</p>
-                            <p className="card-text">
-                                {this.props.job.postalCode} {this.cityAndDist()} - {this.props.job.priceExpectation === "" ?
-                                ("No price expectation") : (`Price expectation: ${this.props.job.priceExpectation} €`)}
-                            </p>
-                            <p className="card-text">{this.props.rating} Job offer created at {this.formatDate}</p>
+                            <div className="row">
+                                <div className="card-text col-auto">{this.props.job.priceExpectation === "" ?
+                                    ("No price expectation") : (`${this.props.job.priceExpectation} €`)}</div>
+                                <div className="card-text col" style={{textAlign: "right"}}>User Rating: {this.props.rating}&#9733;</div>
+                        </div>
                         </div>
                     </Link>
                 </div>
