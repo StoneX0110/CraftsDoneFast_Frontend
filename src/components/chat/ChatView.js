@@ -29,7 +29,6 @@ export function ChatView() {
         message: '',
         price: null,
         startingDate: null,
-        isCraftman: false,
         //TODO: we need the chatPartnerID for rating somewhere here
         chatPartnerID: null
     }
@@ -44,7 +43,9 @@ export function ChatView() {
     const [msgInputValue, setMsgInputValue] = useState("");
     const [messages, setMessages] = useState([]);
     //test states are: "noPayment", "openContract", "contractEstablished", "paymentDone", "jobCompleted"
-    const [contractState, setContractState] = useState("noPayment");
+    const [activeContractStatus, setActiveContractStatus] = useState("noPayment");
+    const [contractStates, setContractStates] = useState([]);
+    const [isCurrentlyCraftsman, setIsCurrentlyCraftsman] = useState(false)
     //chatscope.io conversations
     const [conversations, setConversations] = useState([]);
     const [chats, setChats] = useState([]);
@@ -80,12 +81,20 @@ export function ChatView() {
             //save received chats in local copy
             chatsRef.current = res.data;
             setChats(res.data);
+            //save contract
+            let idArr = res.data.map(chat => {
+                return chat.chat.contract;
+            })
+            axios.get('api/chat/getContractsFromIdArray', {params: {idArray: idArr}}).then(res => {
+                setContractStates(res.data);
+            })
         })
     }
 
     //create websocket, connect to rooms & handle received messages
     const chatCount = useRef(0);
     useEffect(() => {
+        console.log(chats);
         //check so execution only happens when chats are loaded from database
         if (chats.length === chatCount.current) return;
         //chats are loaded
@@ -123,6 +132,11 @@ export function ChatView() {
      */
     function updateActiveChat(activeId, newChats = null) {
         if (newChats === null) newChats = chats;
+        //set active contract status
+        if (contractStates.length !== 0) {
+            setActiveContractStatus(contractStates.find(contract => contract.chat === activeId).paymentStatus);
+            setIsCurrentlyCraftsman(newChats.find(chat => chat.chat._id === activeId).chat.users.craftsman === userId);
+        }
         //find chat with id of active chat from local storage
         let chatToLoad = newChats.find(chatWithPartner => chatWithPartner.chat._id === activeId);
         //create message objects for frontend framework
@@ -149,6 +163,14 @@ export function ChatView() {
         //don't load anything on activeChat initialization
         if (activeChatId !== '') updateActiveChat(activeChatId);
     }, [activeChatId])
+
+    //update active contract status when contracts are changed
+    useEffect(() => {
+        if (contractStates.length !== 0) {
+            setActiveContractStatus(contractStates.find(contract => contract.chat === activeChatIdRef.current).paymentStatus);
+            setIsCurrentlyCraftsman(chatsRef.current.find(chat => chat.chat._id === activeChatIdRef.current).chat.users.craftsman === userId);
+        }
+    }, [contractStates])
 
     //called when message is sent from UI
     const handleSend = message => {
@@ -204,19 +226,20 @@ export function ChatView() {
                             flexDirection: "row",
                             borderTop: "1px dashed #d1dbe4"
                         }}>
-                            {!state.isCraftman && (contractState === "noPayment" || contractState === "openContract") &&
-                                <ContractPopup chatID={activeChatId}/>
+                            {!isCurrentlyCraftsman && (activeContractStatus === "noPayment" || activeContractStatus === "openContract") &&
+                                <ContractPopup chatID={activeChatId}
+                                               contract={contractStates.find(contr => contr.chat === activeChatId)}/>
                             }
-                            {!state.isCraftman && contractState === "contractEstablished" &&
+                            {!isCurrentlyCraftsman && activeContractStatus === "contractEstablished" &&
                                 <PaymentPopup price={state.price}/>
                             }
-                            {!state.isCraftman && contractState === "paymentDone" &&
+                            {!isCurrentlyCraftsman && activeContractStatus === "paymentDone" &&
                                 <ConfirmJobCompletionPopup/>
                             }
-                            {state.isCraftman && contractState === "openContract" &&
+                            {isCurrentlyCraftsman && activeContractStatus === "openContract" &&
                                 <AcceptContractPopup price={state.price} date={state.startingDate}/>
                             }
-                            {contractState === "jobCompleted" &&
+                            {activeContractStatus === "jobCompleted" &&
                                 <RatingPopup chatPartnerID={state.chatPartnerID}/>
                             }
                             <MessageInput value={msgInputValue} onChange={setMsgInputValue} onSend={handleSend}
