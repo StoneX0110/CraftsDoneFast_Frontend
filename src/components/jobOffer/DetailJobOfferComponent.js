@@ -32,6 +32,7 @@ export default class DetailJobOfferComponent extends React.Component {
             popup: "",
         };
         this.details = "";
+        this.skills = [];
         this.handleChange = this.handleChange.bind(this);
         this.updateJobOffer = this.updateJobOffer.bind(this);
         this.deleteJobOffer = this.deleteJobOffer.bind(this);
