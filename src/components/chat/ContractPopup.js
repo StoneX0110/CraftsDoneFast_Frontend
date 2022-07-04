@@ -39,10 +39,17 @@ export function ContractPopup(props) {
         setStartingDate(event.target.value);
     }
 
+    function handleSubmit(event) {
+        event.preventDefault();
+        contractCreation();
+        handleClose();
+    }
+
     return (
             <div>
                 <Button border onClick={handleOpen}>Start Payment</Button>
                 <Popup open={open} closeOnDocumentClick onClose={handleClose}>
+                    <form onSubmit={handleSubmit}>
                         <div className="popupMainContainer">
                             <button className="close" onClick={handleClose}>
                                 &times;
@@ -60,13 +67,11 @@ export function ContractPopup(props) {
                                        id="dateInput"/>
                             </div>
                             <div className="popupButtonContainer">
-                                <button type="button" className="btn popupButton"/*className="btn btn-primary"*/ onClick={() => {
-                                    handleClose();
-                                    contractCreation();
-                                }}>Confirm Details
+                                <button type="submit" className="btn popupButton">Confirm Details
                                 </button>
                             </div>
                         </div>
+                    </form>
                 </Popup>
             </div>
         );
