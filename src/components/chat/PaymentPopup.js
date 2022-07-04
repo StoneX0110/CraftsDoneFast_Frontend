@@ -13,13 +13,19 @@ export function PaymentPopup(props) {
 
     const inputRef = useRef();
     const [open, setOpen] = useState(false);
-    const [price, setPrice] = useState(props.price);
+    const [price, setPrice] = useState(props.contract.price);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     function conductPayment() {
         console.log(`Conduct Payment: \n
         Price: ${price}`)
+        let state = JSON.parse(JSON.stringify(props.contract));
+        state.paymentStatus = 'paymentDone';
+        axios.post('/api/chat/updateContract', state)
+            .then(res => {
+                console.log(res.data);
+            })
     }
 
     return (
