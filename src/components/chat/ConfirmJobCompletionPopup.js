@@ -4,7 +4,7 @@ import Popup from "reactjs-popup";
 import axios from "axios";
 import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 
-export function ConfirmJobCompletionPopup() {
+export function ConfirmJobCompletionPopup(props) {
     let user = '';
     if (sessionStorage.getItem('userData') && JSON.parse(sessionStorage.getItem('userData')) !== null) {
         user = JSON.parse(sessionStorage.getItem('userData')).username;
@@ -17,6 +17,12 @@ export function ConfirmJobCompletionPopup() {
 
     function confirmJobCompletion() {
         console.log(`Confirm Job Completion`)
+        let state = JSON.parse(JSON.stringify(props.contract));
+        state.paymentStatus = 'jobCompleted';
+        axios.post('/api/chat/updateContract', state)
+            .then(res => {
+                console.log(res.data);
+            })
     }
 
     return (
