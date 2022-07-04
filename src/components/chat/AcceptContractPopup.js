@@ -40,7 +40,7 @@ export function AcceptContractPopup(props) {
                     <div className="header">Do you wish to accept the Contract Details?</div>
                     <div className="popupInputContainer">
                         <h2>Price: {price}</h2>
-                        <h2>Starting Date: {startingDate}</h2>
+                        <h2>Starting Date: {startingDate.toString().substring(0, 10)}</h2>
                     </div>
                     <div className="popupButtonContainer">
                         <button type="button" className="btn popupButton"/*className="btn btn-primary"*/ onClick={() => {
