@@ -1,8 +1,13 @@
 .search-wrapper{
     background-color: white;
     color: rgb(41, 118, 74);
-    width: 60%;
+    width: 50%;
     margin: 0 auto;
+}
+.category-wrapper{
+    background-color: white;
+    color: rgb(41, 118, 74);
+    margin-top: 11px!important;
 }
 .btn-enabled{
     color: rgb(240,245,215)!important;
@@ -23,9 +28,9 @@
 }
 .flex-row{
     display: flex;
-    width: 40%;
-    margin: 0 auto;
+    /*width: 40%;*/
+    /*margin: 0 auto;*/
     align-items: center;
-    height: 70px;
+    height: 65px;
     flex-wrap: wrap;
 }

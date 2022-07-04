@@ -1,6 +1,6 @@
 import React from "react";
 import Moment from 'moment';
-import "../jobOffer/JobOfferOverviewComponent.css"
+import "../jobOffer/OverviewComponent.css"
 
 var Router = require('react-router-dom');
 var Link = Router.Link;
@@ -23,7 +23,7 @@ export default class UserOverviewComponent extends React.Component {
     render() {
         return (
             <div>
-                <div className="card border-success mb-3">
+                <div className="card border border-4 rounded mb-3">
                     <Link to={"/user/profile/" + this.props.user.username}
                           style={{textDecoration: 'none', color: "rgb(41, 118, 74)"}}>
 

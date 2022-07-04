@@ -1,6 +1,6 @@
 import React from "react";
 import Moment from 'moment';
-import "./JobOfferOverviewComponent.css"
+import "./OverviewComponent.css"
 
 var Router = require('react-router-dom');
 var Link = Router.Link;
@@ -24,7 +24,7 @@ export default class JobOfferOverviewComponent extends React.Component {
     render() {
         return (
             <div>
-                <div className="card border-success mb-3">
+                <div className="card border border-4 rounded mb-3">
                     <Link to={"/jobOffer/" + this.props.job._id}
                           style={{textDecoration: 'none', color: "rgb(41, 118, 74)"}}>
                         <div className="card-body">
