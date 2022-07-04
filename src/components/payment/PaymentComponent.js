@@ -9,7 +9,7 @@ import {
   import axios from "axios";
   
   const stripePromise = loadStripe("pk_test_51LFv4cGPYqiDG82LLOGXRipIBm2gDVmi6MZyJKXNDSW5PpFXAiBBdAd1pFa0wGdaytWY3cOPhyl8grV4lybRknCd00R0lvsMPY");
-  
+
   const handleSubmit = (stripe, elements) => async () => {
     const cardElement = elements.getElement(CardElement);
     //card number has to be 4242 4242 4242 4242, postalcode 5 numbers, validation date in future, ccv 3 digits
@@ -42,9 +42,8 @@ import {
     const elements = useElements();
     return (
       <>
-        <h1>stripe form</h1>
         <CardElement />
-        <button onClick={handleSubmit(stripe, elements)}>Buy</button>
+        <button type="button" className="btn popupButton" onClick={handleSubmit(stripe, elements)}>Pay with Stripe</button>
       </>
     );
   }
