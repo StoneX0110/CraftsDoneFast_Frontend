@@ -28,6 +28,7 @@ export default class Homepage extends Component {
         this.createResults = this.createResults.bind(this);
         this.handleSort = this.handleSort.bind(this);
         this.getUserRatings = this.getUserRatings.bind(this);
+        this.categorySelection = this.categorySelection.bind(this);
     }
 
     componentDidMount() {
@@ -122,7 +123,6 @@ export default class Homepage extends Component {
                     category: this.state.category
                 }
             }).then(res => {
-                console.log(res.data)
                 this.results = res.data;
                 this.renderedResults = this.results.map((user) => {
                     var cityAndDist = inRange
@@ -179,10 +179,18 @@ export default class Homepage extends Component {
         this.forceUpdate();
     }
 
+    categorySelection(event) {
+        if (event.target.value !== undefined) {
+            this.state.category = event.target.value;
+            const inRange = this.state.postalCode !== "" && this.state.range !== "" && this.state.range !== "Any";
+            this.createResults(inRange);
+        }
+    }
+
     render() {
         return (
             <div>
-                <div className="search-wrapper border border-4 rounded">
+                <div className="search-wrapper border border-4 rounded col">
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-row row container">
                             <div className="form-group col">
@@ -245,18 +253,53 @@ export default class Homepage extends Component {
                         </div>
                     </form>
                 </div>
-                <div className="flex-row">
-                    <div className="col"/>
-                    <h3 className="col">Results</h3>
+                <div className="row" style={{width: "50%", margin: "0 auto"}}>
+                    <div className="col-auto border border-4 rounded category-wrapper">
+                        <h3>Categories</h3>
+                        <div style={{marginTop: "15px"}}>
+                            <div className="form-group col">
+                                <div className="form-row row">
+                                    <label>Search for</label>
+                                </div>
+                                <div className="form-row row">
+                                    <div className="btn-group btn-toggle">
+                                        <button type="button" onClick={() => this.handleClick("Jobs")}
+                                                className={`btn ${this.state.searchJobs ? 'btn-enabled' : 'btn-outline-success'}`}>
+                                            Jobs
+                                        </button>
+                                        <button type="button" onClick={() => this.handleClick("Craftsmen")}
+                                                className={`btn ${this.state.searchCraftsmen ? 'btn-enabled' : 'btn-outline-success'}`}>
+                                            Craftsmen
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <form onClick={this.categorySelection} style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                                <div className="form-check">
+                                    <label>
+                                        <input className="form-check-input" type="radio" name="categorySelection" value="Any"/>
+                                        Any
+                                    </label>
+                                </div>
+                                {Category.returnRadioButtons()}
+                            </form>
+                        </div>
+                    </div>
                     <div className="col">
-                        <DropdownButton title="Sort by" className="float-end">
-                            <DropdownItem onClick={() => this.handleSort("insertionDate")}>Date</DropdownItem>
-                            <DropdownItem onClick={() => this.handleSort("distance")}>Distance</DropdownItem>
-                            <DropdownItem onClick={() => this.handleSort("rating")}>Rating</DropdownItem>
-                        </DropdownButton>
+                        <div className="flex-row">
+                            <div className="col"/>
+                            <h3 className="col">Results</h3>
+                            <div className="col">
+                                <DropdownButton title="Sort by" className="float-end">
+                                    <DropdownItem onClick={() => this.handleSort("insertionDate")}>Date</DropdownItem>
+                                    <DropdownItem onClick={() => this.handleSort("distance")}>Distance</DropdownItem>
+                                    <DropdownItem onClick={() => this.handleSort("rating")}>Rating</DropdownItem>
+                                </DropdownButton>
+                            </div>
+                        </div>
+                        <div>{this.renderedResults}</div>
                     </div>
                 </div>
-                <div>{this.renderedResults}</div>
             </div>
         );
     }

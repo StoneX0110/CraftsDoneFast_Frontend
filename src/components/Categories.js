@@ -22,4 +22,14 @@ export default class Category {
         });
         return options;
     }
+
+    static returnRadioButtons() {
+        return this.categories.map(c =>
+            <div className="form-check">
+                <label>
+                    <input className="form-check-input" type="radio" name="categorySelection" value={c}/>
+                    {c}
+                </label>
+            </div>);
+    }
 }
