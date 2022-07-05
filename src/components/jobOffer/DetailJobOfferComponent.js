@@ -61,7 +61,6 @@ export default class DetailJobOfferComponent extends React.Component {
     }
 
     updateJobOffer() {
-        console.log("as");
         this.setState({ edit: false });
         const jobOffer = Object.create(this.state);
         delete jobOffer.urls;
@@ -76,7 +75,6 @@ export default class DetailJobOfferComponent extends React.Component {
     }
 
     deleteJobOffer() {
-        console.log("del");
         axios.delete('/api/jobOffer/delete/' + this.state._id)
             .then(res => {
                 window.location = "/";

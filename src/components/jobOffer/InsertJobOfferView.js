@@ -50,7 +50,7 @@ export default class InsertJobOfferView extends Component {
                 0,
                 (uri) => {
                     this.state.images.push(uri);
-                    this.imageURLs = this.state.images.map(imageSrc => <ImageComponent imageSrc={imageSrc}/>);
+                    this.imageURLs = this.state.images.map(imageSrc => <ImageComponent imageSrc={imageSrc} key={imageSrc} />);
                     // <span><div className="photo border border-1 mb-3"><img className="image" key={imageSrc} src={imageSrc} /></div></span>);
                     this.setState({imageURLs: this.imageURLs});
                 },
@@ -66,7 +66,7 @@ export default class InsertJobOfferView extends Component {
 
     render() {
         return (
-            <div className="col-md-9 jobOffer">
+            <div className="col-md-9 m-3">
                 <p className="h1">Insert a Job Offer</p>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
@@ -104,11 +104,11 @@ export default class InsertJobOfferView extends Component {
                                   onChange={this.handleChange}></textarea>
                     </div>
                     <div className="form-row row">
-                        <div className="from-group col-md-4">
+                        <div className="form-group col-md-4">
                             <label>Insert Pictures*</label>
                             <input className="form-control" type="file" multiple accept="image/*"
                                    onChange={this.onImageChange}/>
-                            <div>
+                            <div className="form-group col-md-3">
                                 {this.state.imageURLs}
                             </div>
                         </div>
