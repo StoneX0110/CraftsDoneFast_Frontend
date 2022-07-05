@@ -1,5 +1,5 @@
-import React, {useRef, useState} from "react";
-import {Button} from "@chatscope/chat-ui-kit-react";
+import React, { useRef, useState } from "react";
+import { Button } from "@chatscope/chat-ui-kit-react";
 import Popup from "reactjs-popup";
 import axios from "axios";
 import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
@@ -31,23 +31,19 @@ export function PaymentPopup(props) {
     return (
         <div>
             <Button border onClick={handleOpen}>Pay Secure</Button>
+
             <Popup open={open} closeOnDocumentClick onClose={handleClose}>
+
                 <div className="popupMainContainer">
-                    <button className="close" onClick={handleClose}>
-                        &times;
-                    </button>
                     <div className="header">Pay Securely</div>
                     <div className="popupInputContainer">
                         <h2>Price: {price}</h2>
                     </div>
-                    <div className="popupButtonContainer">
-                        <button type="button" className="btn popupButton"/*className="btn btn-primary"*/ onClick={() => {
-                            handleClose();
-                            conductPayment();
-                        }}>Pay with Stripe
-                        </button>
-                        <StripePaymentForm/>
-                    </div>
+                    <button className="close" onClick={handleClose}>
+                        &times;
+                    </button>
+                    <StripePaymentForm handleClose={handleClose} contract={props.contract}/>
+
                 </div>
             </Popup>
         </div>
