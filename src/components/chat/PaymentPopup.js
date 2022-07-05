@@ -42,7 +42,7 @@ export function PaymentPopup(props) {
                     <button className="close" onClick={handleClose}>
                         &times;
                     </button>
-                    <StripePaymentForm handleClose={handleClose} contract={props.contract}/>
+                    <StripePaymentForm handleClose={handleClose} contract={props.contract} setActiveContractStatus={props.setActiveContractStatus}/>
 
                 </div>
             </Popup>

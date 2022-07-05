@@ -45,6 +45,9 @@ function sendToServer(props) {
   axios.post('/api/chat/updateContract', state)
      .then(res => {
        console.log(res.data);
+       console.log(props);
+       props.setActiveContractStatus('paymentDone');
+       console.log(props);
        props.handleClose();
      })
 }
@@ -63,6 +66,6 @@ const PaymentForm = (props) => {
 
 export const StripePaymentForm = (props) => (
   <Elements stripe={stripePromise}>
-    <PaymentForm handleClose={props.handleClose} contract={props.contract} />
+    <PaymentForm handleClose={props.handleClose} contract={props.contract} setActiveContractStatus={props.setActiveContractStatus}/>
   </Elements>
 );

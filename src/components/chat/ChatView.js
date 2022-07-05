@@ -232,7 +232,8 @@ export function ChatView() {
                             }
                             {!isCurrentlyCraftsman && activeContractStatus === "contractEstablished" &&
                                 <PaymentPopup chatID={activeChatId}
-                                              contract={contractStates.find(contr => contr.chat === activeChatId)}/>
+                                              contract={contractStates.find(contr => contr.chat === activeChatId)} 
+                                              setActiveContractStatus={setActiveContractStatus}/>
                             }
                             {!isCurrentlyCraftsman && activeContractStatus === "paymentDone" &&
                                 <ConfirmJobCompletionPopup chatID={activeChatId}
