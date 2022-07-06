@@ -190,7 +190,7 @@ export default class Homepage extends Component {
     render() {
         return (
             <div>
-                <div className="search-wrapper border border-4 rounded col">
+                <div className="search-wrapper border border-4 col rounded " style={{marginTop: "10px"}}>
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-row row container">
                             <div className="form-group col">
@@ -254,7 +254,7 @@ export default class Homepage extends Component {
                     </form>
                 </div>
                 <div className="row" style={{width: "50%", margin: "0 auto"}}>
-                    <div className="col-auto border border-4 rounded category-wrapper">
+                    <div className="col-auto category-wrapper border border-4 rounded" style={{marginBottom: "16px"}}>
                         <h3>Categories</h3>
                         <div style={{marginTop: "15px"}}>
                             <div className="form-group col">
@@ -286,11 +286,10 @@ export default class Homepage extends Component {
                         </div>
                     </div>
                     <div className="col">
-                        <div className="flex-row">
-                            <div className="col"/>
-                            <h3 className="col">Results</h3>
+                        <div className="flex-row text-start">
+                            <h3 className="col" style={{color: "rgb(41, 118, 74)"}}>Results</h3>
                             <div className="col">
-                                <DropdownButton title="Sort by" className="float-end">
+                                <DropdownButton title="Sort by" className="float-end" id="sortButton">
                                     <DropdownItem onClick={() => this.handleSort("insertionDate")}>Date</DropdownItem>
                                     <DropdownItem onClick={() => this.handleSort("distance")}>Distance</DropdownItem>
                                     <DropdownItem onClick={() => this.handleSort("rating")}>Rating</DropdownItem>

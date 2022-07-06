@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Moment from 'moment';
-import { useParams } from "react-router-dom";
+import {useParams} from "react-router-dom";
 import axios from "axios";
 import ImageComponent from "./ImageComponent";
 import './JobOffer.css'
 import BackButtonComponent from "../BackButtonComponent";
-import { isLoggedIn } from "../logic/authentication";
+import {isLoggedIn} from "../logic/authentication";
 import PopupCreateChatJobOffer from "./PopupCreateChatJobOffer";
-
+import Categories from "../Categories";
 
 
 export default class DetailJobOfferComponent extends React.Component {
@@ -49,19 +49,22 @@ export default class DetailJobOfferComponent extends React.Component {
             res.data.images.forEach(element => {
                 imageResult.push("data:image/jpeg;base64," + btoa(String.fromCharCode(...new Uint8Array(element.data.data))).substring(20));
             });
-            this.setState({ urls: imageResult.map(imageSrc => <ImageComponent imageSrc={imageSrc} key={imageSrc} />) });
-            this.setState({popup: <PopupCreateChatJobOffer username={res.data.author.username} id={this.id} title={res.data.title}/>});
+            this.setState({urls: imageResult.map(imageSrc => <ImageComponent imageSrc={imageSrc} key={imageSrc}/>)});
+            this.setState({
+                popup: <PopupCreateChatJobOffer username={res.data.author.username} id={this.id}
+                                                title={res.data.title}/>
+            });
         });
     }
 
     handleChange(event) {
         const name = event.target.name;
-        this.setState({ [name]: event.target.value });
+        this.setState({[name]: event.target.value});
     }
 
     updateJobOffer() {
         console.log("as");
-        this.setState({ edit: false });
+        this.setState({edit: false});
         const jobOffer = Object.create(this.state);
         delete jobOffer.urls;
         delete jobOffer.edit;
@@ -86,10 +89,10 @@ export default class DetailJobOfferComponent extends React.Component {
     render() {
         return (
             <div className="col-md-9 m-3">
-                <BackButtonComponent text="Overview Page" to="/" />
+                <BackButtonComponent text="Overview Page" to="/"/>
                 <p className="h1">Detail Job Offer</p>
                 {this.user === this.state.author.username && !this.state.edit &&
-                    <button type="button" className="btn btn-primary" onClick={(e) => this.setState({ edit: true })}>
+                    <button type="button" className="btn btn-primary" id="editButton" onClick={(e) => this.setState({edit: true})}>
                         Edit Job Offer
                     </button>}
                 {this.user === this.state.author.username && this.state.edit &&
@@ -105,41 +108,51 @@ export default class DetailJobOfferComponent extends React.Component {
                     <div className="form-row row">
                         <div className="form-group col-md-6">
                             <label>Title</label>
-                            <input name="title" type="text" readOnly={!this.state.edit} className="form-control-plaintext col-md-3 border-2 border-success m-4 p-2" value={this.state.title} onChange={this.handleChange} />
+                            <input name="title" type="text" readOnly={!this.state.edit}
+                                   className="form-control-plaintext col-md-3 border-2 border-success m-4 p-2"
+                                   value={this.state.title} onChange={this.handleChange}/>
                         </div>
                         <div className="form-group col-md-6">
                             <label>Author</label>
-                            <input type="text" readOnly className="form-control-plaintext col-md-3 border-2 border-success m-4 p-2" value={this.state.author.username} />
+                            <input type="text" readOnly
+                                   className="form-control-plaintext col-md-3 border-2 border-success m-4 p-2"
+                                   value={this.state.author.username}/>
                         </div>
                     </div>
                 </div>
                 <div className="form-row row">
                     <div className="form-group col-md-4">
                         <label>Category</label>
-                        {!this.state.edit && <input name="category" type="text" readOnly className="form-control-plaintext border-2 border-success m-4 p-2" value={this.state.category} />}
-                        {this.state.edit && <select required name="category" readOnly={!this.state.edit} className="form-control border-2 border-success m-4 p-2" id="exampleFormControlSelect1" value={this.state.category} onChange={this.handleChange}>
+                        {!this.state.edit && <input name="category" type="text" readOnly
+                                                    className="form-control-plaintext border-2 border-success m-4 p-2"
+                                                    value={this.state.category}/>}
+                        {this.state.edit && <select required name="category" readOnly={!this.state.edit}
+                                                    className="form-control border-2 border-success m-4 p-2"
+                                                    id="exampleFormControlSelect1" value={this.state.category}
+                                                    onChange={this.handleChange}>
                             <option defaultValue disabled value="">Choose...</option>
-                            <option>Electrics</option>
-                            <option>Gardening</option>
-                            <option>Painting</option>
-                            <option>Plumbing</option>
-                            <option>Woodworking</option>
-                            <option>Other</option>
+                            {Categories.returnSelection()}
                         </select>}
                     </div>
                     <div className="form-group col-md-4">
                         <label>Postal Code</label>
-                        <input name="postalCode" type="text" readOnly={!this.state.edit} className="form-control-plaintext border-2 border-success m-4 p-2" value={this.state.postalCode} onChange={this.handleChange} />
+                        <input name="postalCode" type="text" readOnly={!this.state.edit}
+                               className="form-control-plaintext border-2 border-success m-4 p-2"
+                               value={this.state.postalCode} onChange={this.handleChange}/>
                     </div>
                     <div className="form-group col-md-4">
                         <label>Price expectation*</label>
-                        <input name="priceExpectation" type="text" readOnly={!this.state.edit} className="form-control-plaintext border-2 border-success m-4 p-2" value={this.state.priceExpectation} onChange={this.handleChange} />
+                        <input name="priceExpectation" type="text" readOnly={!this.state.edit}
+                               className="form-control-plaintext border-2 border-success m-4 p-2"
+                               value={this.state.priceExpectation} onChange={this.handleChange}/>
 
                     </div>
                 </div>
                 <div className="form-group">
                     <label>Description</label>
-                    <textarea name="description" type="text" readOnly={!this.state.edit} className="form-control-plaintext border-2 border-success m-4 p-2" rows="5" value={this.state.description} onChange={this.handleChange}></textarea>
+                    <textarea name="description" type="text" readOnly={!this.state.edit}
+                              className="form-control-plaintext border-2 border-success m-4 p-2" rows="5"
+                              value={this.state.description} onChange={this.handleChange}></textarea>
                 </div>
                 <div className="from-group col-md-3">
                     <div>

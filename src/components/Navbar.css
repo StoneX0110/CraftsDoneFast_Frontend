@@ -7,11 +7,18 @@
     font-size: 35px !important;
     color: rgb(240,245,215)!important;
 }
-.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited{
+.navbarButton, .navbarButton:hover, .navbarButton:active, .navbarButton:visited{
     color: rgb(240,245,215) !important;
     background-color: transparent !important;
     border-color: rgb(240,245,215) !important;
 }
+
+#basic-nav-dropdown, #basic-nav-dropdown:hover, #basic-nav-dropdown:active, #basic-nav-dropdown:visited{
+    color: rgb(240,245,215) !important;
+    background-color: transparent !important;
+    border-color: rgb(240,245,215) !important;
+}
+
 .navbar-custom{
     height: 125px;
 }

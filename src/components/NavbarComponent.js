@@ -36,7 +36,7 @@ export default class NavbarComponent extends React.Component {
                         {/* <Link to="/createJobOffer">About</Link> */}
                         {/* <Nav.Link as={Link} to="/createJobOffer" >Home</Nav.Link> */}
                         <Nav.Link href="/createJobOffer">
-                            <Button size="lg">Insert New Job Offer</Button>
+                            <Button className="navbarButton" size="lg">Insert New Job Offer</Button>
                         </Nav.Link>
                     </Navbar.Collapse>
                 </div>
@@ -49,7 +49,7 @@ export default class NavbarComponent extends React.Component {
                     <Navbar.Toggle aria-controls="basic-navbar-nav2"/>
                     <Navbar.Collapse id="basic-navbar-nav2" className="float-end">
                         <Nav.Link href="/messages">
-                            <Button size="lg">Messages</Button>
+                            <Button className="navbarButton" size="lg">Messages</Button>
                         </Nav.Link>
                         {this.state.loggedIn ? (
                             <DropdownButton title="Profile" id="basic-nav-dropdown" className="btn" size="lg">
@@ -63,7 +63,7 @@ export default class NavbarComponent extends React.Component {
                             </DropdownButton>
                         ) : (
                             <Nav.Link href="/login">
-                                <Button size="lg">Login</Button>
+                                <Button className="navbarButton" size="lg">Login</Button>
                             </Nav.Link>
                         )}
                     </Navbar.Collapse>

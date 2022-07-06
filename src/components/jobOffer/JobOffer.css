@@ -14,3 +14,9 @@
 input[type="text"], textarea[type="text"] {
     background-color: white;
 }
+
+#editButton, #editButton:hover{
+    color: rgb(41, 118, 74)!important;
+    border-color: rgb(41, 118, 74)!important;
+    background-color: transparent;
+}

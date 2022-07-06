@@ -135,7 +135,7 @@ export default class UserView extends Component {
             <div className="profile">
                 <p className="h1">Profile</p>
                 {this.user === this.username && !this.state.edit &&
-                <button type="button" className="btn btn-primary" onClick={(e) => this.setState({edit: true})}>
+                <button type="button" className="btn btn-primary" id="editButton" onClick={(e) => this.setState({edit: true})}>
                     Edit Profile
                 </button>}
                 {this.user === this.username && this.state.edit &&

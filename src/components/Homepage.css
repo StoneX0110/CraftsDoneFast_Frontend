@@ -34,3 +34,8 @@
     height: 65px;
     flex-wrap: wrap;
 }
+#sortButton, #sortButton:hover{
+    color: rgb(41, 118, 74)!important;
+    border-color: rgb(41, 118, 74)!important;
+    background-color: transparent;
+}
