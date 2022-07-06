@@ -45,6 +45,7 @@ export function ChatView() {
     //test states are: "noPayment", "openContract", "contractEstablished", "paymentDone", "jobCompleted"
     const [activeContractStatus, setActiveContractStatus] = useState("noPayment");
     const [contractStates, setContractStates] = useState([]);
+    const contractStatesRef = useRef([]);
     const [isCurrentlyCraftsman, setIsCurrentlyCraftsman] = useState(false)
     //chatscope.io conversations
     const [conversations, setConversations] = useState([]);
@@ -87,6 +88,7 @@ export function ChatView() {
             })
             axios.get('api/chat/getContractsFromIdArray', {params: {idArray: idArr}}).then(res => {
                 setContractStates(res.data);
+                contractStatesRef.current = res.data;
             })
         })
     }
@@ -94,7 +96,6 @@ export function ChatView() {
     //create websocket, connect to rooms & handle received messages
     const chatCount = useRef(0);
     useEffect(() => {
-        console.log(chats);
         //check so execution only happens when chats are loaded from database
         if (chats.length === chatCount.current) return;
         //chats are loaded
@@ -118,6 +119,24 @@ export function ChatView() {
             })
             chatsRef.current = newChats;
             setChats(newChats);
+            //update contracts when receiving system message
+            if (message.isSystemMessage) {
+                let contrId = chats.find(chat => chat.chat._id === message.chat).chat.contract;
+                //get contract from id in message
+                axios.get('/api/chat/getContract', {params: {contractId: contrId}}).then(res => {
+                    //update local copy of contracts
+                    let newContractStates = [...contractStatesRef.current];
+                    newContractStates = newContractStates.map(contr => {
+                        if (contr._id === res.data._id) {
+                            return res.data;
+                        } else {
+                            return contr;
+                        }
+                    })
+                    contractStatesRef.current = newContractStates;
+                    setContractStates(newContractStates);
+                })
+            }
             //if chat of incoming message is active, show in UI
             if (message.chat === activeChatIdRef.current) {
                 updateActiveChat(message.chat, newChats);
@@ -142,9 +161,17 @@ export function ChatView() {
         //create message objects for frontend framework
         let tempMessages = [];
         chatToLoad.chat.messages.forEach(message => {
+            //create message
             let tempMessage = {};
-            tempMessage.message = message.content;
+            //add time when it was sent
             tempMessage.sentTime = message.createdAt.toString();
+            //if message is system message, set payload
+            if (message.isSystemMessage) {
+                tempMessage.payload = message.content;
+            } else {
+                tempMessage.message = message.content;
+            }
+            //decide if message is incoming or outgoing depending on who sent it
             if (message.author === userId) {
                 tempMessage.direction = 'outgoing';
             } else {
@@ -173,10 +200,10 @@ export function ChatView() {
     }, [contractStates])
 
     //called when message is sent from UI
-    const handleSend = message => {
+    const handleSend = messageText => {
         //update UI
         setMessages([...messages, {
-            message,
+            message: messageText,
             direction: 'outgoing'
         }]);
         setMsgInputValue("");
@@ -184,7 +211,7 @@ export function ChatView() {
 
         //write message to db
         let tempMessage = {
-            content: message,
+            content: messageText,
             author: userId,
             chat: activeChatId,
             isSystemMessage: false,
@@ -205,6 +232,25 @@ export function ChatView() {
         //send message using websocket for live chat
         socket.current.emit("sendMessage", tempMessage);
     };
+
+    function sendSystemMessage(payload) {
+        //make new socket
+        const wsSocket = io("ws://localhost:3002");
+        //join room
+        wsSocket.emit("create", activeChatIdRef.current);
+        //send message to socket
+        let tempMessage = {
+            content: payload,
+            author: userId,
+            chat: activeChatIdRef.current,
+            isSystemMessage: true,
+            createdAt: new Date()
+        };
+        //send to room
+        wsSocket.emit('sendMessage', tempMessage);
+        //save to database
+        axios.post('/api/chat/postMessageToChat', tempMessage);
+    }
 
     return (
         <div>
@@ -227,18 +273,18 @@ export function ChatView() {
                             borderTop: "1px dashed #d1dbe4"
                         }}>
                             {!isCurrentlyCraftsman && (activeContractStatus === "noPayment" || activeContractStatus === "openContract") &&
-                                <ContractPopup chatID={activeChatId}
+                                <ContractPopup chatID={activeChatId} sendSystemMessage={sendSystemMessage}
                                                contract={contractStates.find(contr => contr.chat === activeChatId)}/>
                             }
                             {!isCurrentlyCraftsman && activeContractStatus === "contractEstablished" &&
                                 <PaymentPopup chatID={activeChatId}
-                                              contract={contractStates.find(contr => contr.chat === activeChatId)} 
+                                              contract={contractStates.find(contr => contr.chat === activeChatId)}
                                               setActiveContractStatus={setActiveContractStatus}/>
                             }
                             {!isCurrentlyCraftsman && activeContractStatus === "paymentDone" &&
                                 <ConfirmJobCompletionPopup chatID={activeChatId}
-                                                      contract={contractStates.find(contr => contr.chat === activeChatId)}
-                                                      setActiveContractStatus={setActiveContractStatus}/>
+                                                           contract={contractStates.find(contr => contr.chat === activeChatId)}
+                                                           setActiveContractStatus={setActiveContractStatus}/>
                             }
                             {isCurrentlyCraftsman && activeContractStatus === "openContract" &&
                                 <AcceptContractPopup chatID={activeChatId}
