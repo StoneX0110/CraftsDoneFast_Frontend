@@ -29,7 +29,6 @@ export function ChatView() {
         message: '',
         price: null,
         startingDate: null,
-        //TODO: we need the chatPartnerID for rating somewhere here
         chatPartnerID: null
     }
     let user = '';
@@ -43,7 +42,7 @@ export function ChatView() {
     const [msgInputValue, setMsgInputValue] = useState("");
     const [messages, setMessages] = useState([]);
     //test states are: "noPayment", "openContract", "contractEstablished", "paymentDone", "jobCompleted"
-    const [activeContractStatus, setActiveContractStatus] = useState("noPayment");
+    const [activeContractStatus, setActiveContractStatus] = useState("");
     const [contractStates, setContractStates] = useState([]);
     const contractStatesRef = useRef([]);
     const [isCurrentlyCraftsman, setIsCurrentlyCraftsman] = useState(false)
@@ -235,6 +234,7 @@ export function ChatView() {
 
     function sendSystemMessage(payload) {
         //make new socket
+        console.log(payload)
         const wsSocket = io("ws://localhost:3002");
         //join room
         wsSocket.emit("create", activeChatIdRef.current);
@@ -250,6 +250,7 @@ export function ChatView() {
         wsSocket.emit('sendMessage', tempMessage);
         //save to database
         axios.post('/api/chat/postMessageToChat', tempMessage);
+        console.log("message should have been send")
     }
 
     return (
@@ -277,17 +278,17 @@ export function ChatView() {
                                                contract={contractStates.find(contr => contr.chat === activeChatId)}/>
                             }
                             {!isCurrentlyCraftsman && activeContractStatus === "contractEstablished" &&
-                                <PaymentPopup chatID={activeChatId}
+                                <PaymentPopup chatID={activeChatId} sendSystemMessage={sendSystemMessage}
                                               contract={contractStates.find(contr => contr.chat === activeChatId)}
                                               setActiveContractStatus={setActiveContractStatus}/>
                             }
                             {!isCurrentlyCraftsman && activeContractStatus === "paymentDone" &&
-                                <ConfirmJobCompletionPopup chatID={activeChatId}
+                                <ConfirmJobCompletionPopup chatID={activeChatId} sendSystemMessage={sendSystemMessage}
                                                            contract={contractStates.find(contr => contr.chat === activeChatId)}
                                                            setActiveContractStatus={setActiveContractStatus}/>
                             }
                             {isCurrentlyCraftsman && activeContractStatus === "openContract" &&
-                                <AcceptContractPopup chatID={activeChatId}
+                                <AcceptContractPopup chatID={activeChatId} sendSystemMessage={sendSystemMessage}
                                                      contract={contractStates.find(contr => contr.chat === activeChatId)}/>
                             }
                             {activeContractStatus === "jobCompleted" &&
