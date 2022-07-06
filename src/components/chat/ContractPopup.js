@@ -18,9 +18,6 @@ export function ContractPopup(props) {
     const handleClose = () => setOpen(false);
 
     function contractCreation() {
-        console.log(`Propose Contract: \n
-        Price: ${price}\n
-        Starting Date: ${startingDate}`)
         let state = JSON.parse(JSON.stringify(props.contract));
         state.price = price;
         state.startingDate = startingDate;
@@ -30,7 +27,7 @@ export function ContractPopup(props) {
                 props.sendSystemMessage('<Message.CustomContent>' +
                     '<strong>New contract proposed:</strong><br />' +
                     'Price: ' +
-                    '<span style="color:darkred">' + price + '</span><br />' +
+                    '<span style="color:darkred">' + price + '$' + '</span><br />' +
                     'Starting date: ' +
                     '<span style="color:darkred">' + startingDate + '</span>' +
                     '</Message.CustomContent>');
@@ -66,7 +63,7 @@ export function ContractPopup(props) {
                             <input required type="number" name="price" className="form-control"
                                    value={price} onChange={handleChangePrice}
                                    id="priceInput"
-                                   placeholder="Insert Price..."/>
+                                   placeholder="Insert Price in Dollar"/>
                             <label>Date</label>
                             <input required type="date" name="startingDate" className="form-control"
                                    value={startingDate} onChange={handleChangeDate}
