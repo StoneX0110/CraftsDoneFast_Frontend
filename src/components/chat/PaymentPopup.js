@@ -14,7 +14,10 @@ export function PaymentPopup(props) {
     const inputRef = useRef();
     const [open, setOpen] = useState(false);
     const [price, setPrice] = useState(props.contract.price);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        setOpen(true);
+        console.log(props);
+    }
     const handleClose = () => setOpen(false);
 
     function conductPayment() {
@@ -24,7 +27,12 @@ export function PaymentPopup(props) {
         state.paymentStatus = 'paymentDone';
         axios.post('/api/chat/updateContract', state)
             .then(res => {
-                console.log(res.data);
+                props.sendSystemMessage('<Message.CustomContent>' +
+                    '<strong>Conducted Payment:</strong><br />' +
+                    'payed Price: ' +
+                    '<span style="color:darkred">' + price + '</span><br />' +
+                    '</Message.CustomContent>');
+                console.log("Payload should have been send")
             })
     }
 
@@ -37,13 +45,12 @@ export function PaymentPopup(props) {
                 <div className="popupMainContainer">
                     <div className="header">Pay Securely</div>
                     <div className="popupInputContainer">
-                        <h2>Price: {price}</h2>
+                        <h2>Price: {price}$</h2>
                     </div>
                     <button className="close" onClick={handleClose}>
                         &times;
                     </button>
-                    <StripePaymentForm handleClose={handleClose} contract={props.contract} setActiveContractStatus={props.setActiveContractStatus}/>
-
+                    <StripePaymentForm handleClose={handleClose} contract={props.contract} sendSystemMessage={props.sendSystemMessage} setActiveContractStatus={props.setActiveContractStatus}/>
                 </div>
             </Popup>
         </div>
