@@ -28,8 +28,8 @@ export default class DetailJobOfferComponent extends React.Component {
             images: [],
             imageurl: "",
             urls: "",
-            edit: false,
-            popup: "",
+            edit: false, //edit mode
+            popup: "", //popup for contacting, has to be created after the data of the jobOffer is received from the backend
         };
         this.details = "";
         this.skills = [];
@@ -47,9 +47,11 @@ export default class DetailJobOfferComponent extends React.Component {
             const foo = res.data;
             this.setState(res.data);
             const imageResult = [];
+            //convert buffer data to image
             res.data.images.forEach(element => {
                 imageResult.push("data:image/jpeg;base64," + btoa(String.fromCharCode(...new Uint8Array(element.data.data))).substring(20));
             });
+            //create a list of images based on the converted images
             this.setState({urls: imageResult.map(imageSrc => <ImageComponent imageSrc={imageSrc} key={imageSrc}/>)});
             this.setState({
                 popup: <PopupCreateChatJobOffer username={res.data.author.username} id={this.id}

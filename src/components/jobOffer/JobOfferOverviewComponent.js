@@ -4,7 +4,9 @@ import "./OverviewComponent.css"
 
 var Router = require('react-router-dom');
 var Link = Router.Link;
-
+/**
+ * Reusable component to display the most important data fields of a JobOffers (used within a list e.g. when searching for joboffers)
+ */
 export default class JobOfferOverviewComponent extends React.Component {
 
     constructor(props) {

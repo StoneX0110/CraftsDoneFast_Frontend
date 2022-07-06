@@ -1,7 +1,9 @@
 import React, {Component} from "react";
 import axios from "axios";
 import JobOfferOverviewComponent from "./JobOfferOverviewComponent";
-
+/**
+ * Display all job offers of the respective author in this component
+ */
 export default class MyJobOfferView extends Component {
 
     constructor(props) {

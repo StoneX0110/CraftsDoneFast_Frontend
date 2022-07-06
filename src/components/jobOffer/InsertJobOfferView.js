@@ -20,9 +20,10 @@ export default class InsertJobOfferView extends Component {
         this.imageURLs = [];
 
         this.handleChange = this.handleChange.bind(this);
-        this.onImageChange = this.onImageChange.bind(this);
+        this.onImageChange = this.onImageChange.bind(this); //register handlers
     }
 
+    //handler for changing the value of the respective input field
     handleChange(event) {
         const name = event.target.name;
         this.setState({[name]: event.target.value});
@@ -30,7 +31,7 @@ export default class InsertJobOfferView extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        delete this.state.imageURLs;
+        delete this.state.imageURLs; //imageURLs are only required locally, not within the backend
         axios.post('/api/jobOffer/insert', this.state)
             .then(res => {
                 const id = res.data;
@@ -41,6 +42,9 @@ export default class InsertJobOfferView extends Component {
 
     onImageChange(e) {
         try {
+            /**
+             * Images are getting directly resized, when uploading them, even before they are transmitted to the backend
+             */
             Resizer.imageFileResizer(
                 e.target.files[0],
                 300,
@@ -50,8 +54,8 @@ export default class InsertJobOfferView extends Component {
                 0,
                 (uri) => {
                     this.state.images.push(uri);
+                    //create a Image directly as preview, that the user can verify
                     this.imageURLs = this.state.images.map(imageSrc => <ImageComponent imageSrc={imageSrc} key={imageSrc} />);
-                    // <span><div className="photo border border-1 mb-3"><img className="image" key={imageSrc} src={imageSrc} /></div></span>);
                     this.setState({imageURLs: this.imageURLs});
                 },
                 "base64",

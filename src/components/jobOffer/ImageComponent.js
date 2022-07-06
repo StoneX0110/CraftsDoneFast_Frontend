@@ -4,7 +4,9 @@ import React from "react";
 
 var Router = require('react-router-dom');
 var Link = Router.Link;
-
+/**
+ * Simple encapsulation for images, setting the data fields, style and spacing
+ */
 export default class ImageComponent extends React.Component {
 
     constructor(props) {
