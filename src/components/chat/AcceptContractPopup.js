@@ -18,14 +18,17 @@ export function AcceptContractPopup(props) {
     const handleClose = () => setOpen(false);
 
     function acceptContract() {
-        console.log(`Accept Contract: \n
-        Price: ${price}\n
-        Starting Date: ${startingDate}`)
         let state = JSON.parse(JSON.stringify(props.contract));
         state.paymentStatus = 'contractEstablished';
         axios.post('/api/chat/updateContract', state)
             .then(res => {
-                console.log(res.data);
+                props.sendSystemMessage('<Message.CustomContent>' +
+                    '<strong>Accepted Contract:</strong><br />' +
+                    'with Price: ' +
+                    '<span style="color:darkred">' + price + '$' + '</span><br />' +
+                    'and Starting date: ' +
+                    '<span style="color:darkred">' + startingDate + '</span>' +
+                    '</Message.CustomContent>');
             })
     }
 
@@ -39,7 +42,7 @@ export function AcceptContractPopup(props) {
                     </button>
                     <div className="header">Do you wish to accept the Contract Details?</div>
                     <div className="popupInputContainer">
-                        <h2>Price: {price}</h2>
+                        <h2>Price: {price}$</h2>
                         <h2>Starting Date: {startingDate.toString().substring(0, 10)}</h2>
                     </div>
                     <div className="popupButtonContainer">
