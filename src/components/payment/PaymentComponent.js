@@ -29,14 +29,6 @@ const handleSubmit = (stripe, elements, props) => async () => {
 
 function confirm(paymentMethod, props) {
   sendToServer(props);
-  // axios.post('/api/user/confirmPayment', paymentMethod)
-  //   .then(res => {
-  //     // const id = res.data;
-  //     // console.log(res.data);
-  //     // window.location = "/jobOffer/" + id;
-  //     console.log("sucessfully paid");
-  //     //handleClose();
-  //   });
 }
 
 function sendToServer(props) {
@@ -47,7 +39,11 @@ function sendToServer(props) {
        console.log(res.data);
        console.log(props);
        props.setActiveContractStatus('paymentDone');
-       console.log(props);
+       props.sendSystemMessage('<Message.CustomContent>' +
+           '<strong>Conducted Payment:</strong><br />' +
+           'payed Price: ' +
+           '<span style="color:darkred">' + props.contract.price + '$' + '</span><br />' +
+           '</Message.CustomContent>');
        props.handleClose();
      })
 }
@@ -66,6 +62,6 @@ const PaymentForm = (props) => {
 
 export const StripePaymentForm = (props) => (
   <Elements stripe={stripePromise}>
-    <PaymentForm handleClose={props.handleClose} contract={props.contract} setActiveContractStatus={props.setActiveContractStatus}/>
+    <PaymentForm handleClose={props.handleClose} contract={props.contract} sendSystemMessage={props.sendSystemMessage} setActiveContractStatus={props.setActiveContractStatus}/>
   </Elements>
 );
