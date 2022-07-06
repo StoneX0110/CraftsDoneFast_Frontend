@@ -91,7 +91,7 @@ export default class InsertJobOfferView extends Component {
                                    onChange={this.handleChange} placeholder="Insert Postal Code"/>
                         </div>
                         <div className="form-group col-md-4">
-                            <label>Price expectation*</label>
+                            <label>Price expectation* (in USD)</label>
                             <input name="priceExpectation" type="text" className="form-control"
                                    id="exampleFormControlInput1" value={this.state.priceExpectation}
                                    onChange={this.handleChange} placeholder="Price expectation"/>

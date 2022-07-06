@@ -35,7 +35,7 @@ export default class JobOfferOverviewComponent extends React.Component {
                             <p className="card-title">{this.props.job.title}</p>
                             <div className="row">
                                 <div className="card-text col-auto">{this.props.job.priceExpectation === "" ?
-                                    ("No price expectation") : (`${this.props.job.priceExpectation} €`)}</div>
+                                    ("No price expectation") : (`${this.props.job.priceExpectation} $`)}</div>
                                 <div className="card-text col" style={{textAlign: "right"}}>User Rating: {this.props.rating}&#9733;</div>
                         </div>
                         </div>
