@@ -1,5 +1,5 @@
 import React, {useRef, useState} from "react";
-import {Button} from "@chatscope/chat-ui-kit-react";
+import {Button, Message} from "@chatscope/chat-ui-kit-react";
 import Popup from "reactjs-popup";
 import "./Popup.css"
 import axios from "axios";
@@ -27,7 +27,13 @@ export function ContractPopup(props) {
         state.paymentStatus = 'openContract';
         axios.post('/api/chat/updateContract', state)
             .then(res => {
-                console.log(res.data);
+                props.sendSystemMessage('<Message.CustomContent>' +
+                    '<strong>New contract proposed:</strong><br />' +
+                    'Price: ' +
+                    '<span style="color:darkred">' + price + '</span><br />' +
+                    'Starting date: ' +
+                    '<span style="color:darkred">' + startingDate + '</span>' +
+                    '</Message.CustomContent>');
             })
     }
 
@@ -46,33 +52,33 @@ export function ContractPopup(props) {
     }
 
     return (
-            <div>
-                <Button border onClick={handleOpen}>Start Payment</Button>
-                <Popup open={open} closeOnDocumentClick onClose={handleClose}>
-                    <form onSubmit={handleSubmit}>
-                        <div className="popupMainContainer">
-                            <button className="close" onClick={handleClose}>
-                                &times;
-                            </button>
-                            <div className="header">Define Contract Details</div>
-                            <div className="form-group popupInputContainer">
-                                <label>Price</label>
-                                <input required type="number" name="price" className="form-control"
-                                       value={price} onChange={handleChangePrice}
-                                       id="priceInput"
-                                       placeholder="Insert Price..."/>
-                                <label>Date</label>
-                                <input required type="date" name="startingDate" className="form-control"
-                                       value={startingDate} onChange={handleChangeDate}
-                                       id="dateInput"/>
-                            </div>
-                            <div className="popupButtonContainer">
-                                <button type="submit" className="btn popupButton">Confirm Details
-                                </button>
-                            </div>
+        <div>
+            <Button border onClick={handleOpen}>Start Payment</Button>
+            <Popup open={open} closeOnDocumentClick onClose={handleClose}>
+                <form onSubmit={handleSubmit}>
+                    <div className="popupMainContainer">
+                        <button className="close" onClick={handleClose}>
+                            &times;
+                        </button>
+                        <div className="header">Define Contract Details</div>
+                        <div className="form-group popupInputContainer">
+                            <label>Price</label>
+                            <input required type="number" name="price" className="form-control"
+                                   value={price} onChange={handleChangePrice}
+                                   id="priceInput"
+                                   placeholder="Insert Price..."/>
+                            <label>Date</label>
+                            <input required type="date" name="startingDate" className="form-control"
+                                   value={startingDate} onChange={handleChangeDate}
+                                   id="dateInput"/>
                         </div>
-                    </form>
-                </Popup>
-            </div>
-        );
+                        <div className="popupButtonContainer">
+                            <button type="submit" className="btn popupButton">Confirm Details
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </Popup>
+        </div>
+    );
 }
