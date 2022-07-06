@@ -12,8 +12,8 @@ export function AcceptContractPopup(props) {
 
     const inputRef = useRef();
     const [open, setOpen] = useState(false);
-    const [price, setPrice] = useState(props.price);
-    const [startingDate, setStartingDate] = useState(props.startingDate);
+    const [price, setPrice] = useState(props.contract.price);
+    const [startingDate, setStartingDate] = useState(props.contract.startingDate);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -21,6 +21,12 @@ export function AcceptContractPopup(props) {
         console.log(`Accept Contract: \n
         Price: ${price}\n
         Starting Date: ${startingDate}`)
+        let state = JSON.parse(JSON.stringify(props.contract));
+        state.paymentStatus = 'contractEstablished';
+        axios.post('/api/chat/updateContract', state)
+            .then(res => {
+                console.log(res.data);
+            })
     }
 
     return (
@@ -34,7 +40,7 @@ export function AcceptContractPopup(props) {
                     <div className="header">Do you wish to accept the Contract Details?</div>
                     <div className="popupInputContainer">
                         <h2>Price: {price}</h2>
-                        <h2>Starting Date: {startingDate}</h2>
+                        <h2>Starting Date: {startingDate.toString().substring(0, 10)}</h2>
                     </div>
                     <div className="popupButtonContainer">
                         <button type="button" className="btn popupButton"/*className="btn btn-primary"*/ onClick={() => {

@@ -32,6 +32,7 @@ export default class DetailJobOfferComponent extends React.Component {
             popup: "",
         };
         this.details = "";
+        this.skills = [];
         this.handleChange = this.handleChange.bind(this);
         this.updateJobOffer = this.updateJobOffer.bind(this);
         this.deleteJobOffer = this.deleteJobOffer.bind(this);
@@ -59,12 +60,11 @@ export default class DetailJobOfferComponent extends React.Component {
 
     handleChange(event) {
         const name = event.target.name;
-        this.setState({[name]: event.target.value});
+        this.setState({ [name]: event.target.value });
     }
 
     updateJobOffer() {
-        console.log("as");
-        this.setState({edit: false});
+        this.setState({ edit: false });
         const jobOffer = Object.create(this.state);
         delete jobOffer.urls;
         delete jobOffer.edit;
@@ -78,7 +78,6 @@ export default class DetailJobOfferComponent extends React.Component {
     }
 
     deleteJobOffer() {
-        console.log("del");
         axios.delete('/api/jobOffer/delete/' + this.state._id)
             .then(res => {
                 window.location = "/";
