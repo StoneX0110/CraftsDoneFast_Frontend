@@ -69,13 +69,14 @@ export default class PopupCreateChat extends Component {
         let createdChatId = '';
         await axios.post('/api/chat/create', chatToCreate).then(res => {
             createdChatId = res.data;
+            window.location = "/messages";
         });
     }
 
     render() {
         return (
             <div>
-                <button type="button" className="btn btn-primary" onClick={this.handleOpen}> Contact</button>
+                <button type="button" className="btn btn-primary" id="contactButton" onClick={this.handleOpen}> Contact</button>
                 <Popup open={this.state.open} closeOnDocumentClick onClose={this.handleClose}>
                     <div className="popupMainContainer">
                         <button className="close" onClick={this.handleClose}>
