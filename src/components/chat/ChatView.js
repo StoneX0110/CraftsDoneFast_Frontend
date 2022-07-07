@@ -23,14 +23,6 @@ import {io} from "socket.io-client";
 
 export function ChatView() {
 
-    const state = {
-        chats: [],
-        //messages: [],
-        message: '',
-        price: null,
-        startingDate: null,
-        chatPartnerID: null
-    }
     let user = '';
     let userId = '';
     if (sessionStorage.getItem('userData') && JSON.parse(sessionStorage.getItem('userData')) !== null) {
@@ -45,7 +37,8 @@ export function ChatView() {
     const [activeContractStatus, setActiveContractStatus] = useState("");
     const [contractStates, setContractStates] = useState([]);
     const contractStatesRef = useRef([]);
-    const [isCurrentlyCraftsman, setIsCurrentlyCraftsman] = useState(false)
+    const [isCurrentlyCraftsman, setIsCurrentlyCraftsman] = useState(false);
+    const [currentChatPartnerID, setCurrentChatPartnerID] = useState("");
     //chatscope.io conversations
     const [conversations, setConversations] = useState([]);
     const [chats, setChats] = useState([]);
@@ -153,7 +146,15 @@ export function ChatView() {
         //set active contract status
         if (contractStates.length !== 0) {
             setActiveContractStatus(contractStates.find(contract => contract.chat === activeId).paymentStatus);
-            setIsCurrentlyCraftsman(newChats.find(chat => chat.chat._id === activeId).chat.users.craftsman === userId);
+            let currentChat = chatsRef.current.find(chat => chat.chat._id === activeChatIdRef.current).chat
+            setIsCurrentlyCraftsman(currentChat.users.craftsman === userId);
+            //select current ID of chat partner
+            if (currentChat.users.craftsman === userId) {
+                setCurrentChatPartnerID(currentChat.users.client)
+            } else {
+                setCurrentChatPartnerID(currentChat.users.craftsman)
+            }
+            console.log(currentChatPartnerID)
         }
         //find chat with id of active chat from local storage
         let chatToLoad = newChats.find(chatWithPartner => chatWithPartner.chat._id === activeId);
@@ -194,6 +195,7 @@ export function ChatView() {
     useEffect(() => {
         if (contractStates.length !== 0) {
             setActiveContractStatus(contractStates.find(contract => contract.chat === activeChatIdRef.current).paymentStatus);
+            //ensures that craftsman status is initiated correctly on first page load
             setIsCurrentlyCraftsman(chatsRef.current.find(chat => chat.chat._id === activeChatIdRef.current).chat.users.craftsman === userId);
         }
     }, [contractStates])
@@ -292,7 +294,7 @@ export function ChatView() {
                                                      contract={contractStates.find(contr => contr.chat === activeChatId)}/>
                             }
                             {activeContractStatus === "jobCompleted" &&
-                                <RatingPopup chatPartnerID={state.chatPartnerID}/>
+                                <RatingPopup chatPartnerID={currentChatPartnerID}/>
                             }
                             <MessageInput value={msgInputValue} onChange={setMsgInputValue} onSend={handleSend}
                                           placeholder="Type message here" attachButton={false} sendButton={false}
