@@ -20,3 +20,15 @@ input[type="text"], textarea[type="text"] {
     border-color: rgb(41, 118, 74)!important;
     background-color: transparent;
 }
+
+#contactButton, #contactButton:hover{
+    color: rgb(41, 118, 74)!important;
+    border-color: rgb(41, 118, 74)!important;
+    background-color: transparent;
+}
+
+#saveButton, #saveButton:hover{
+    color: rgb(41, 118, 74)!important;
+    border-color: rgb(41, 118, 74)!important;
+    background-color: transparent;
+}
