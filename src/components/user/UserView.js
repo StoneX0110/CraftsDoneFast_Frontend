@@ -33,17 +33,19 @@ export default class UserView extends Component {
         this.jobs = [];
         this.jobNames = [];
         this.profilePictureURL = "";
+        this.backUp = "";
         this.handleChange = this.handleChange.bind(this);
         this.onImageChange = this.onImageChange.bind(this);
         this.updateUser = this.updateUser.bind(this);
         this.render = this.render.bind(this);
+        this.startEdit = this.startEdit.bind(this);
+        this.cancelEdit = this.cancelEdit.bind(this);
         if (sessionStorage.getItem('userData') && JSON.parse(sessionStorage.getItem('userData')) !== null) {
             this.user = JSON.parse(sessionStorage.getItem('userData')).username;
         }
     }
 
     componentDidMount() {
-        console.log("fetch user");
         axios.get('/api/user/profile/' + this.username).then(res => {
             this.setState(res.data.settings);
             if (res.data.profilePicture !== undefined) {
@@ -54,12 +56,9 @@ export default class UserView extends Component {
                 }
             } else {
                 this.state.profilePicture = profilePictureDefaultString;
-                console.log("default loaded")
             }
             const transformedPictureURL = <ImageComponent imageSrc={this.state.profilePicture} key={this.state.profilePicture}/>
             this.setState({profilePictureURL: transformedPictureURL});
-            console.log("Picture URL: ")
-            console.log(this.state.profilePictureURL)
         })
 
         //fill options
@@ -86,6 +85,7 @@ export default class UserView extends Component {
         //console.log(user);
         axios.post('/api/user/update', user)
             .then(res => {
+                alert("Your profile was updated Successfully!")
                 const id = res.data;
                 //sessionStorage.setItem('userData', JSON.stringify(res.data));
             })
@@ -99,6 +99,16 @@ export default class UserView extends Component {
         return skills.map(choice => {
             return choice.value + ", ";
         });
+    }
+
+    startEdit() {
+        this.setState({edit: true})
+        this.backUp = this.state;
+    }
+
+    cancelEdit() {
+        this.setState(this.backUp)
+        this.setState({edit: false})
     }
 
     onImageChange(e) {
@@ -135,11 +145,19 @@ export default class UserView extends Component {
             <div className="profile">
                 <p className="h1">Profile</p>
                 {this.user === this.username && !this.state.edit &&
-                <button type="button" className="btn btn-primary" id="editButton" onClick={(e) => this.setState({edit: true})}>
+                <button type="button" className="btn btn-primary" id="editButton" onClick={this.startEdit}>
                     Edit Profile
                 </button>}
-                {this.user === this.username && this.state.edit &&
-                <button type="button" className="btn btn-info" onClick={this.updateUser}>Save Profile</button>}
+                <div className="flex-row justify-content-center">
+                    <div className="buttonMarginContainer">
+                        {this.user === this.username && this.state.edit &&
+                        <button type="button" className="btn" id="userSaveButton" onClick={this.updateUser}>Save </button>}
+                    </div>
+                    <div className="buttonMarginContainer">
+                        {this.user === this.username && this.state.edit &&
+                        <button type="button" className="btn" id="userCancelButton" onClick={this.cancelEdit}>Cancel</button>}
+                    </div>
+                </div>
                 {/*TODO: CSS für Schönheit noch definieren*/}
                 {this.user !== this.username && (this.state.skills.length > 0) &&
                 <PopupCreateChat username={this.state.name}/>
