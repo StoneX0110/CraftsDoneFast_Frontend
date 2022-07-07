@@ -62,6 +62,7 @@ export default class PopupCreateChatJobOffer extends Component {
         let createdChatId = '';
         await axios.post('/api/chat/create', chatToCreate).then(res => {
             createdChatId = res.data;
+            window.location = "/messages";
         });
     }
 
