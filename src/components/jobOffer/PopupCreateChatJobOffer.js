@@ -68,7 +68,7 @@ export default class PopupCreateChatJobOffer extends Component {
     render() {
         return (
             <div>
-                <button type="button" className="btn btn-primary" onClick={this.handleOpen}> Contact</button>
+                <button type="button" className="btn" id="contactButton" onClick={this.handleOpen}> Contact</button>
                 <Popup open={this.state.open} closeOnDocumentClick onClose={this.handleClose}>
                     <div className="popupMainContainer">
                         <button className="close" onClick={this.handleClose}>
@@ -76,7 +76,7 @@ export default class PopupCreateChatJobOffer extends Component {
                         </button>
                         <div className="header">Contact {this.state.username}</div>
                         <div className="popupButtonContainer">
-                            <button type="button" className="btn popupButton" onClick={() => {
+                            <button type="button" className="btn" id="contactButton" onClick={() => {
                                 console.log('modal closed');
                                 this.handleChatCreation().then(this.handleClose());
                             }}>Contact
