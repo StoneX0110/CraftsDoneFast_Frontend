@@ -62,11 +62,11 @@ export default class DetailJobOfferComponent extends React.Component {
 
     handleChange(event) {
         const name = event.target.name;
-        this.setState({ [name]: event.target.value });
+        this.setState({[name]: event.target.value});
     }
 
     updateJobOffer() {
-        this.setState({ edit: false });
+        this.setState({edit: false});
         const jobOffer = Object.create(this.state);
         delete jobOffer.urls;
         delete jobOffer.edit;
@@ -76,6 +76,7 @@ export default class DetailJobOfferComponent extends React.Component {
             .then(res => {
                 const id = res.data;
                 console.log(res.data);
+                alert("Your Job Offer was updated Successfully!")
             })
     }
 
@@ -92,19 +93,28 @@ export default class DetailJobOfferComponent extends React.Component {
             <div className="col-md-9 m-3">
                 <BackButtonComponent text="Overview Page" to="/"/>
                 <p className="h1">Detail Job Offer</p>
-                {this.user === this.state.author.username && !this.state.edit &&
-                    <button type="button" className="btn btn-primary" id="editButton" onClick={(e) => this.setState({edit: true})}>
-                        Edit Job Offer
-                    </button>}
-                {this.user === this.state.author.username && this.state.edit &&
-                    <button type="button" className="btn btn-info" onClick={this.updateJobOffer}>
-                        Save Job Offer
-                    </button>}
-                {this.user === this.state.author.username &&
-                    <button type="button" className="btn btn-danger" onClick={this.deleteJobOffer}>
-                        Delete Job Offer
-                    </button>}
-                {this.user !== this.state.author.username && this.skills.length > 0 && this.state.popup}
+                <div className="flex-row justify-content-center">
+                    <div className="buttonMarginContainer">
+                        {this.user === this.state.author.username && !this.state.edit &&
+                        <button type="button" className="btn btn-primary" id="editButton"
+                                onClick={(e) => this.setState({edit: true})}>
+                            Edit Job Offer
+                        </button>}
+                    </div>
+                    <div className="buttonMarginContainer">
+                        {this.user === this.state.author.username && this.state.edit &&
+                        <button type="button" className="btn btn-primary" id="saveButton" onClick={this.updateJobOffer}>
+                            Save Job Offer
+                        </button>}
+                    </div>
+                    <div className="buttonMarginContainer">
+                        {this.user === this.state.author.username &&
+                        <button type="button" className="btn btn-danger" onClick={this.deleteJobOffer}>
+                            Delete Job Offer
+                        </button>}
+                    </div>
+                        {this.user !== this.state.author.username && this.skills.length > 0 && this.state.popup}
+                </div>
                 <div className="form-group">
                     <div className="form-row row">
                         <div className="form-group col-md-6">
