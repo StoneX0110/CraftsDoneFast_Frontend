@@ -80,6 +80,11 @@
 
 
 .rating-submit:hover{
-
     color: #fff;
+}
+
+#contactButton, #contactButton:hover{
+    color: rgb(240,245,215)!important;
+    background-color: rgb(41, 118, 74)!important;
+    border-color: rgb(240,245,215)!important;
 }
