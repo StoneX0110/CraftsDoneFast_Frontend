@@ -48,3 +48,20 @@
     border-radius: 18px;
     border: 1px solid #cfcece;
 }
+
+.buttonMarginContainer{
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+#userSaveButton, #userSaveButton:hover {
+    color: rgb(41, 118, 74)!important;
+    border-color: rgb(41, 118, 74)!important;
+    background-color: transparent;
+}
+
+#userCancelButton, #userCancelButton:hover {
+    color: whitesmoke;
+    border-color: red!important;
+    background-color:red!important;
+}
