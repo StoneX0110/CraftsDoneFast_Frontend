@@ -17,13 +17,19 @@ export function RatingPopup(props) {
     const handleClose = () => setOpen(false);
 
     //TODO: Placeholder
-    const [stars, setStars] = useState(0);
+    const [stars, setStars] = useState(1);
     const [comment, setComment] = useState("");
 
     function rateUser() {
-        console.log(`Propose Contract: \n
-        Stars: ${stars}\n
-        Comment: ${comment}`)
+        var body = {
+            rating: {
+                date: Date.now(),
+                stars: stars,
+                description: comment
+            },
+            id: chatPartnerID,
+        }
+        axios.post('/api/user/insertRating', body).then()
     }
 
     function handleChangeStars(event) {
@@ -32,6 +38,10 @@ export function RatingPopup(props) {
 
     function handleChangeComment(event) {
         setComment(event.target.value);
+    }
+
+    function handleChangeStars(event) {
+        setStars(event.target.value);
     }
 
     return (
@@ -44,13 +54,15 @@ export function RatingPopup(props) {
                     </button>
                     <div className="header">Rate User</div>
                     <div className="form-group popupInputContainer">
-                        <label>Stars</label>
-                        <input required type="number" name="price" className="form-control"
-                               value={stars} onChange={handleChangeStars}
-                               id="priceInput"
-                               placeholder="Insert Price..."/>
+                        <div onClick={handleChangeStars} className="rating">
+                            <input type="radio" name="rating" value="5" id="5"/> <label htmlFor="5">☆</label>
+                            <input type="radio" name="rating" value="4" id="4"/> <label htmlFor="4">☆</label>
+                            <input type="radio" name="rating" value="3" id="3"/> <label htmlFor="3">☆</label>
+                            <input type="radio" name="rating" value="2" id="2"/> <label htmlFor="2">☆</label>
+                            <input type="radio" name="rating" value="1" id="1"/> <label htmlFor="1">☆</label>
+                        </div>
                         <label>Comment</label>
-                        <input required type="text" name="startingDate" className="form-control"
+                        <textarea required type="text" name="startingDate" className="form-control"
                                value={comment} onChange={handleChangeComment}
                                id="dateInput"/>
                     </div>
