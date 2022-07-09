@@ -3,6 +3,7 @@ import {Button} from "@chatscope/chat-ui-kit-react";
 import Popup from "reactjs-popup";
 import axios from "axios";
 import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import Modal from "react-bootstrap/Modal";
 
 export function ConfirmJobCompletionPopup(props) {
     let user = '';
@@ -29,22 +30,27 @@ export function ConfirmJobCompletionPopup(props) {
 
     return (
         <div>
-            <Button border onClick={handleOpen}>Confirm Job Completion</Button>
-            <Popup open={open} closeOnDocumentClick onClose={handleClose}>
-                <div className="popupMainContainer">
-                    <button className="close" onClick={handleClose}>
-                        &times;
+            <Button border onClick={handleOpen}>
+                Confirm Job Completion
+            </Button>
+            <Modal show={open} onHide={handleClose}>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleClose}>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <Modal.Header>
+                </Modal.Header>
+                <Modal.Body className="popupMainContainer">
+                    <Modal.Title>Do you wish to confirm the job Completion?</Modal.Title>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button type="cancel" className="btn popupButtonCancel" onClick={handleClose}>Cancel</button>
+                    <button type="button" className="btn popupButton"/*className="btn btn-primary"*/ onClick={() => {
+                        handleClose();
+                        confirmJobCompletion();
+                    }}>Confirm Job Completion
                     </button>
-                    <div className="header">Do you wish to confirm the job Completion?</div>
-                    <div className="popupButtonContainer">
-                        <button type="button" className="btn popupButton"/*className="btn btn-primary"*/ onClick={() => {
-                            handleClose();
-                            confirmJobCompletion();
-                        }}>Confirm Job Completion
-                        </button>
-                    </div>
-                </div>
-            </Popup>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
