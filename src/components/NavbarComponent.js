@@ -57,6 +57,7 @@ export default class NavbarComponent extends React.Component {
                                     href={"/user/profile/" + JSON.parse(sessionStorage.getItem('userData')).username}>My
                                     Profile</Dropdown.Item>}
                                 <Dropdown.Item href="/myJobOffers">My Job Offers</Dropdown.Item>
+                                <Dropdown.Item href="/myJobOfferRequests">Job Requests</Dropdown.Item>
                                 <Dropdown.Divider/>
                                 <Dropdown.Item onClick={() => this.logout()}>Logout</Dropdown.Item>
                                 {/* {false && <Dropdown.Item href="#action/3.4">Login</Dropdown.Item>}     */}

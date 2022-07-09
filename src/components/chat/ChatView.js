@@ -11,7 +11,6 @@ import {
     Message,
     MessageInput,
     MessageList,
-    Search,
     SendButton,
     Sidebar
 } from '@chatscope/chat-ui-kit-react';
@@ -54,8 +53,8 @@ export function ChatView() {
     function getChats() {
         //get chats with messages from db
         axios.get('/api/chat/getMyChats').then(res => {
-            //only continue if conversations are not set already
-            if (conversations.length !== 0) return;
+            //only continue if conversations are not set already and # of chats is > 0
+            if (conversations.length !== 0 || res.data.length === 0) return;
             //create chatscope.io Conversation UI components from received chats
             //TODO: mark active chat; hint: Conversation can have 'active' attribute
             let chatTemp = res.data.map(chatWithPartner => {
@@ -67,7 +66,17 @@ export function ChatView() {
                                      }}>
                     <Avatar src={"defaultAvatar.png"} name={chatWithPartner.partnerUsername}/>
                     <Conversation.Operations
-                        onClick={() => console.log('Operations clicked ' + chatWithPartner.partnerUsername)}/>
+                        onClick={() => {
+                            //delete chat from db
+                            axios.delete('/api/chat/delete/' + chatWithPartner.chat._id).then(() => {
+                                //if # of chats before deletion is 1 (therefore 0 afterwards), reload page; else load remaining chats
+                                if (chatsRef.current.length === 1) {
+                                    window.location = '/messages';
+                                } else {
+                                    getChats();
+                                }
+                            })
+                        }}/>
                 </Conversation>;
             });
             setConversations([chatTemp]);
@@ -92,6 +101,8 @@ export function ChatView() {
         if (chats.length === chatCount.current) return;
         //chats are loaded
         chatCount.current = chats.length;
+        //if no chats are present, don't continue
+        if (chats.length === 0) return;
         setActiveChatId(chats[0].chat._id);
         activeChatIdRef.current = chats[0].chat._id;
         //once chats are loaded, create websocket
@@ -154,7 +165,6 @@ export function ChatView() {
             } else {
                 setCurrentChatPartnerID(currentChat.users.craftsman)
             }
-            console.log(currentChatPartnerID)
         }
         //find chat with id of active chat from local storage
         let chatToLoad = newChats.find(chatWithPartner => chatWithPartner.chat._id === activeId);
