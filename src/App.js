@@ -1,6 +1,7 @@
 import './App.css';
 import InsertJobOfferView from './components/jobOffer/InsertJobOfferView';
 import MyJobOfferView from './components/jobOffer/MyJobOfferView';
+import MyJobOfferRequestsView from "./components/jobOffer/MyJobOfferRequestsView";
 import NavbarComponent from './components/NavbarComponent';
 import Homepage from "./components/Homepage";
 import Login from "./components/Login";
@@ -31,6 +32,7 @@ function App() {
           <Route exact path='/createJobOffer' element={<InsertJobOfferView/>} />
           <Route exact path='/user/profile/:username' element={<UserView/>}/>}/>
           <Route exact path='/myJobOffers' element={isLoggedIn ? <MyJobOfferView/> : <Navigate to={{pathname: "/"}}/>}/>
+          <Route exact path='/myJobOfferRequests' element={isLoggedIn ? <MyJobOfferRequestsView/> : <Navigate to={{pathname: "/"}}/>}/>
           <Route path="/jobOffer/:id" element={<DetailJobOfferComponent/>} />
           <Route exact path='/login' element={isLoggedIn ? <Navigate to={{pathname: "/"}}/> :<Login/>} />
           <Route exact path='/registration' element={isLoggedIn ? <Navigate to={{pathname: "/"}}/> : <Registration/>} />
