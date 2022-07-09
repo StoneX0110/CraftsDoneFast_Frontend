@@ -2,7 +2,7 @@ import React, {useRef, useState} from "react";
 import {Button} from "@chatscope/chat-ui-kit-react";
 import Popup from "reactjs-popup";
 import axios from "axios";
-import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import Modal from "react-bootstrap/Modal";
 
 export function AcceptContractPopup(props) {
     let user = '';
@@ -10,7 +10,6 @@ export function AcceptContractPopup(props) {
         user = JSON.parse(sessionStorage.getItem('userData')).username;
     }
 
-    const inputRef = useRef();
     const [open, setOpen] = useState(false);
     const [price, setPrice] = useState(props.contract.price);
     const [startingDate, setStartingDate] = useState(props.contract.startingDate);
@@ -34,26 +33,35 @@ export function AcceptContractPopup(props) {
 
     return (
         <div>
-            <Button border onClick={handleOpen}>Accept Contract</Button>
-            <Popup open={open} closeOnDocumentClick onClose={handleClose}>
-                <div className="popupMainContainer">
-                    <button className="close" onClick={handleClose}>
-                        &times;
-                    </button>
-                    <div className="header">Do you wish to accept the Contract Details?</div>
+            <Button border onClick={handleOpen}>
+                Accept Contract
+            </Button>
+            <Modal show={open} onHide={handleClose}>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleClose}>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <Modal.Header>
+                    <Modal.Title>Do you wish to accept the Contract Details?</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="popupMainContainer">
                     <div className="popupInputContainer">
-                        <h2>Price: {price}$</h2>
-                        <h2>Starting Date: {startingDate.toString().substring(0, 10)}</h2>
+                        <div className="card-text col-auto text-center">
+                            <label>Starting Date: {startingDate.toString().substring(0, 10)}</label>
+                        </div>
+                        <div className="card-text col-auto text-center">
+                            <label>Price: {price}$</label>
+                        </div>
                     </div>
-                    <div className="popupButtonContainer">
-                        <button type="button" className="btn popupButton"/*className="btn btn-primary"*/ onClick={() => {
-                            handleClose();
-                            acceptContract();
-                        }}>Accept Contract Details
-                        </button>
-                    </div>
-                </div>
-            </Popup>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button type="cancel" className="btn popupButtonCancel" onClick={handleClose}>Cancel</button>
+                    <button type="button" className="btn popupButton"/*className="btn btn-primary"*/ onClick={() => {
+                        handleClose();
+                        acceptContract();
+                    }}>Accept Contract Details
+                    </button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
