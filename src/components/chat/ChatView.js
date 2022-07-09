@@ -105,6 +105,12 @@ export function ChatView() {
         if (chats.length === 0) return;
         setActiveChatId(chats[0].chat._id);
         activeChatIdRef.current = chats[0].chat._id;
+        //select current ID of chat partner
+        if (chats[0].chat.users.craftsman === userId) {
+            setCurrentChatPartnerID(chats[0].chat.users.client)
+        } else {
+            setCurrentChatPartnerID(chats[0].chat.users.craftsman)
+        }
         //once chats are loaded, create websocket
         socket.current = io("ws://localhost:3002");
         //join room for each chat
