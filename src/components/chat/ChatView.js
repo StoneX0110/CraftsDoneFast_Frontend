@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import "./ChatView.css"
 import {ContractPopup} from "./ContractPopup"
 import {PaymentPopup} from "./PaymentPopup";
+import {DropdownButton, Dropdown} from "react-bootstrap";
 import {
     Avatar,
     ChatContainer,
@@ -65,18 +66,29 @@ export function ChatView() {
                                          activeChatIdRef.current = chatWithPartner.chat._id;
                                      }}>
                     <Avatar src={"defaultAvatar.png"} name={chatWithPartner.partnerUsername}/>
-                    <Conversation.Operations
-                        onClick={() => {
-                            //delete chat from db
-                            axios.delete('/api/chat/delete/' + chatWithPartner.chat._id).then(() => {
-                                //if # of chats before deletion is 1 (therefore 0 afterwards), reload page; else load remaining chats
-                                if (chatsRef.current.length === 1) {
-                                    window.location = '/messages';
-                                } else {
-                                    getChats();
+                    <Conversation.Operations>
+                        <DropdownButton id="dropdown-basic-button" title="">
+                            <Dropdown.Item as="button" onClick={() => {
+                                if (window.confirm("Do you want to delete the chat permanently?\nPress OK to do so.")) {
+                                    //delete chat from db
+                                    axios.delete('/api/chat/delete/' + chatWithPartner.chat._id).then(() => {
+                                        //if # of chats before deletion is 1 (therefore 0 afterwards), reload page; else load remaining chats
+                                        if (chatsRef.current.length === 1) {
+                                            window.location = '/messages';
+                                        } else {
+                                            //force reload of chats
+                                            getChats(true);
+                                        }
+                                    })
                                 }
-                            })
-                        }}/>
+                            }}>Delete Chat</Dropdown.Item>
+                            <Dropdown.Item as="button" onClick={() => {
+                                console.log('Information for customer support:');
+                                console.log('User id which initiated the support request:\n' + userId + '\nChat info:')
+                                console.log(chatWithPartner);
+                            }}>Contact support</Dropdown.Item>
+                        </DropdownButton>
+                    </Conversation.Operations>
                 </Conversation>;
             });
             setConversations([chatTemp]);
