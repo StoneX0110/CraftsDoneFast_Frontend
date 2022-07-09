@@ -21,7 +21,7 @@ export function ConfirmJobCompletionPopup(props) {
         axios.post('/api/chat/updateContract', state)
             .then(res => {
                 props.sendSystemMessage('<Message.CustomContent>' +
-                    '<strong>Confirmed Job Completion:</strong><br />' +
+                    '<strong>Confirmed Job Completion</strong><br />' +
                     '</Message.CustomContent>');
             })
     }
