@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import Popup from 'reactjs-popup';
 import axios from "axios";
+import Modal from "react-bootstrap/Modal";
 
 
 export default class PopupCreateChatJobOffer extends Component {
@@ -69,22 +69,27 @@ export default class PopupCreateChatJobOffer extends Component {
     render() {
         return (
             <div>
-                <button type="button" className="btn" id="contactButton" onClick={this.handleOpen}> Contact</button>
-                <Popup open={this.state.open} closeOnDocumentClick onClose={this.handleClose}>
-                    <div className="popupMainContainer">
-                        <button className="close" onClick={this.handleClose}>
-                            &times;
+                <button type="button" className="btn btn-primary" id="contactButton" onClick={this.handleOpen}>
+                    Contact
+                </button>
+                <Modal show={this.state.open} onHide={this.handleClose}>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.handleClose}>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <Modal.Header>
+                    </Modal.Header>
+                    <Modal.Body className="popupMainContainer">
+                        <Modal.Title>Contact {this.state.username}</Modal.Title>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button type="cancel" className="btn popupButtonCancel" onClick={this.handleClose}>Cancel</button>
+                        <button type="button" className="btn" id="contactButton" onClick={() => {
+                            console.log('modal closed');
+                            this.handleChatCreation().then(this.handleClose());
+                        }}>Contact
                         </button>
-                        <div className="header">Contact {this.state.username}</div>
-                        <div className="popupButtonContainer">
-                            <button type="button" className="btn" id="contactButton" onClick={() => {
-                                console.log('modal closed');
-                                this.handleChatCreation().then(this.handleClose());
-                            }}>Contact
-                            </button>
-                        </div>
-                    </div>
-                </Popup>
+                    </Modal.Footer>
+                </Modal>
             </div>
         );
     }
