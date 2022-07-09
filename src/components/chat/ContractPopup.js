@@ -1,5 +1,4 @@
-import React, {useRef, useState} from "react";
-//import Popup from "reactjs-popup";
+import React, {useState} from "react";
 import {Button} from "@chatscope/chat-ui-kit-react";
 import Modal from "react-bootstrap/Modal";
 import "./Popup.css"

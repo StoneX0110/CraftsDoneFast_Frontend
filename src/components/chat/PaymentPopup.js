@@ -1,8 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Button } from "@chatscope/chat-ui-kit-react";
-import Popup from "reactjs-popup";
 import axios from "axios";
-import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { StripePaymentForm } from "../payment/PaymentComponent";
 import Modal from "react-bootstrap/Modal";
 

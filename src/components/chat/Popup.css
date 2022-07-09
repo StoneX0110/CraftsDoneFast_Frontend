@@ -6,11 +6,18 @@
     display: flex;
     justify-content: center;
     padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .popupButton{
     color: rgb(240,245,215)!important;
     background-color: rgb(41, 118, 74)!important;
+    border-color: rgb(240,245,215)!important;
+}
+
+.popupButtonCancel {
+    color: rgb(240,245,215)!important;
+    background-color: red!important;
     border-color: rgb(240,245,215)!important;
 }
 
@@ -81,6 +88,11 @@
 
 .rating-submit:hover{
     color: #fff;
+}
+
+.textFieldPopup {
+    width: 80%;
+    margin: 0 auto;
 }
 
 #contactButton, #contactButton:hover{
