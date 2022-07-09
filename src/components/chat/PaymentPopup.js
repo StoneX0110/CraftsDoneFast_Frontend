@@ -4,6 +4,7 @@ import Popup from "reactjs-popup";
 import axios from "axios";
 import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { StripePaymentForm } from "../payment/PaymentComponent";
+import Modal from "react-bootstrap/Modal";
 
 export function PaymentPopup(props) {
     let user = '';
@@ -38,21 +39,27 @@ export function PaymentPopup(props) {
 
     return (
         <div>
-            <Button border onClick={handleOpen}>Pay Secure</Button>
-
-            <Popup open={open} closeOnDocumentClick onClose={handleClose}>
-
-                <div className="popupMainContainer">
-                    <div className="header">Pay Securely</div>
+            <Button border onClick={handleOpen}>
+                Pay Secure
+            </Button>
+            <Modal show={open} onHide={handleClose}>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleClose}>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <Modal.Header>
+                    <Modal.Title>Pay Securely</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="popupMainContainer">
                     <div className="popupInputContainer">
-                        <h2>Price: {price}$</h2>
+                        <div className="card-text col-auto text-center">
+                            <label>Price: {price}$</label>
+                        </div>
                     </div>
-                    <button className="close" onClick={handleClose}>
-                        &times;
-                    </button>
+                </Modal.Body>
+                <Modal.Body>
                     <StripePaymentForm handleClose={handleClose} contract={props.contract} sendSystemMessage={props.sendSystemMessage} setActiveContractStatus={props.setActiveContractStatus}/>
-                </div>
-            </Popup>
+                </Modal.Body>
+            </Modal>
         </div>
     );
 }
