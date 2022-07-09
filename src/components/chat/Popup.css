@@ -31,6 +31,17 @@
     margin: 0 auto;
 }
 
+.modal-dialog {
+    display: flex !important;
+    width: 50% !important;
+    pointer-events: none;
+    justify-content: center;
+    align-items: center;
+}
+.modal{
+    display:flex !important;
+}
+
 /*https://bbbootstrap.com/snippets/bootstrap-rate-your-experience-template-star-ratings-30972576*/
 .rate{
 

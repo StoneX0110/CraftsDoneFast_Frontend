@@ -1,8 +1,8 @@
 import React, {useRef, useState} from "react";
 import {Button} from "@chatscope/chat-ui-kit-react";
-import Popup from "reactjs-popup";
 import axios from "axios";
 import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import Modal from "react-bootstrap/Modal";
 
 export function RatingPopup(props) {
     let user = '';
@@ -10,7 +10,6 @@ export function RatingPopup(props) {
         user = JSON.parse(sessionStorage.getItem('userData')).username;
     }
 
-    const inputRef = useRef();
     const chatPartnerID = props.chatPartnerID;
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -29,11 +28,14 @@ export function RatingPopup(props) {
             },
             id: chatPartnerID,
         }
+        console.log(props.chatPartnerID)
+        console.log(body)
         axios.post('/api/user/insertRating', body).then()
     }
 
     function handleChangeStars(event) {
         setStars(event.target.value);
+        console.log(props)
     }
 
     function handleChangeComment(event) {
@@ -46,13 +48,17 @@ export function RatingPopup(props) {
 
     return (
         <div>
-            <Button border onClick={handleOpen}>Rate User</Button>
-            <Popup open={open} closeOnDocumentClick onClose={handleClose}>
-                <div className="popupMainContainer">
-                    <button className="close" onClick={handleClose}>
-                        &times;
-                    </button>
-                    <div className="header">Rate User</div>
+            <Button border onClick={handleOpen}>
+                Rate User
+            </Button>
+            <Modal show={open} onHide={handleClose}>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleClose}>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <Modal.Header>
+                    <Modal.Title>Rate User</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="popupMainContainer">
                     <div className="form-group popupInputContainer">
                         <div onClick={handleChangeStars} className="rating">
                             <input type="radio" name="rating" value="5" id="5"/> <label htmlFor="5">☆</label>
@@ -63,9 +69,11 @@ export function RatingPopup(props) {
                         </div>
                         <label>Comment</label>
                         <textarea required type="text" name="startingDate" className="form-control"
-                               value={comment} onChange={handleChangeComment}
-                               id="dateInput"/>
+                                  value={comment} onChange={handleChangeComment}
+                                  id="dateInput"/>
                     </div>
+                </Modal.Body>
+                <Modal.Footer>
                     <div className="popupButtonContainer">
                         <button type="button" className="btn popupButton" /*className="btn btn-primary"*/ onClick={() => {
                             handleClose();
@@ -73,8 +81,8 @@ export function RatingPopup(props) {
                         }}>Confirm Rating
                         </button>
                     </div>
-                </div>
-            </Popup>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
