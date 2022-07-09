@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import Popup from 'reactjs-popup';
 import axios from "axios";
+import {Button} from "@chatscope/chat-ui-kit-react";
+import Modal from "react-bootstrap/Modal";
 
 
 export default class PopupCreateChat extends Component {
@@ -76,23 +78,27 @@ export default class PopupCreateChat extends Component {
     render() {
         return (
             <div>
-                <button type="button" className="btn btn-primary" id="contactButton" onClick={this.handleOpen}> Contact</button>
-                <Popup open={this.state.open} closeOnDocumentClick onClose={this.handleClose}>
-                    <div className="popupMainContainer">
-                        <button className="close" onClick={this.handleClose}>
-                            &times;
-                        </button>
-                        <div className="header">Contact {this.state.name}</div>
+                <button type="button" className="btn btn-primary" id="contactButton" onClick={this.handleOpen}>
+                    Contact
+                </button>
+                <Modal show={this.state.open} onHide={this.handleClose}>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.handleClose}>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <Modal.Header>
+                        <Modal.Title>Contact {this.state.name}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className="popupMainContainer">
                         <div className="form-group popupInputContainer">
-                        <label>Select Job Offer or</label>
-                        <select required name="job" className="form-control" id="job"
-                                value={this.state.job} onChange={this.handleChange}>
-                            /*
-                            <option defaultValue disabled value="">Choose...</option>
-                            */
-                            <option>{this.noJobOffer}</option>
-                            {this.state.jobSelection}
-                        </select>
+                            <label>Select Job Offer or</label>
+                            <select required name="job" className="form-control" id="job"
+                                    value={this.state.job} onChange={this.handleChange}>
+                                /*
+                                <option defaultValue disabled value="">Choose...</option>
+                                */
+                                <option>{this.noJobOffer}</option>
+                                {this.state.jobSelection}
+                            </select>
                             <label>Title</label>
                             <input required type="text" name="title" className="form-control"
                                    id="exampleFormControlInput1"
@@ -101,15 +107,16 @@ export default class PopupCreateChat extends Component {
                                    disabled={this.state.job !== this.noJobOffer}
                             />
                         </div>
-                        <div className="popupButtonContainer">
-                            <button type="button" className="btn popupButton" onClick={() => {
-                                console.log('modal closed');
-                                this.handleChatCreation().then(this.handleClose());
-                            }}>Contact
-                            </button>
-                        </div>
-                    </div>
-                </Popup>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button type="cancel" className="btn popupButtonCancel" onClick={this.handleClose}>Cancel</button>
+                        <button type="button" className="btn popupButton" onClick={() => {
+                            console.log('modal closed');
+                            this.handleChatCreation().then(this.handleClose());
+                        }}>Contact
+                        </button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         );
     }
