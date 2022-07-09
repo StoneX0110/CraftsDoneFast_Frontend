@@ -1,6 +1,7 @@
 import React, {useRef, useState} from "react";
-import {Button, Message} from "@chatscope/chat-ui-kit-react";
-import Popup from "reactjs-popup";
+//import Popup from "reactjs-popup";
+import {Button} from "@chatscope/chat-ui-kit-react";
+import Modal from "react-bootstrap/Modal";
 import "./Popup.css"
 import axios from "axios";
 
@@ -10,7 +11,6 @@ export function ContractPopup(props) {
         user = JSON.parse(sessionStorage.getItem('userData')).username;
     }
 
-    const inputRef = useRef();
     const [open, setOpen] = useState(false);
     const [price, setPrice] = useState("");
     const [startingDate, setStartingDate] = useState("");
@@ -50,32 +50,34 @@ export function ContractPopup(props) {
 
     return (
         <div>
-            <Button border onClick={handleOpen}>Start Payment</Button>
-            <Popup open={open} closeOnDocumentClick onClose={handleClose}>
-                <form onSubmit={handleSubmit}>
-                    <div className="popupMainContainer">
-                        <button className="close" onClick={handleClose}>
-                            &times;
-                        </button>
-                        <div className="header">Define Contract Details</div>
-                        <div className="form-group popupInputContainer">
-                            <label>Price</label>
-                            <input required type="number" name="price" className="form-control"
-                                   value={price} onChange={handleChangePrice}
-                                   id="priceInput"
-                                   placeholder="Insert Price in Dollar"/>
-                            <label>Date</label>
-                            <input required type="date" name="startingDate" className="form-control"
-                                   value={startingDate} onChange={handleChangeDate}
-                                   id="dateInput"/>
-                        </div>
-                        <div className="popupButtonContainer">
-                            <button type="submit" className="btn popupButton">Confirm Details
-                            </button>
-                        </div>
+            <Button border onClick={handleOpen}>
+                Start Payment
+            </Button>
+            <Modal show={open} onHide={handleClose}>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleClose}>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <Modal.Header>
+                    <Modal.Title>Define Contract Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="popupMainContainer">
+                    <div className="form-group popupInputContainer">
+                        <label>Price</label>
+                        <input required type="number" name="price" className="form-control"
+                               value={price} onChange={handleChangePrice}
+                               id="priceInput"
+                               placeholder="Insert Price in Dollar"/>
+                        <label>Date</label>
+                        <input required type="date" name="startingDate" className="form-control"
+                               value={startingDate} onChange={handleChangeDate}
+                               id="dateInput"/>
                     </div>
-                </form>
-            </Popup>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button type="cancel" className="btn popupButtonCancel" onClick={handleClose}>Cancel</button>
+                    <button type="submit" className="btn popupButton" onClick={handleSubmit}>Confirm Details</button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
