@@ -1,5 +1,5 @@
 .popupMainContainer{
-    background-color: rgb(240,245,215);
+    background-color: #F4F4F4;
 }
 
 .popupButtonContainer{
@@ -21,6 +21,12 @@
     border-color: rgb(240,245,215)!important;
 }
 
+#contactButton, #contactButton:hover{
+    color: rgb(240,245,215)!important;
+    background-color: rgb(41, 118, 74)!important;
+    border-color: rgb(240,245,215)!important;
+}
+
 .popupInputContainer{
     width: 50%;
     margin: 0 auto;
@@ -28,6 +34,11 @@
 
 .popupHeader{
     width: 70%;
+    margin: 0 auto;
+}
+
+.textFieldPopup {
+    width: 80%;
     margin: 0 auto;
 }
 
@@ -44,13 +55,9 @@
 
 /*https://bbbootstrap.com/snippets/bootstrap-rate-your-experience-template-star-ratings-30972576*/
 .rate{
-
     border-bottom-right-radius: 12px;
     border-bottom-left-radius: 12px;
-
 }
-
-
 
 .rating {
     display: flex;
@@ -99,15 +106,4 @@
 
 .rating-submit:hover{
     color: #fff;
-}
-
-.textFieldPopup {
-    width: 80%;
-    margin: 0 auto;
-}
-
-#contactButton, #contactButton:hover{
-    color: rgb(240,245,215)!important;
-    background-color: rgb(41, 118, 74)!important;
-    border-color: rgb(240,245,215)!important;
 }
