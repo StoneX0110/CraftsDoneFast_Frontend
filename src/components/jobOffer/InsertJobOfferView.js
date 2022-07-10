@@ -55,7 +55,8 @@ export default class InsertJobOfferView extends Component {
                 (uri) => {
                     this.state.images.push(uri);
                     //create a Image directly as preview, that the user can verify
-                    this.imageURLs = this.state.images.map(imageSrc => <ImageComponent imageSrc={imageSrc} key={imageSrc} />);
+                    this.imageURLs = this.state.images.map(imageSrc => <ImageComponent imageSrc={imageSrc}
+                                                                                       key={imageSrc}/>);
                     this.setState({imageURLs: this.imageURLs});
                 },
                 "base64",
@@ -70,9 +71,9 @@ export default class InsertJobOfferView extends Component {
 
     render() {
         return (
-            <div className="col-md-9 m-3">
-                <p className="h1">Insert a Job Offer</p>
-                <form onSubmit={this.handleSubmit}>
+            <div className="search-wrapper category-wrapper border border-4 rounded">
+                <h3 style={{marginTop: "5px"}}>Insert a Job Offer</h3>
+                <form onSubmit={this.handleSubmit} style={{marginRight: "20px", marginLeft: "20px"}}>
                     <div className="form-group">
                         <label>Title</label>
                         <input required type="text" name="title" className="form-control" id="exampleFormControlInput1"
@@ -80,7 +81,7 @@ export default class InsertJobOfferView extends Component {
                                placeholder="Insert Title..."/>
                     </div>
                     <div className="form-row row">
-                        <div className="form-group col-md-4">
+                        <div className="form-group col">
                             <label>Category</label>
                             <select required name="category" className="form-control" id="exampleFormControlSelect1"
                                     value={this.state.category} onChange={this.handleChange}>
@@ -88,13 +89,13 @@ export default class InsertJobOfferView extends Component {
                                 {Category.returnSelection()}
                             </select>
                         </div>
-                        <div className="form-group col-md-4">
+                        <div className="form-group col">
                             <label>Postal Code</label>
                             <input required name="postalCode" type="text" className="form-control"
                                    id="exampleFormControlInput1" value={this.state.postalCode}
                                    onChange={this.handleChange} placeholder="Insert Postal Code"/>
                         </div>
-                        <div className="form-group col-md-4">
+                        <div className="form-group col">
                             <label>Price expectation* (in USD)</label>
                             <input name="priceExpectation" type="text" className="form-control"
                                    id="exampleFormControlInput1" value={this.state.priceExpectation}
@@ -108,7 +109,7 @@ export default class InsertJobOfferView extends Component {
                                   onChange={this.handleChange}></textarea>
                     </div>
                     <div className="form-row row">
-                        <div className="form-group col-md-4">
+                        <div className="form-group col">
                             <label>Insert Pictures*</label>
                             <input className="form-control" type="file" multiple accept="image/*"
                                    onChange={this.onImageChange}/>
@@ -116,9 +117,13 @@ export default class InsertJobOfferView extends Component {
                                 {this.state.imageURLs}
                             </div>
                         </div>
-                        <div className="from-group col-md-4"></div>
-                        <div className="from-group col-md-4">
-                            <button type="submit" className="btn btn-success float-end">Confirm Job Offer</button>
+                        <div className="from-group col"></div>
+                        <div className="from-group col"
+                             style={{display: "flex", alignItems: "top", justifyContent: "end"}}>
+                                <button type="submit" className="btn btn-success"
+                                        style={{height: "fit-content", marginTop: "15px"}}>
+                                    Confirm Job Offer
+                                </button>
                         </div>
                     </div>
                 </form>

@@ -23,10 +23,7 @@
 .submitButton{
     width: 100%!important;
 }
-.zipField {
-    background-color: white!important;
-}
-.flex-row{
+#sortDropdown{
     display: flex;
     /*width: 40%;*/
     /*margin: 0 auto;*/

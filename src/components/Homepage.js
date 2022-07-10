@@ -221,7 +221,7 @@ export default class Homepage extends Component {
                             </div>
                             <div className="form-group col">
                                 <label>Postal Code</label>
-                                <input name="postalCode" type="number" className="form-control zipField"
+                                <input name="postalCode" type="number" className="form-control"
                                        id="postalCode" value={this.state.postalCode}
                                        onChange={this.handleChange} placeholder="Insert ZIP"/>
                             </div>
@@ -286,7 +286,7 @@ export default class Homepage extends Component {
                         </div>
                     </div>
                     <div className="col">
-                        <div className="flex-row text-start">
+                        <div className=" text-start" id="sortDropdown">
                             <h3 className="col" style={{color: "rgb(41, 118, 74)"}}>Results</h3>
                             <div className="col">
                                 <DropdownButton title="Sort by" className="float-end" id="sortButton">

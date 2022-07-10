@@ -40,7 +40,7 @@ export default class UserOverviewComponent extends React.Component {
                                     {this.props.user.settings.name}
                                 </div>
                                 <div className="card-text col" style={{textAlign: "right"}}>
-                                    User Rating: {this.props.rating}&#9733;
+                                    Craftsman Rating: {this.props.rating}&#9733;
                                 </div>
                             </div>
                         </div>

@@ -31,15 +31,21 @@ export default class JobOfferOverviewComponent extends React.Component {
                           style={{textDecoration: 'none', color: "rgb(41, 118, 74)"}}>
                         <div className="card-body">
                             <div className="row">
-                                <div className="card-text col-auto">{this.props.job.postalCode} {this.cityAndDist()}</div>
-                            <div className="card-text col" style={{textAlign: "right"}}>{this.formatDate}</div>
+                                <div className="card-text col-auto">
+                                    {this.props.job.postalCode} {this.cityAndDist()}
+                                </div>
+                                <div className="card-text col" style={{textAlign: "right"}}>{this.formatDate}</div>
                             </div>
                             <p className="card-title">{this.props.job.title}</p>
                             <div className="row">
                                 <div className="card-text col-auto">{this.props.job.priceExpectation === "" ?
                                     ("No price expectation") : (`${this.props.job.priceExpectation} $`)}</div>
-                                <div className="card-text col" style={{textAlign: "right"}}>User Rating: {this.props.rating}&#9733;</div>
-                        </div>
+                                {this.props.ownOverview ? "" :
+                                    <div className="card-text col" style={{textAlign: "right"}}>
+                                        Customer Rating: {this.props.rating}&#9733;
+                                    </div>
+                                }
+                            </div>
                         </div>
                     </Link>
                 </div>

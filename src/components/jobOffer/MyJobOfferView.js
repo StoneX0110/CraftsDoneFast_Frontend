@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import axios from "axios";
 import JobOfferOverviewComponent from "./JobOfferOverviewComponent";
+
 /**
  * Display all job offers of the respective author in this component
  */
@@ -13,11 +14,12 @@ export default class MyJobOfferView extends Component {
     }
 
     componentDidMount() {
+        console.log("Get user rating")
         console.log("fetch job offers");
         axios.get('/api/jobOffer/myJobOffers').then(res => {
             this.jobs = res.data;
             console.log(this.jobs);
-            this.renderJobs = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job={e}/>)
+            this.renderJobs = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job={e} ownOverview={true}/>)
             this.forceUpdate();
         })
     }
@@ -25,9 +27,11 @@ export default class MyJobOfferView extends Component {
     render() {
         return (
             <div>
-                <div style={{backgroundColor: "rgb(41, 118, 74)", color: "rgb(240,245,215)"}}>
-                    <p className="h1">My Job Offers</p>
-                    {this.renderJobs}
+                <div className="search-wrapper category-wrapper border-4 border rounded">
+                    <h3 style={{marginTop: "5px"}}>My Job Offers</h3>
+                    <div className="gapLeft gapRight">
+                        {this.renderJobs}
+                    </div>
                 </div>
             </div>
         );
