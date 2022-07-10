@@ -30,18 +30,18 @@ export default class PopupCreateChat extends Component {
     }
 
     handleClose() {
-        this.state.open = false;
-        this.forceUpdate();
+        this.setState({ open: false });
     }
 
     handleOpen() {
-        this.state.open = true;
+        this.setState({ open: true });
         axios.get("/api/jobOffer/myJobOffers").then(res => {
             this.state.jobs = res.data;
             this.state.jobNames = this.state.jobs.map((e) => e.title);
             this.state.jobSelection = this.state.jobNames.map((e) => <option>{e}</option>);
             this.state.open = true;
             this.forceUpdate();
+            console.log("forceUpdate")
         });
     }
 
