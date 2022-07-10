@@ -53,29 +53,34 @@ export function ContractPopup(props) {
                 Start Payment
             </Button>
             <Modal show={open} onHide={handleClose}>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleClose}>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close"
+                        onClick={handleClose}>
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <Modal.Header>
                     <Modal.Title>Define Contract Details</Modal.Title>
                 </Modal.Header>
-                <Modal.Body className="popupMainContainer">
-                    <div className="form-group popupInputContainer">
-                        <label>Price</label>
-                        <input required type="number" name="price" className="form-control"
-                               value={price} onChange={handleChangePrice}
-                               id="priceInput"
-                               placeholder="Insert Price in Dollar"/>
-                        <label>Date</label>
-                        <input required type="date" name="startingDate" className="form-control"
-                               value={startingDate} onChange={handleChangeDate}
-                               id="dateInput"/>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <button type="cancel" className="btn popupButtonCancel" onClick={handleClose}>Cancel</button>
-                    <button type="submit" className="btn popupButton" onClick={handleSubmit}>Confirm Details</button>
-                </Modal.Footer>
+                <form onSubmit={handleSubmit}>
+                    <Modal.Body className="popupMainContainer">
+                        <div className="form-group popupInputContainer">
+                            <label>Price</label>
+                            <input required type="number" name="price" className="form-control"
+                                   value={price} onChange={handleChangePrice}
+                                   id="priceInput"
+                                   placeholder="Insert Price in Dollar"/>
+                            <label>Date</label>
+                            <input required type="date" name="startingDate" className="form-control"
+                                   value={startingDate} onChange={handleChangeDate}
+                                   id="dateInput"/>
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <div className="from-group">
+                            <button type="button" className="btn popupButtonCancel" onClick={handleClose}>Cancel</button>
+                            <button id="submit" type="submit" className="btn popupButton">Confirm Details</button>
+                        </div>
+                    </Modal.Footer>
+                </form>
             </Modal>
         </div>
     );
