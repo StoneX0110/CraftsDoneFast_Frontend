@@ -19,7 +19,8 @@ export function RatingPopup(props) {
     const [stars, setStars] = useState(1);
     const [comment, setComment] = useState("");
 
-    function rateUser() {
+    function handleSubmit(event) {
+        event.preventDefault();
         var body = {
             rating: {
                 date: Date.now(),
@@ -30,12 +31,7 @@ export function RatingPopup(props) {
         }
         console.log(props.chatPartnerID)
         console.log(body)
-        axios.post('/api/user/insertRating', body).then()
-    }
-
-    function handleChangeStars(event) {
-        setStars(event.target.value);
-        console.log(props)
+        axios.post('/api/user/insertRating', body).then(handleClose)
     }
 
     function handleChangeComment(event) {
@@ -56,32 +52,39 @@ export function RatingPopup(props) {
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <Modal.Header>
-                    <Modal.Title>Rate User</Modal.Title>
+                    <Modal.Title>Rate User with 1 - 5 Stars</Modal.Title>
                 </Modal.Header>
+                <form onSubmit={handleSubmit}>
                 <Modal.Body className="popupMainContainer">
                     <div className="form-group popupInputContainer">
                         <div onClick={handleChangeStars} className="rating">
-                            <input type="radio" name="rating" value="5" id="5"/> <label htmlFor="5">☆</label>
-                            <input type="radio" name="rating" value="4" id="4"/> <label htmlFor="4">☆</label>
-                            <input type="radio" name="rating" value="3" id="3"/> <label htmlFor="3">☆</label>
-                            <input type="radio" name="rating" value="2" id="2"/> <label htmlFor="2">☆</label>
-                            <input type="radio" name="rating" value="1" id="1"/> <label htmlFor="1">☆</label>
+                            {/*
+                            giving one field the required tag makes it necessary to choose a value
+                            -> note this throughs and error due to the hiden radio button
+
+                            else default value can be left out for invisible conversion to 1 if nothing is selected
+
+                            or move the checked marker to another input field
+                            */}
+                            <input type="radio" name="rating" value="5" id="5" required/> <label htmlFor="5">☆</label>
+                            <input type="radio" name="rating" value="4" id="4" /> <label htmlFor="4">☆</label>
+                            <input type="radio" name="rating" value="3" id="3" /> <label htmlFor="3">☆</label>
+                            <input type="radio" name="rating" value="2" id="2" /> <label htmlFor="2">☆</label>
+                            <input type="radio" name="rating" value="1" id="1" /> <label htmlFor="1">☆</label>
                         </div>
                         <label>Comment</label>
-                        <textarea required type="text" name="startingDate" className="form-control"
+                        <textarea type="text" name="startingDate" className="form-control"
                                   value={comment} onChange={handleChangeComment}
                                   id="dateInput"/>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <div className="popupButtonContainer">
-                        <button type="button" className="btn popupButton" /*className="btn btn-primary"*/ onClick={() => {
-                            handleClose();
-                            rateUser();
-                        }}>Confirm Rating
-                        </button>
+                    <div className="from-group popupButtonContainer">
+                        <button type="button" className="btn popupButtonCancel" onClick={handleClose}>Cancel</button>
+                        <button id="submit" type="submit" className="btn popupButton">Confirm Rating</button>
                     </div>
                 </Modal.Footer>
+                </form>
             </Modal>
         </div>
     );
