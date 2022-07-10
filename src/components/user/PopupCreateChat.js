@@ -26,7 +26,7 @@ export default class PopupCreateChat extends Component {
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleChatCreation = this.handleChatCreation.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleClose() {
@@ -50,7 +50,7 @@ export default class PopupCreateChat extends Component {
         this.setState({[name]: event.target.value});
     }
 
-    async handleChatCreation() {
+     handleSubmit() {
         console.log("test chat creation")
 
         let chatToCreate = {};
@@ -66,9 +66,10 @@ export default class PopupCreateChat extends Component {
         chatToCreate.users = {craftsman: this.username, client: this.user};
 
         //post to db
-        let createdChatId = '';
-        await axios.post('/api/chat/create', chatToCreate).then(res => {
-            createdChatId = res.data;
+        let createdChatID = "";
+        axios.post('/api/chat/create', chatToCreate).then(res => {
+            createdChatID = res.data;
+            console.log(createdChatID);
             window.location = "/messages";
         });
     }
@@ -80,40 +81,41 @@ export default class PopupCreateChat extends Component {
                     Contact
                 </button>
                 <Modal show={this.state.open} onHide={this.handleClose}>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.handleClose}>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close"
+                            onClick={this.handleClose}>
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <Modal.Header>
                         <Modal.Title>Contact {this.state.name}</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body className="popupMainContainer">
-                        <div className="form-group popupInputContainer">
-                            <label>Select Job Offer or</label>
-                            <select required name="job" className="form-control" id="job"
-                                    value={this.state.job} onChange={this.handleChange}>
-                                /*
-                                <option defaultValue disabled value="">Choose...</option>
-                                */
-                                <option>{this.noJobOffer}</option>
-                                {this.state.jobSelection}
-                            </select>
-                            <label>Title</label>
-                            <input required type="text" name="title" className="form-control"
-                                   id="exampleFormControlInput1"
-                                   value={this.state.title} onChange={this.handleChange}
-                                   placeholder="Insert Title..."
-                                   disabled={this.state.job !== this.noJobOffer}
-                            />
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <button type="cancel" className="btn popupButtonCancel" onClick={this.handleClose}>Cancel</button>
-                        <button type="button" className="btn popupButton" onClick={() => {
-                            console.log('modal closed');
-                            this.handleChatCreation().then(this.handleClose());
-                        }}>Contact
-                        </button>
-                    </Modal.Footer>
+                    <form onSubmit={this.handleSubmit}>
+                        <Modal.Body className="popupMainContainer">
+                            <div className="form-group popupInputContainer">
+                                <label>Select Job Offer or</label>
+                                <select required type="select" name="job" className="form-control" id="job"
+                                        value={this.state.job} onChange={this.handleChange}>
+                                    /*
+                                    <option defaultValue disabled value="">Choose...</option>
+                                    */
+                                    <option>{this.noJobOffer}</option>
+                                    {this.state.jobSelection}
+                                </select>
+                                <label>Title</label>
+                                <input required type="text" name="title" className="form-control"
+                                       id="exampleFormControlInput1"
+                                       value={this.state.title} onChange={this.handleChange}
+                                       placeholder="Insert Title..."
+                                       disabled={this.state.job !== this.noJobOffer}
+                                />
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <div className="from-group">
+                                <button type="button" className="btn popupButtonCancel" onClick={this.handleClose}>Cancel</button>
+                                <button type="submit" className="btn popupButton">Contact</button>
+                            </div>
+                        </Modal.Footer>
+                    </form>
                 </Modal>
             </div>
         );
