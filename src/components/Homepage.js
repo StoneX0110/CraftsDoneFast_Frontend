@@ -27,20 +27,20 @@ export default class Homepage extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.createResults = this.createResults.bind(this);
         this.handleSort = this.handleSort.bind(this);
-        this.getUserRatings = this.getUserRatings.bind(this);
+        this.getAverageCustomerRatings = this.getAverageCustomerRatings.bind(this);
         this.categorySelection = this.categorySelection.bind(this);
     }
 
     componentDidMount() {
         console.log("Fetching 10 most recent job offers...");
         axios.get('/api/jobOffer/recentJobOffers').then(res => {
-            const __ret = this.getUserRatings(res);
-            var averageRatings = __ret.averageRatings;
+            const __ret = this.getAverageCustomerRatings(res);
+            var averageCustomerRatings = __ret.averageCustomerRatings;
             const requests = __ret.requests;
             return Promise.all(requests).then(() => {
                 var rR = [];
                 this.results.map((e, index) => {
-                    return rR.push(<JobOfferOverviewComponent key={e._id} job={e} rating={averageRatings[index]}/>);
+                    return rR.push(<JobOfferOverviewComponent key={e._id} job={e} rating={averageCustomerRatings[index]}/>);
                 });
                 this.renderedResults = rR;
                 this.forceUpdate();
@@ -97,8 +97,8 @@ export default class Homepage extends Component {
                     category: this.state.category
                 }
             }).then(res => {
-                const __ret = this.getUserRatings(res);
-                var averageRatings = __ret.averageRatings;
+                const __ret = this.getAverageCustomerRatings(res);
+                var averageCustomerRatings = __ret.averageCustomerRatings;
                 const requests = __ret.requests;
                 return Promise.all(requests).then(() => {
                     var rR = [];
@@ -109,7 +109,7 @@ export default class Homepage extends Component {
                         return rR.push(<JobOfferOverviewComponent key={e._id} job={e}
                                                                   city={cityAndDist.city}
                                                                   dist={cityAndDist.distance}
-                                                                  rating={averageRatings[index]}/>)
+                                                                  rating={averageCustomerRatings[index]}/>)
                     })
                     this.renderedResults = rR;
                     this.forceUpdate();
@@ -129,7 +129,7 @@ export default class Homepage extends Component {
                         ? this.state.zips_with_distance.find(elem => parseInt(elem.zip_code) === user.settings.postalCode)
                         : {city: undefined, distance: undefined};
                     return <UserOverviewComponent user={user} city={cityAndDist.city} dist={cityAndDist.distance}
-                                                  rating={user.averageRating}/>
+                                                  rating={user.averageCraftsmanRating}/>
                 });
                 this.forceUpdate();
 
@@ -137,17 +137,17 @@ export default class Homepage extends Component {
         }
     }
 
-    getUserRatings(res) {
+    getAverageCustomerRatings(res) {
         this.results = res.data;
         this.renderedResults = [];
-        var averageRatings = [];
+        var averageCustomerRatings = [];
 
         const requests = this.results.map((e) => {
-            return axios.get('/api/user/getAverageRating', {params: {id: e.author}}).then(res => {
-                averageRatings.push(res.data.averageRating);
+            return axios.get('/api/user/getAverageCustomerRating', {params: {id: e.author}}).then(res => {
+                averageCustomerRatings.push(res.data.averageCustomerRating);
             })
         });
-        return {averageRatings, requests};
+        return {averageCustomerRatings, requests};
     }
 
     handleSort = (type) => {
