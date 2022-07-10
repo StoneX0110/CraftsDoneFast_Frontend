@@ -130,10 +130,13 @@ export default class UserView extends Component {
     };
 
     displaySelected(skills) {
-        return skills.map(choice => {
-            return choice.value + ", ";
-        });
-    }
+        console.log(skills)
+        let tempArray = [];
+        for(let skill of skills){
+            tempArray.push(skill.label)
+        }
+        return tempArray.join(", ")
+    };
 
     startEdit() {
         this.setState({edit: true})
