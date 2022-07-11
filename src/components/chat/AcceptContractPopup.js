@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {Button} from "@chatscope/chat-ui-kit-react";
 import axios from "axios";
 import Modal from "react-bootstrap/Modal";
+import Moment from "moment";
 
 export function AcceptContractPopup(props) {
     let user = '';
@@ -10,9 +11,13 @@ export function AcceptContractPopup(props) {
     }
 
     const [open, setOpen] = useState(false);
-    const [price, setPrice] = useState(props.contract.price);
-    const [startingDate, setStartingDate] = useState(props.contract.startingDate);
-    const handleOpen = () => setOpen(true);
+    const [price, setPrice] = useState("");
+    const [startingDate, setStartingDate] = useState("");
+    const handleOpen = () => {
+        setOpen(true);
+        setPrice(props.contract.price)
+        setStartingDate(Moment(props.contract.startingDate).format('DD.MM.YYYY'));
+    }
     const handleClose = () => setOpen(false);
 
     function acceptContract() {
