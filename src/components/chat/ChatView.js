@@ -96,7 +96,11 @@ export function ChatView() {
                                 axios.delete('/api/chat/delete/' + chatWithPartner.chat._id).then(() => {
                                     //if # of chats before deletion is 1 (therefore 0 afterwards), reload page; else load remaining chats
                                     if (chatsRef.current.length === 1) {
-                                        window.location = '/messages';
+                                        //last chat was deleted -> set everything empty
+                                        setConversations([]);
+                                        setMessages([]);
+                                        setChats([]);
+                                        setActiveContractStatus('');
                                     } else {
                                         //reload of chats
                                         getChats();
@@ -335,6 +339,7 @@ export function ChatView() {
                             }
                             <MessageInput value={msgInputValue} onChange={setMsgInputValue} onSend={handleSend}
                                           placeholder="Type message here" attachButton={false} sendButton={false}
+                                          disabled={chats.length === 0}
                                           style={{
                                               flexGrow: 1,
                                               borderTop: 0,
