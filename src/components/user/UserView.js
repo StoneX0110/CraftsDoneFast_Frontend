@@ -212,7 +212,6 @@ export default class UserView extends Component {
                                         onClick={this.cancelEdit}>Cancel</button>}
                         </div>
                     </div>
-                    {/*TODO: CSS für Schönheit noch definieren*/}
                     {this.user !== this.username && (this.state.skills.length > 0) &&
                         <PopupCreateChat username={this.state.name}/>
                     }
