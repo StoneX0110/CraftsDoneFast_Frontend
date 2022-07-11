@@ -55,14 +55,14 @@ export function ChatView() {
         getChats();
     }, [])
 
-    //gets chats & messages; creates conversations bar
+    //gets chats & messages; sets conversations for conversations bar
     function getChats() {
         //get chats with messages from db
         axios.get('/api/chat/getMyChats').then(res => {
-            //only continue if conversations are not set already and # of chats is > 0
-            if (conversations.length !== 0 || res.data.length === 0) return;
-            //create chatscope.io Conversation UI components
-            getConversations(res.data);
+            //only continue if # of chats is > 0
+            if (res.data.length === 0) return;
+            //set conversations, which automatically updates HTML
+            setConversations(res.data);
             //save received chats in local copy
             chatsRef.current = res.data;
             setChats(res.data);
@@ -75,49 +75,6 @@ export function ChatView() {
                 contractStatesRef.current = res.data;
             })
         })
-    }
-
-    //create chatscope.io Conversation UI components from received chats
-    function getConversations(chatsArray) {
-        //TODO: mark active chat; hint: Conversation can have 'active' attribute
-        let chatTemp = chatsArray.map(chatWithPartner => {
-            return <Conversation name={chatWithPartner.chat.title} active={false}
-                                 info={"Chat partner: " + chatWithPartner.partnerUsername}
-                                 onClick={() => {
-                                     setActiveChatId(chatWithPartner.chat._id);
-                                     activeChatIdRef.current = chatWithPartner.chat._id;
-                                 }}>
-                <Avatar src={"defaultAvatar.png"} name={chatWithPartner.partnerUsername}/>
-                <Conversation.Operations>
-                    <DropdownButton id="dropdown-basic-button" title="">
-                        <Dropdown.Item as="button" onClick={() => {
-                            if (window.confirm("Do you want to delete the chat permanently?\nPress OK to do so.")) {
-                                //delete chat from db
-                                axios.delete('/api/chat/delete/' + chatWithPartner.chat._id).then(() => {
-                                    //if # of chats before deletion is 1 (therefore 0 afterwards), reload page; else load remaining chats
-                                    if (chatsRef.current.length === 1) {
-                                        //last chat was deleted -> set everything empty
-                                        setConversations([]);
-                                        setMessages([]);
-                                        setChats([]);
-                                        setActiveContractStatus('');
-                                    } else {
-                                        //reload of chats
-                                        getChats();
-                                    }
-                                })
-                            }
-                        }}>Delete Chat</Dropdown.Item>
-                        <Dropdown.Item as="button" onClick={() => {
-                            console.log('Information for customer support:');
-                            console.log('User id which initiated the support request:\n' + userId + '\nChat info:')
-                            console.log(chatWithPartner);
-                        }}>Contact support</Dropdown.Item>
-                    </DropdownButton>
-                </Conversation.Operations>
-            </Conversation>;
-        });
-        setConversations([chatTemp]);
     }
 
     //create websocket, connect to rooms & handle received messages
@@ -304,7 +261,44 @@ export function ChatView() {
                 <MainContainer>
                     <Sidebar position="left" scrollable={false}>
                         <ConversationList>
-                            {conversations}
+                            {conversations.map(chatWithPartner => {
+                                return <Conversation name={chatWithPartner.chat.title}
+                                                     active={chatWithPartner.chat._id === activeChatIdRef.current}
+                                                     info={"Chat partner: " + chatWithPartner.partnerUsername}
+                                                     onClick={() => {
+                                                         setActiveChatId(chatWithPartner.chat._id);
+                                                         activeChatIdRef.current = chatWithPartner.chat._id;
+                                                     }}>
+                                    <Avatar src={"defaultAvatar.png"} name={chatWithPartner.partnerUsername}/>
+                                    <Conversation.Operations>
+                                        <DropdownButton id="dropdown-basic-button" title="">
+                                            <Dropdown.Item as="button" onClick={() => {
+                                                if (window.confirm("Do you want to delete the chat permanently?\nPress OK to do so.")) {
+                                                    //delete chat from db
+                                                    axios.delete('/api/chat/delete/' + chatWithPartner.chat._id).then(() => {
+                                                        //if # of chats before deletion is 1 (therefore 0 afterwards), reload page; else load remaining chats
+                                                        if (chatsRef.current.length === 1) {
+                                                            //last chat was deleted -> set everything empty
+                                                            setConversations([]);
+                                                            setMessages([]);
+                                                            setChats([]);
+                                                            setActiveContractStatus('');
+                                                        } else {
+                                                            //reload of chats
+                                                            getChats();
+                                                        }
+                                                    })
+                                                }
+                                            }}>Delete Chat</Dropdown.Item>
+                                            <Dropdown.Item as="button" onClick={() => {
+                                                console.log('Information for customer support:');
+                                                console.log('User id which initiated the support request:\n' + userId + '\nChat info:')
+                                                console.log(chatWithPartner);
+                                            }}>Contact support</Dropdown.Item>
+                                        </DropdownButton>
+                                    </Conversation.Operations>
+                                </Conversation>;
+                            })}
                         </ConversationList>
                     </Sidebar>
                     <ChatContainer>
