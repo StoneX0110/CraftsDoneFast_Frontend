@@ -30,11 +30,11 @@ export default class PopupCreateChat extends Component {
     }
 
     handleClose() {
-        this.setState({ open: false });
+        this.setState({open: false});
     }
 
     handleOpen() {
-        this.setState({ open: true });
+        this.setState({open: true});
         axios.get("/api/jobOffer/myJobOffers").then(res => {
             this.state.jobs = res.data;
             this.state.jobNames = this.state.jobs.map((e) => e.title);
@@ -50,7 +50,8 @@ export default class PopupCreateChat extends Component {
         this.setState({[name]: event.target.value});
     }
 
-     handleSubmit() {
+    handleSubmit(event) {
+        event.preventDefault();
         console.log("test chat creation")
 
         let chatToCreate = {};
@@ -94,9 +95,7 @@ export default class PopupCreateChat extends Component {
                                 <label>Select Job Offer or</label>
                                 <select required type="select" name="job" className="form-control" id="job"
                                         value={this.state.job} onChange={this.handleChange}>
-                                    /*
                                     <option defaultValue disabled value="">Choose...</option>
-                                    */
                                     <option>{this.noJobOffer}</option>
                                     {this.state.jobSelection}
                                 </select>
@@ -110,9 +109,11 @@ export default class PopupCreateChat extends Component {
                             </div>
                         </Modal.Body>
                         <Modal.Footer>
-                            <div className="from-group">
-                                <button type="button" className="btn popupButtonCancel" onClick={this.handleClose}>Cancel</button>
-                                <button type="submit" className="btn popupButton">Contact</button>
+                            <div className="form-group">
+                                <button type="button" className="btn popupButtonCancel"
+                                        onClick={this.handleClose}>Cancel
+                                </button>
+                                <button type="submit" id="submit" className="btn popupButton">Contact</button>
                             </div>
                         </Modal.Footer>
                     </form>
