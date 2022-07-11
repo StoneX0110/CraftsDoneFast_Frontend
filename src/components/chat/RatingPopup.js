@@ -31,7 +31,11 @@ export function RatingPopup(props) {
         }
         console.log(props.chatPartnerID)
         console.log(body)
-        axios.post('/api/user/insertRating', body).then(handleClose)
+        if (props.isCraftsman) {
+            axios.post('/api/user/insertCustomerRating', body).then(handleClose)
+        } else {
+            axios.post('/api/user/insertCraftsmanRating', body).then(handleClose)
+        }
     }
 
     function handleChangeComment(event) {
@@ -66,7 +70,7 @@ export function RatingPopup(props) {
 
                             or move the checked marker to another input field
                             */}
-                            <input type="radio" name="rating" value="5" id="5" required/> <label htmlFor="5">☆</label>
+                            <input type="radio" name="rating" value="5" id="5" /> <label htmlFor="5">☆</label>
                             <input type="radio" name="rating" value="4" id="4" /> <label htmlFor="4">☆</label>
                             <input type="radio" name="rating" value="3" id="3" /> <label htmlFor="3">☆</label>
                             <input type="radio" name="rating" value="2" id="2" /> <label htmlFor="2">☆</label>
