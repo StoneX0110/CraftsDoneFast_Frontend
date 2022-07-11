@@ -322,7 +322,7 @@ export function ChatView() {
                                                      contract={contractStates.find(contr => contr.chat === activeChatId)}/>
                             }
                             {activeContractStatus === "jobCompleted" &&
-                                <RatingPopup chatPartnerID={currentChatPartnerID}/>
+                                <RatingPopup chatPartnerID={currentChatPartnerID} isCraftsman={isCurrentlyCraftsman}/>
                             }
                             <MessageInput value={msgInputValue} onChange={setMsgInputValue} onSend={handleSend}
                                           placeholder="Type message here" attachButton={false} sendButton={false}
@@ -341,6 +341,9 @@ export function ChatView() {
                         </div>
                     </ChatContainer>
                 </MainContainer>
+                {/*
+                <button onClick={() => {console.log(currentChatPartnerID)}}>test</button>
+                */}
             </div>
         </div>
     );
