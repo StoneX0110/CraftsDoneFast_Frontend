@@ -50,7 +50,7 @@ export function AcceptContractPopup(props) {
                 <Modal.Body className="popupMainContainer">
                     <div className="popupInputContainer">
                         <div className="card-text col-auto text-center">
-                            <label>Starting Date: {startingDate.toString().substring(0, 10)}</label>
+                            <label>Starting Date: {startingDate}</label>
                         </div>
                         <div className="card-text col-auto text-center">
                             <label>Price: {price}$</label>

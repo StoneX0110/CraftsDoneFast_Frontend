@@ -3,6 +3,7 @@ import {Button} from "@chatscope/chat-ui-kit-react";
 import Modal from "react-bootstrap/Modal";
 import "./Popup.css"
 import axios from "axios";
+import Moment from "moment";
 
 export function ContractPopup(props) {
     let user = '';
@@ -28,7 +29,7 @@ export function ContractPopup(props) {
                     'Price: ' +
                     '<span style="color:darkred">' + price + '$' + '</span><br />' +
                     'Starting date: ' +
-                    '<span style="color:darkred">' + startingDate + '</span>' +
+                    '<span style="color:darkred">' + Moment(startingDate).format('DD.MM.YYYY') + '</span>' +
                     '</Message.CustomContent>');
             })
     }
