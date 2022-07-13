@@ -12,11 +12,14 @@ export function RatingPopup(props) {
 
     const chatPartnerID = props.chatPartnerID;
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        setStars("1");
+        setOpen(true);
+    }
     const handleClose = () => setOpen(false);
 
     //TODO: Placeholder
-    const [stars, setStars] = useState(1);
+    const [stars, setStars] = useState("1");
     const [comment, setComment] = useState("");
 
     function handleSubmit(event) {
