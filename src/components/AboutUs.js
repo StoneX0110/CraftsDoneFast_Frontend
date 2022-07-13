@@ -58,12 +58,12 @@ export default class AboutUs extends Component {
                     </div>
                     <div className="column">
                         <div className="card">
-                        <img className="img" src="defaultAvatar.png" alt="Jane" />
+                        <img className="img" src="Florian.png" alt="Jane" />
                             <div className="container">
                                 <h2>Florian</h2>
                                 <p className="title">Founder and Developer</p>
-                                <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-                                <p>jane@example.com</p>
+                                <p>TUM Information Systems Master student. Interested in Cloud Technology</p>
+                                <p>florian.stang@tum.de</p>
                             </div>
                         </div>
                     </div>
