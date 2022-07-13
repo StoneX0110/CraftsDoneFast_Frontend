@@ -60,7 +60,7 @@ export default class AboutUs extends Component {
                         <div className="card">
                         <img className="img" src="Florian.png" alt="Jane" />
                             <div className="container">
-                                <h2>Florian</h2>
+                                <h2>Florian Stang</h2>
                                 <p className="title">Founder and Developer</p>
                                 <p>TUM Information Systems Master student. Interested in Cloud Technology</p>
                                 <p>florian.stang@tum.de</p>
