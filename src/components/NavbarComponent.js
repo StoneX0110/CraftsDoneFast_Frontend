@@ -48,6 +48,9 @@ export default class NavbarComponent extends React.Component {
                 <div className="col-4">
                     <Navbar.Toggle aria-controls="basic-navbar-nav2"/>
                     <Navbar.Collapse id="basic-navbar-nav2" className="float-end">
+                        <Nav.Link href="/aboutUs">
+                            <Button className="navbarButton" size="lg">About us</Button>
+                        </Nav.Link>
                         <Nav.Link href="/messages">
                             <Button className="navbarButton" size="lg">Messages</Button>
                         </Nav.Link>

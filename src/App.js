@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import Registration from "./components/Registration";
 import UserView from "./components/user/UserView";
 import {ChatView} from "./components/chat/ChatView";
+import AboutUs from './components/AboutUs';
 
 
 import DetailJobOfferComponent from './components/jobOffer/DetailJobOfferComponent';
@@ -37,6 +38,8 @@ function App() {
           <Route exact path='/login' element={isLoggedIn ? <Navigate to={{pathname: "/"}}/> :<Login/>} />
           <Route exact path='/registration' element={isLoggedIn ? <Navigate to={{pathname: "/"}}/> : <Registration/>} />
           <Route exact path='/messages' element={isLoggedIn ? <ChatView/> : <Navigate to={{pathname: "/login"}}/>}/>
+          <Route exact path='/aboutUs' element={<AboutUs/>}/>
+
         </Routes>
       </Router>
     </div>
