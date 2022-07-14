@@ -94,7 +94,8 @@ export function ChatView() {
         } else {
             setCurrentChatPartnerID(chats[0].chat.users.craftsman)
         }
-        //once chats are loaded, create websocket
+        //once chats are loaded, disconnect old socket and create new one
+        if (socket.current !== null) socket.current.emit("forceDisconnect");
         socket.current = io("ws://localhost:3002");
         //join room for each chat
         chats.forEach(chatOb => {
