@@ -61,19 +61,45 @@ export function ChatView() {
         axios.get('/api/chat/getMyChats').then(res => {
             //only continue if # of chats is > 0
             if (res.data.length === 0) return;
+            //order chats
+            let orderedRes = orderChats(res.data);
             //set conversations, which automatically updates HTML
-            setConversations(res.data);
+            setConversations(orderedRes);
             //save received chats in local copy
-            chatsRef.current = res.data;
-            setChats(res.data);
+            chatsRef.current = orderedRes;
+            setChats(orderedRes);
             //save contract
-            let idArr = res.data.map(chat => {
+            let idArr = orderedRes.map(chat => {
                 return chat.chat.contract;
             })
             axios.get('api/chat/getContractsFromIdArray', {params: {idArray: idArr}}).then(res => {
                 setContractStates(res.data);
                 contractStatesRef.current = res.data;
             })
+        })
+    }
+
+    function orderChats(chatObjs) {
+        return chatObjs.sort((a, b) => {
+            //order empty chats on top
+            if (a.chat.messages.length === 0) {
+                return -1
+            } else if (b.chat.messages.length === 0) {
+                return 1;
+            }
+            //order chats with messages below
+            else {
+                //order chats by send time of the latest message; also directly orders messages
+                let reverseOrderedMessagesA = a.chat.messages.sort(
+                    (objA, objB) => Date.parse(objA.createdAt) - Date.parse(objB.createdAt)
+                );
+                let reverseOrderedMessagesB = b.chat.messages.sort(
+                    (objA, objB) => Date.parse(objA.createdAt) - Date.parse(objB.createdAt)
+                );
+                let latestMessageFromA = reverseOrderedMessagesA[reverseOrderedMessagesA.length - 1];
+                let latestMessageFromB = reverseOrderedMessagesB[reverseOrderedMessagesB.length - 1];
+                return Date.parse(latestMessageFromB.createdAt) - Date.parse(latestMessageFromA.createdAt);
+            }
         })
     }
 
@@ -180,9 +206,7 @@ export function ChatView() {
             tempMessages.push(tempMessage);
         });
         //sort messages by date & set state
-        setMessages(tempMessages.sort(
-            (objA, objB) => Number(objA.sentTime) - Number(objB.sentTime),
-        ));
+        setMessages(tempMessages);
     }
 
     //display messages of other chat when active chat is changed
@@ -277,8 +301,7 @@ export function ChatView() {
                                                 //do not allow deletion of chat when contract is active
                                                 if (activeContractStatus === 'contractEstablished' || activeContractStatus === 'paymentDone') {
                                                     window.alert('Contract is active, you can delete this chat when the contract is finished')
-                                                }
-                                                else if (window.confirm("Do you want to delete the chat permanently?\nPress OK to do so.")) {
+                                                } else if (window.confirm("Do you want to delete the chat permanently?\nPress OK to do so.")) {
                                                     //delete chat from db
                                                     axios.delete('/api/chat/delete/' + chatWithPartner.chat._id).then(() => {
                                                         //if # of chats before deletion is 1 (therefore 0 afterwards), reload page; else load remaining chats
