@@ -287,7 +287,7 @@ export function ChatView() {
                     <Sidebar position="left" scrollable={false}>
                         <ConversationList>
                             {conversations.map(chatWithPartner => {
-                                return <Conversation name={chatWithPartner.chat.title}
+                                return <Conversation name={chatWithPartner.chat.title} key={chatWithPartner.chat._id}
                                                      active={chatWithPartner.chat._id === activeChatIdRef.current}
                                                      info={"Chat partner: " + chatWithPartner.partnerUsername}
                                                      onClick={() => {
