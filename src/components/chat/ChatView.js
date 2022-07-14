@@ -274,7 +274,11 @@ export function ChatView() {
                                     <Conversation.Operations>
                                         <DropdownButton id="dropdown-basic-button" title="">
                                             <Dropdown.Item as="button" onClick={() => {
-                                                if (window.confirm("Do you want to delete the chat permanently?\nPress OK to do so.")) {
+                                                //do not allow deletion of chat when contract is active
+                                                if (activeContractStatus === 'contractEstablished' || activeContractStatus === 'paymentDone') {
+                                                    window.alert('Contract is active, you can delete this chat when the contract is finished')
+                                                }
+                                                else if (window.confirm("Do you want to delete the chat permanently?\nPress OK to do so.")) {
                                                     //delete chat from db
                                                     axios.delete('/api/chat/delete/' + chatWithPartner.chat._id).then(() => {
                                                         //if # of chats before deletion is 1 (therefore 0 afterwards), reload page; else load remaining chats
