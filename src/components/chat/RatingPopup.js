@@ -32,18 +32,13 @@ export function RatingPopup(props) {
             },
             id: chatPartnerID,
         }
+        console.log(props.chatPartnerID)
+        console.log(body)
         if (props.isCraftsman) {
-            axios.post('/api/user/insertCustomerRating', body).then(sendMessage)
+            axios.post('/api/user/insertCustomerRating', body).then(handleClose)
         } else {
-            axios.post('/api/user/insertCraftsmanRating', body).then(sendMessage)
+            axios.post('/api/user/insertCraftsmanRating', body).then(handleClose)
         }
-    }
-
-    function sendMessage() {
-        props.sendSystemMessage('<Message.CustomContent>' +
-            '<strong>Rated ' + (props.isCraftsman ? 'client' : 'craftsman') + '!' + '</strong>' +
-            '</Message.CustomContent>', 'hasRated')
-        handleClose();
     }
 
     function handleChangeComment(event) {
@@ -67,10 +62,10 @@ export function RatingPopup(props) {
                     <Modal.Title>Rate User with 1 - 5 Stars</Modal.Title>
                 </Modal.Header>
                 <form onSubmit={handleSubmit}>
-                    <Modal.Body className="popupMainContainer">
-                        <div className="form-group popupInputContainer">
-                            <div onClick={handleChangeStars} className="rating">
-                                {/*
+                <Modal.Body className="popupMainContainer">
+                    <div className="form-group popupInputContainer">
+                        <div onClick={handleChangeStars} className="rating">
+                            {/*
                             giving one field the required tag makes it necessary to choose a value
                             -> note this throughs and error due to the hiden radio button
 
@@ -78,25 +73,24 @@ export function RatingPopup(props) {
 
                             or move the checked marker to another input field
                             */}
-                                <input type="radio" name="rating" value="5" id="5"/> <label htmlFor="5">☆</label>
-                                <input type="radio" name="rating" value="4" id="4"/> <label htmlFor="4">☆</label>
-                                <input type="radio" name="rating" value="3" id="3"/> <label htmlFor="3">☆</label>
-                                <input type="radio" name="rating" value="2" id="2"/> <label htmlFor="2">☆</label>
-                                <input type="radio" name="rating" value="1" id="1"/> <label htmlFor="1">☆</label>
-                            </div>
-                            <label>Comment</label>
-                            <textarea type="text" name="startingDate" className="form-control"
-                                      value={comment} onChange={handleChangeComment}
-                                      id="dateInput"/>
+                            <input type="radio" name="rating" value="5" id="5" /> <label htmlFor="5">☆</label>
+                            <input type="radio" name="rating" value="4" id="4" /> <label htmlFor="4">☆</label>
+                            <input type="radio" name="rating" value="3" id="3" /> <label htmlFor="3">☆</label>
+                            <input type="radio" name="rating" value="2" id="2" /> <label htmlFor="2">☆</label>
+                            <input type="radio" name="rating" value="1" id="1" /> <label htmlFor="1">☆</label>
                         </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <div className="from-group popupButtonContainer">
-                            <button type="button" className="btn popupButtonCancel" onClick={handleClose}>Cancel
-                            </button>
-                            <button id="submit" type="submit" className="btn popupButton">Confirm Rating</button>
-                        </div>
-                    </Modal.Footer>
+                        <label>Comment</label>
+                        <textarea type="text" name="startingDate" className="form-control"
+                                  value={comment} onChange={handleChangeComment}
+                                  id="dateInput"/>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <div className="from-group popupButtonContainer">
+                        <button type="button" className="btn popupButtonCancel" onClick={handleClose}>Cancel</button>
+                        <button id="submit" type="submit" className="btn popupButton">Confirm Rating</button>
+                    </div>
+                </Modal.Footer>
                 </form>
             </Modal>
         </div>
