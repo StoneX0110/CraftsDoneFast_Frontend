@@ -30,7 +30,7 @@ export function ContractPopup(props) {
                     '<span style="color:darkred">' + price + '$' + '</span><br />' +
                     'Starting date: ' +
                     '<span style="color:darkred">' + Moment(startingDate).format('DD.MM.YYYY') + '</span>' +
-                    '</Message.CustomContent>');
+                    '</Message.CustomContent>', state);
             })
     }
 

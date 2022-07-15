@@ -22,7 +22,7 @@ export function ConfirmJobCompletionPopup(props) {
             .then(res => {
                 props.sendSystemMessage('<Message.CustomContent>' +
                     '<strong>Confirmed Job Completion</strong><br />' +
-                    '</Message.CustomContent>');
+                    '</Message.CustomContent>', state);
             })
     }
 

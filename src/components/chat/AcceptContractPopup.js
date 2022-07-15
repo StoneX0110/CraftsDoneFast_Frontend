@@ -31,7 +31,7 @@ export function AcceptContractPopup(props) {
                     '<span style="color:darkred">' + price + '$' + '</span><br />' +
                     'and Starting date: ' +
                     '<span style="color:darkred">' + startingDate + '</span>' +
-                    '</Message.CustomContent>');
+                    '</Message.CustomContent>', state);
             })
     }
 

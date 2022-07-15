@@ -43,7 +43,7 @@ function sendToServer(props) {
                 '<strong>Conducted Payment:</strong><br />' +
                 'payed Price: ' +
                 '<span style="color:darkred">' + props.contract.price + '$' + '</span><br />' +
-                '</Message.CustomContent>');
+                '</Message.CustomContent>', state);
             props.handleClose();
         })
 }
