@@ -140,28 +140,24 @@ export function ChatView() {
             })
             chatsRef.current = newChats;
             setChats(newChats);
-            //update contracts when receiving system message
-            if (message.isSystemMessage) {
-                let contrId = chats.find(chat => chat.chat._id === message.chat).chat.contract;
-                //get contract from id in message
-                axios.get('/api/chat/getContract', {params: {contractId: contrId}}).then(res => {
-                    //update local copy of contracts
-                    let newContractStates = [...contractStatesRef.current];
-                    newContractStates = newContractStates.map(contr => {
-                        if (contr._id === res.data._id) {
-                            return res.data;
-                        } else {
-                            return contr;
-                        }
-                    })
-                    contractStatesRef.current = newContractStates;
-                    setContractStates(newContractStates);
-                })
-            }
             //if chat of incoming message is active, show in UI
             if (message.chat === activeChatIdRef.current) {
                 updateActiveChat(message.chat, newChats);
             }
+        })
+        //update local contracts
+        socket.current.on("updateContract", (updatedContract) => {
+            //update local copy of contracts
+            let newContractStates = [...contractStatesRef.current];
+            newContractStates = newContractStates.map(contr => {
+                if (contr._id === updatedContract._id) {
+                    return updatedContract;
+                } else {
+                    return contr;
+                }
+            })
+            contractStatesRef.current = newContractStates;
+            setContractStates(newContractStates);
         })
 
     }, [chats])
@@ -260,7 +256,7 @@ export function ChatView() {
         socket.current.emit("sendMessage", tempMessage);
     };
 
-    function sendSystemMessage(payload) {
+    function sendSystemMessage(payload, updatedContract = null) {
         //make new socket
         console.log(payload)
         const wsSocket = io("ws://localhost:3002");
@@ -278,7 +274,8 @@ export function ChatView() {
         wsSocket.emit('sendMessage', tempMessage);
         //save to database
         axios.post('/api/chat/postMessageToChat', tempMessage);
-        console.log("message should have been send")
+        //send call to all participants to update local chats
+        if (updatedContract !== null) wsSocket.emit("updateContract", updatedContract);
     }
 
     return (
