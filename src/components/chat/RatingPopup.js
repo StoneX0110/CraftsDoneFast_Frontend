@@ -35,10 +35,17 @@ export function RatingPopup(props) {
         console.log(props.chatPartnerID)
         console.log(body)
         if (props.isCraftsman) {
-            axios.post('/api/user/insertCustomerRating', body).then(handleClose)
+            axios.post('/api/user/insertCustomerRating', body).then(sendMessage)
         } else {
-            axios.post('/api/user/insertCraftsmanRating', body).then(handleClose)
+            axios.post('/api/user/insertCraftsmanRating', body).then(sendMessage)
         }
+    }
+
+    function sendMessage() {
+        props.sendSystemMessage('<Message.CustomContent>' +
+            '<strong>Rated ' + (props.isCraftsman ? 'client' : 'craftsman') + '!' + '</strong>' +
+            '</Message.CustomContent>', null, 'hasRated')
+        handleClose();
     }
 
     function handleChangeComment(event) {
