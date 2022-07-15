@@ -39,6 +39,7 @@ export function ChatView() {
     const [activeContractStatus, setActiveContractStatus] = useState("");
     const [contractStates, setContractStates] = useState([]);
     const contractStatesRef = useRef([]);
+    const [hasRated, setHasRated] = useState(false);
     const [isCurrentlyCraftsman, setIsCurrentlyCraftsman] = useState(false);
     const [currentChatPartnerID, setCurrentChatPartnerID] = useState("");
     //chatscope.io conversations
@@ -141,7 +142,7 @@ export function ChatView() {
             chatsRef.current = newChats;
             setChats(newChats);
             //update contracts when receiving system message
-            if (message.isSystemMessage) {
+            if (message.type === 'systemMessage') {
                 let contrId = chats.find(chat => chat.chat._id === message.chat).chat.contract;
                 //get contract from id in message
                 axios.get('/api/chat/getContract', {params: {contractId: contrId}}).then(res => {
@@ -186,6 +187,8 @@ export function ChatView() {
         }
         //find chat with id of active chat from local storage
         let chatToLoad = newChats.find(chatWithPartner => chatWithPartner.chat._id === activeId);
+        //set hasRated to false, may get changed later in this function
+        setHasRated(false);
         //create message objects for frontend framework
         let tempMessages = [];
         chatToLoad.chat.messages.forEach(message => {
@@ -193,11 +196,11 @@ export function ChatView() {
             let tempMessage = {};
             //add time when it was sent
             tempMessage.sentTime = message.createdAt.toString();
-            //if message is system message, set payload
-            if (message.isSystemMessage) {
-                tempMessage.payload = message.content;
-            } else {
+            //if message is normal message, set message, else payload
+            if (message.type === 'basicMessage') {
                 tempMessage.message = message.content;
+            } else {
+                tempMessage.payload = message.content;
             }
             //decide if message is incoming or outgoing depending on who sent it
             if (message.author === userId) {
@@ -206,6 +209,11 @@ export function ChatView() {
                 tempMessage.direction = 'incoming';
             }
             tempMessages.push(tempMessage);
+
+            //set hasRatedRef variable
+            if (message.type === 'hasRated' && message.author === userId) {
+                setHasRated(true);
+            }
         });
         //sort messages by date & set state
         setMessages(tempMessages);
@@ -241,7 +249,7 @@ export function ChatView() {
             content: messageText,
             author: userId,
             chat: activeChatId,
-            isSystemMessage: false,
+            type: 'basicMessage',
             createdAt: new Date()
         }
         axios.post('/api/chat/postMessageToChat', tempMessage);
@@ -260,9 +268,8 @@ export function ChatView() {
         socket.current.emit("sendMessage", tempMessage);
     };
 
-    function sendSystemMessage(payload) {
+    function sendSystemMessage(payload, type = 'systemMessage') {
         //make new socket
-        console.log(payload)
         const wsSocket = io("ws://localhost:3002");
         //join room
         wsSocket.emit("create", activeChatIdRef.current);
@@ -271,14 +278,13 @@ export function ChatView() {
             content: payload,
             author: userId,
             chat: activeChatIdRef.current,
-            isSystemMessage: true,
+            type: type,
             createdAt: new Date()
         };
         //send to room
         wsSocket.emit('sendMessage', tempMessage);
         //save to database
         axios.post('/api/chat/postMessageToChat', tempMessage);
-        console.log("message should have been send")
     }
 
     return (
@@ -368,8 +374,9 @@ export function ChatView() {
                                 <AcceptContractPopup chatID={activeChatId} sendSystemMessage={sendSystemMessage}
                                                      contract={contractStates.find(contr => contr.chat === activeChatId)}/>
                             }
-                            {activeContractStatus === "jobCompleted" &&
-                                <RatingPopup chatPartnerID={currentChatPartnerID} isCraftsman={isCurrentlyCraftsman}/>
+                            {activeContractStatus === "jobCompleted" && (!hasRated) &&
+                                <RatingPopup chatPartnerID={currentChatPartnerID} sendSystemMessage={sendSystemMessage}
+                                             isCraftsman={isCurrentlyCraftsman}/>
                             }
                             <MessageInput value={msgInputValue} onChange={setMsgInputValue} onSend={handleSend}
                                           placeholder="Type message here" attachButton={false} sendButton={false}
@@ -389,9 +396,6 @@ export function ChatView() {
                         </div>
                     </ChatContainer>
                 </MainContainer>
-                {/*
-                <button onClick={() => {console.log(currentChatPartnerID)}}>test</button>
-                */}
             </div>
         </div>
     );
