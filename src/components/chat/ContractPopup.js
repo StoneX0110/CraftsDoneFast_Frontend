@@ -76,10 +76,8 @@ export function ContractPopup(props) {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <div className="from-group">
                             <button type="button" className="btn popupButtonCancel" onClick={handleClose}>Cancel</button>
                             <button id="submit" type="submit" className="btn popupButton">Confirm Details</button>
-                        </div>
                     </Modal.Footer>
                 </form>
             </Modal>

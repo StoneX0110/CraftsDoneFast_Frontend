@@ -93,11 +93,8 @@ export function RatingPopup(props) {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <div className="from-group popupButtonContainer">
-                            <button type="button" className="btn popupButtonCancel" onClick={handleClose}>Cancel
-                            </button>
-                            <button id="submit" type="submit" className="btn popupButton">Confirm Rating</button>
-                        </div>
+                        <button type="button" className="btn popupButtonCancel" onClick={handleClose}>Cancel</button>
+                        <button id="submit" type="submit" className="btn popupButton">Confirm Rating</button>
                     </Modal.Footer>
                 </form>
             </Modal>
