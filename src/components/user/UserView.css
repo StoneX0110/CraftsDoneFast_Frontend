@@ -51,14 +51,26 @@
     border: 1px solid #cfcece;
 }
 
+#userViewButtonContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
 #userSaveButton, #userSaveButton:hover {
     color: rgb(41, 118, 74)!important;
     border-color: rgb(41, 118, 74)!important;
     background-color: transparent;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
 }
 
 #userCancelButton, #userCancelButton:hover {
     color: whitesmoke;
     border-color: red!important;
     background-color:red!important;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
 }
