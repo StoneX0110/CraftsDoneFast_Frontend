@@ -117,7 +117,9 @@ export default class InsertJobOfferView extends Component {
                                 {this.state.imageURLs}
                             </div>
                         </div>
-                        <div className="from-group col"></div>
+                        <div className="from-group col">
+                            <label>Fields marked with "*" are optional</label>
+                        </div>
                         <div className="from-group col"
                              style={{display: "flex", alignItems: "top", justifyContent: "end"}}>
                                 <button type="submit" className="btn btn-success"
