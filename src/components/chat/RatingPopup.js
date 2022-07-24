@@ -18,7 +18,6 @@ export function RatingPopup(props) {
     }
     const handleClose = () => setOpen(false);
 
-    //TODO: Placeholder
     const [stars, setStars] = useState("1");
     const [comment, setComment] = useState("");
 

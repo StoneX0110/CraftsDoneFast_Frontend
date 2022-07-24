@@ -28,7 +28,6 @@ export default class UserOverviewComponent extends React.Component {
                     <Link to={"/user/profile/" + this.props.user.username}
                           style={{textDecoration: 'none', color: "rgb(41, 118, 74)"}}>
 
-                        {/* TODO show picture left of information text (see ebay kleinanzeigen for reference) */}
                         <div className="card-body">
                             <img className="rounded float-left img img-fluid" src={this.imageLink} alt="ProfilePicture" />
                             <div className="row">
