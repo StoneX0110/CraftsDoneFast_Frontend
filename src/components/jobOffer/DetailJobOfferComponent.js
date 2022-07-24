@@ -74,8 +74,6 @@ export default class DetailJobOfferComponent extends React.Component {
         delete jobOffer.imageurl;
         axios.post('/api/jobOffer/update', this.state)
             .then(res => {
-                const id = res.data;
-                console.log(res.data);
                 alert("Your Job Offer was updated Successfully!")
             })
     }

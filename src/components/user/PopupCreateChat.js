@@ -41,7 +41,6 @@ export default class PopupCreateChat extends Component {
             this.state.jobSelection = this.state.jobNames.map((e) => <option>{e}</option>);
             this.state.open = true;
             this.forceUpdate();
-            console.log("forceUpdate")
         });
     }
 
@@ -52,8 +51,6 @@ export default class PopupCreateChat extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log("test chat creation")
-
         let chatToCreate = {};
         //create chat
         //define title & set connected job offer if present
@@ -67,10 +64,7 @@ export default class PopupCreateChat extends Component {
         chatToCreate.users = {craftsman: this.username, client: this.user};
 
         //post to db
-        let createdChatID = "";
         axios.post('/api/chat/create', chatToCreate).then(res => {
-            createdChatID = res.data;
-            console.log(createdChatID);
             window.location = "/messages";
         });
     }

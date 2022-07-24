@@ -21,7 +21,6 @@ const handleSubmit = (stripe, elements, props) => async () => {
     if (error) {
         console.log('[error]', error);
     } else {
-        console.log('[PaymentMethod]', paymentMethod);
         // ... SEND to your API server to process payment intent
         confirm(paymentMethod, props);
     }
@@ -36,12 +35,10 @@ function sendToServer(props) {
     state.paymentStatus = 'paymentDone';
     axios.post('/api/chat/updateContract', state)
         .then(res => {
-            console.log(res.data);
-            console.log(props);
             props.setActiveContractStatus('paymentDone');
             props.sendSystemMessage('<Message.CustomContent>' +
                 '<strong>Conducted Payment:</strong><br />' +
-                'payed Price: ' +
+                'payed price: ' +
                 '<span style="color:darkred">' + props.contract.price + '$' + '</span><br />' +
                 '</Message.CustomContent>', state);
             props.handleClose();

@@ -27,9 +27,9 @@ export function AcceptContractPopup(props) {
             .then(res => {
                 props.sendSystemMessage('<Message.CustomContent>' +
                     '<strong>Accepted Contract:</strong><br />' +
-                    'with Price: ' +
+                    'price: ' +
                     '<span style="color:darkred">' + price + '$' + '</span><br />' +
-                    'and Starting date: ' +
+                    'starting date: ' +
                     '<span style="color:darkred">' + startingDate + '</span>' +
                     '</Message.CustomContent>', state);
             })

@@ -32,8 +32,6 @@ export function RatingPopup(props) {
             },
             id: chatPartnerID,
         }
-        console.log(props.chatPartnerID)
-        console.log(body)
         if (props.isCraftsman) {
             axios.post('/api/user/insertCustomerRating', body).then(sendMessage)
         } else {
@@ -43,7 +41,7 @@ export function RatingPopup(props) {
 
     function sendMessage() {
         props.sendSystemMessage('<Message.CustomContent>' +
-            '<strong>Rated ' + (props.isCraftsman ? 'client' : 'craftsman') + '!' + '</strong>' +
+            '<strong>Rated ' + (props.isCraftsman ? 'Client' : 'Craftsman') + '!' + '</strong>' +
             '</Message.CustomContent>', null, 'hasRated')
         handleClose();
     }
@@ -74,7 +72,7 @@ export function RatingPopup(props) {
                             <div onClick={handleChangeStars} className="rating">
                                 {/*
                             giving one field the required tag makes it necessary to choose a value
-                            -> note this throughs and error due to the hiden radio button
+                            -> note this throws and error due to the hidden radio button
 
                             else default value can be left out for invisible conversion to 1 if nothing is selected
 

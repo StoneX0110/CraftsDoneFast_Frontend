@@ -15,7 +15,6 @@ export function ConfirmJobCompletionPopup(props) {
     const handleClose = () => setOpen(false);
 
     function confirmJobCompletion() {
-        console.log(`Confirm Job Completion`)
         let state = JSON.parse(JSON.stringify(props.contract));
         state.paymentStatus = 'jobCompleted';
         axios.post('/api/chat/updateContract', state)

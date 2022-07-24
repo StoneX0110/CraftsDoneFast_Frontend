@@ -47,8 +47,6 @@ export default class PopupCreateChatJobOffer extends Component {
     }
 
     async handleChatCreation() {
-        console.log("test chat creation")
-
         let chatToCreate = {};
         //create chat
         //define title & set connected job offer if present
@@ -84,7 +82,6 @@ export default class PopupCreateChatJobOffer extends Component {
                     <Modal.Footer>
                         <button type="cancel" className="btn popupButtonCancel" onClick={this.handleClose}>Cancel</button>
                         <button type="button" className="btn" id="contactButton" onClick={() => {
-                            console.log('modal closed');
                             this.handleChatCreation().then(this.handleClose());
                         }}>Contact
                         </button>

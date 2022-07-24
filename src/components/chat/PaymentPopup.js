@@ -15,23 +15,19 @@ export function PaymentPopup(props) {
     const [price, setPrice] = useState(props.contract.price);
     const handleOpen = () => {
         setOpen(true);
-        console.log(props);
     }
     const handleClose = () => setOpen(false);
 
     function conductPayment() {
-        console.log(`Conduct Payment: \n
-        Price: ${price}`)
         let state = JSON.parse(JSON.stringify(props.contract));
         state.paymentStatus = 'paymentDone';
         axios.post('/api/chat/updateContract', state)
             .then(res => {
                 props.sendSystemMessage('<Message.CustomContent>' +
                     '<strong>Conducted Payment:</strong><br />' +
-                    'payed Price: ' +
+                    'payed price: ' +
                     '<span style="color:darkred">' + price + '</span><br />' +
                     '</Message.CustomContent>');
-                console.log("Payload should have been send")
             })
     }
 

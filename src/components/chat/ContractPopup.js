@@ -25,10 +25,10 @@ export function ContractPopup(props) {
         axios.post('/api/chat/updateContract', state)
             .then(res => {
                 props.sendSystemMessage('<Message.CustomContent>' +
-                    '<strong>New contract proposed:</strong><br />' +
-                    'Price: ' +
+                    '<strong>New Contract Proposed:</strong><br />' +
+                    'price: ' +
                     '<span style="color:darkred">' + price + '$' + '</span><br />' +
-                    'Starting date: ' +
+                    'starting date: ' +
                     '<span style="color:darkred">' + Moment(startingDate).format('DD.MM.YYYY') + '</span>' +
                     '</Message.CustomContent>', state);
             })
