@@ -9,3 +9,7 @@
     color: rgb(41, 118, 74)!important;
     /*width: 40%;*/
 }
+
+.img {
+    float: left;
+}

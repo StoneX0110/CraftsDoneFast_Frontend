@@ -10,6 +10,7 @@ export default class UserOverviewComponent extends React.Component {
     constructor(props) {
         super(props);
         this.cityAndDist = this.cityAndDist.bind(this);
+        this.imageLink = "data:image/jpeg;base64," + btoa(String.fromCharCode(...new Uint8Array(props.user.profilePicture.data.data))).substring(20);
     }
 
     cityAndDist() {
@@ -29,6 +30,7 @@ export default class UserOverviewComponent extends React.Component {
 
                         {/* TODO show picture left of information text (see ebay kleinanzeigen for reference) */}
                         <div className="card-body">
+                            <img className="rounded float-left img img-fluid" src={this.imageLink} alt="ProfilePicture" />
                             <div className="row">
                                 <div className="card-text col-auto">
                                     {this.props.user.settings.postalCode} {this.cityAndDist()}

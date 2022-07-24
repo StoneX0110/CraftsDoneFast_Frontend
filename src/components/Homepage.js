@@ -106,6 +106,7 @@ export default class Homepage extends Component {
                         var cityAndDist = inRange
                             ? this.state.zips_with_distance.find(elem => parseInt(elem.zip_code) === e.postalCode)
                             : {city: undefined, distance: undefined};
+                            console.log(e);
                         return rR.push(<JobOfferOverviewComponent key={e._id} job={e}
                                                                   city={cityAndDist.city}
                                                                   dist={cityAndDist.distance}
