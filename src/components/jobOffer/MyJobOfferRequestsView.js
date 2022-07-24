@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import axios from "axios";
 import JobOfferOverviewComponent from "./JobOfferOverviewComponent";
+
 /**
  * Display all job offer requests of the respective author in this component
  * Adapted from MyJobOfferView.js
@@ -25,11 +26,9 @@ export default class MyJobOfferRequestsView extends Component {
 
     render() {
         return (
-            <div>
-                <div style={{backgroundColor: "rgb(41, 118, 74)", color: "rgb(240,245,215)"}}>
-                    <p className="h1">My Job Offer Requests</p>
-                    {this.renderJobs}
-                </div>
+            <div className="search-wrapper category-wrapper border border-4 rounded">
+                <h3 style={{marginTop: "5px"}}>My Job Offer Requests</h3>
+                {this.renderJobs}
             </div>
         );
     }
