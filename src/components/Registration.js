@@ -22,8 +22,6 @@ export default class Registration extends Component {
     register() {
         axios.post('/api/auth/signup', this.state)
             .then(res => {
-                const id = res.data;
-                console.log(res.data);
                 window.location = "/login";
             }).catch(error => {
                 console.log(error);

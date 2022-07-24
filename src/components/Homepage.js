@@ -32,7 +32,6 @@ export default class Homepage extends Component {
     }
 
     componentDidMount() {
-        console.log("Fetching 10 most recent job offers...");
         axios.get('/api/jobOffer/recentJobOffers').then(res => {
             const __ret = this.getAverageCustomerRatings(res);
             var averageCustomerRatings = __ret.averageCustomerRatings;
@@ -72,7 +71,6 @@ export default class Homepage extends Component {
         const inRange = this.state.postalCode !== "" && this.state.range !== "" && this.state.range !== "Any";
         // postal code and range entered
         if (inRange) {
-            console.log("Fetching zip codes within range...")
             axios.get(`https://cors-anywhere.herokuapp.com/https://www.zipcodeapi.com/rest/ow5HhsCp3yPQIYqVA1IKEiGHjWLsF2TlFKhHkjdR3SIAO9QpNFwDYyVxXVoVlcIQ/radius.json/${this.state.postalCode}/${dist}/km`)
                 .then(res => {
                     this.state.zips_with_distance = res.data.zip_codes;
@@ -90,7 +88,6 @@ export default class Homepage extends Component {
 
     createResults(inRange) {
         if (this.state.searchJobs) {
-            console.log("Fetching matching job offers...");
             axios.get(inRange ? '/api/jobOffer/matchingJobOffersInRange' : '/api/jobOffer/matchingJobOffers', {
                 params: {
                     zips: this.state.zips_in_range,
@@ -117,7 +114,6 @@ export default class Homepage extends Component {
                 })
             })
         } else {
-            console.log("Fetching matching craftsmen profiles...");
             axios.get(inRange ? '/api/user/matchingProfilesInRange' : '/api/user/matchingProfiles', {
                 params: {
                     zips: this.state.zips_in_range,
@@ -159,19 +155,16 @@ export default class Homepage extends Component {
             case "insertionDate":
                 if (this.state.searchCraftsmen)
                     return; // search by date not possible for craftsmen
-                console.log("Sorting by insertionDate...")
                 this.renderedResults = this.renderedResults.sort((a, b) => {
                     return b.props.job.insertionDate.localeCompare(a.props.job.insertionDate);
                 });
                 break;
             case "distance":
-                console.log("Sorting by distance...")
                 this.renderedResults = this.renderedResults.sort((a, b) => {
                     return a.props.dist > b.props.dist ? 1 : -1;
                 })
                 break;
             case "rating":
-                console.log("Sorting by rating...")
                 this.renderedResults = this.renderedResults.sort((a, b) => {
                     return a.props.rating > b.props.rating ? -1 : 1;
                 })

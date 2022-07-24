@@ -13,11 +13,8 @@ export default class JobOfferOverviewComponent extends React.Component {
         super(props);
         this.formatDate = Moment(this.props.job.insertionDate).format('DD.MM.YYYY hh:mm');
         this.cityAndDist = this.cityAndDist.bind(this);
-        console.log(props.job);
         if (props.job.images != null && props.job.images[0] != null) {
             this.imageLink = "data:image/jpeg;base64," + btoa(String.fromCharCode(...new Uint8Array(props.job.images[0].data.data))).substring(20);
-        } else {
-            console.log("Null");
         }
     }
 

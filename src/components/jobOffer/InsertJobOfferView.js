@@ -35,7 +35,6 @@ export default class InsertJobOfferView extends Component {
         axios.post('/api/jobOffer/insert', this.state)
             .then(res => {
                 const id = res.data;
-                console.log(res.data);
                 window.location = "/jobOffer/" + id;
             })
     }

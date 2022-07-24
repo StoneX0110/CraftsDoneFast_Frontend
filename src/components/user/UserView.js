@@ -111,9 +111,6 @@ export default class UserView extends Component {
             id: JSON.parse(sessionStorage.getItem('userData')).id,
             profilePicture: profilePicture
         }
-        console.log("user: ")
-        console.log(user);
-        console.log(user.state)
         axios.post('/api/user/update', user)
             .then(res => {
                 alert("Your profile was updated Successfully!");
@@ -129,8 +126,6 @@ export default class UserView extends Component {
                 delete tempData.edit;
                 sessionData += JSON.stringify(tempData) + '}';
                 sessionStorage.setItem('userData', sessionData);
-                console.log(sessionStorage.getItem('userData'))
-
             })
     }
 
@@ -139,7 +134,6 @@ export default class UserView extends Component {
     };
 
     displaySelected(skills) {
-        console.log(skills)
         let tempArray = [];
         for (let skill of skills) {
             tempArray.push(skill.label)
@@ -158,7 +152,6 @@ export default class UserView extends Component {
     }
 
     onImageChange(e) {
-        console.log("changes to image")
         this.profileDefault = false;
         try {
             Resizer.imageFileResizer(
@@ -174,7 +167,6 @@ export default class UserView extends Component {
                         <ImageComponent imageSrc={this.state.profilePicture} key={this.state.profilePicture}/>;
                     // <span><div className="photo border border-1 mb-3"><img className="image" key={imageSrc} src={imageSrc} /></div></span>);
                     this.setState({profilePictureURL: this.profilePictureURL});
-                    console.log(this.state.profilePicture)
                 },
                 "base64",
                 10,

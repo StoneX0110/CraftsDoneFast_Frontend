@@ -55,20 +55,16 @@ export default class ProfileComponent extends React.Component {
     }
 
     updateJobOffer() {
-        console.log("as");
         this.setState({ edit: false });
         const jobOffer = this.state;
         delete jobOffer.urls;
         delete jobOffer.edit;
         axios.post('/api/jobOffer/update', this.state)
             .then(res => {
-                const id = res.data;
-                console.log(res.data);
             })
     }
 
     deleteJobOffer() {
-        console.log("del");
         axios.delete('/api/jobOffer/delete/' + this.state._id)
             .then(res => {
                 window.location = "/";

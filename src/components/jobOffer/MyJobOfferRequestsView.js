@@ -15,10 +15,8 @@ export default class MyJobOfferRequestsView extends Component {
     }
 
     componentDidMount() {
-        console.log("fetch job offers");
         axios.get('/api/jobOffer/getMyJobOfferRequests').then(res => {
             this.jobs = res.data;
-            console.log(this.jobs);
             this.renderJobs = this.jobs.map((e) => <JobOfferOverviewComponent key={e._id} job={e}/>)
             this.forceUpdate();
         })

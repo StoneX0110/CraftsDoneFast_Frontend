@@ -266,7 +266,6 @@ export function ChatView() {
 
     function sendSystemMessage(payload, updatedContract = null, type = 'systemMessage') {
         //make new socket
-        console.log(payload)
         const wsSocket = io("ws://localhost:3002");
         //join room
         wsSocket.emit("create", activeChatIdRef.current);
