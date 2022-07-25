@@ -103,7 +103,7 @@ export default class InsertJobOfferView extends Component {
                     </div>
                     <div className="form-group">
                         <label>Description</label>
-                        <textarea required name="description" className="form-control" id="exampleFormControlTextarea1"
+                        <textarea name="description" className="form-control" id="exampleFormControlTextarea1"
                                   rows="5" value={this.state.description}
                                   onChange={this.handleChange}></textarea>
                     </div>
