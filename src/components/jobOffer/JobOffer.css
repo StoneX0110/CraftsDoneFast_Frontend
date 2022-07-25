@@ -1,0 +1,34 @@
+.jobOffer {
+    margin: 0 auto;
+    width: 40%!important;
+}
+
+.photo {
+  object-fit:cover;
+}
+
+.image {
+    object-fit:cover;
+}
+
+input[type="text"], textarea[type="text"] {
+    background-color: white;
+}
+
+#editButton, #editButton:hover{
+    color: rgb(41, 118, 74)!important;
+    border-color: rgb(41, 118, 74)!important;
+    background-color: transparent;
+}
+
+#contactButton, #contactButton:hover{
+    color: rgb(41, 118, 74)!important;
+    border-color: rgb(41, 118, 74)!important;
+    background-color: transparent;
+}
+
+#saveButton, #saveButton:hover{
+    color: rgb(41, 118, 74)!important;
+    border-color: rgb(41, 118, 74)!important;
+    background-color: transparent;
+}

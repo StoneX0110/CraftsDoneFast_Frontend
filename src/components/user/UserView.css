@@ -1,0 +1,76 @@
+.basic-multi-select {
+    color: black;
+}
+
+/*taken from https://react-popup.elazizi.com/react-modal */
+.modal {
+    font-size: 12px;
+}
+
+.gapLeft{
+    margin-left: 10px;
+}
+.gapRight{
+    margin-right: 10px;
+}
+.padBottom{
+    margin-bottom: 10px;
+}
+
+.header {
+    width: 100%;
+    border-bottom: 1px solid gray;
+    font-size: 18px;
+    text-align: center;
+    padding: 5px;
+}
+.content {
+    padding: 10px 5px;
+    font-size: 12px;
+    width: 0%;
+    margin: 0 auto;
+}
+.actions {
+    width: 100%;
+    padding: 10px 5px;
+    margin: auto;
+    text-align: center;
+    font-size: 12px;
+}
+.close {
+    cursor: pointer;
+    position: absolute;
+    display: block;
+    padding: 2px 5px;
+    line-height: 20px;
+    right: -10px;
+    top: -10px;
+    font-size: 24px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #cfcece;
+}
+
+#userViewButtonContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#userSaveButton, #userSaveButton:hover {
+    color: rgb(41, 118, 74)!important;
+    border-color: rgb(41, 118, 74)!important;
+    background-color: transparent;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+#userCancelButton, #userCancelButton:hover {
+    color: whitesmoke;
+    border-color: red!important;
+    background-color:red!important;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
