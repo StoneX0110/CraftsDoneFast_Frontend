@@ -10,10 +10,11 @@ export default class AboutUs extends Component {
         return (
             <div>
                 <div className="about-section">
-                        <h2>About Us</h2>
+                    <h2>About Us</h2>
                     <div className="text-start" style={{width: "40%", margin: "0 auto"}}>
                         <p>CraftsDoneFast has the vision to enable citizens to find craftsmen without requiring a time
-                            intensive search. Available craftsman are easy to find based on your location and category of work.
+                            intensive search. Available craftsman are easy to find based on your location and category
+                            of work.
                             The platform provides you with ways to transparently compare prices across different
                             craftsmen.
                             Thus, in the future, you won't have to face any problems waiting in phone queues, scrolling
@@ -32,11 +33,14 @@ export default class AboutUs extends Component {
                 <div className="row">
                     <div className="col">
                         <div className="card">
-                            <img className="img" src="Daniel.jpg" alt="Jane"/>
+                            <div className="row justify-content-center">
+                                <img className="about-us-img" src="Daniel.jpg" alt="Jane"/>
+                            </div>
                             <div className="container">
                                 <h2>Daniel Testor</h2>
                                 <p className="title">Founder and Developer</p>
-                                <p>TUM Information Systems Master student. Likes the creation and development of new
+                                <p>TUM Information Systems Master student.</p>
+                                <p>Likes the creation and development of new
                                     visions.</p>
                                 <p>daniel.testor@tum.de</p>
                             </div>
@@ -44,41 +48,50 @@ export default class AboutUs extends Component {
                     </div>
                     <div className="col">
                         <div className="card">
-                            <img className="img" src="Patrick.jpg" alt="Jane"/>
+                            <div className="row justify-content-center">
+                                <img className="about-us-img" src="Patrick.jpg" alt="Jane"/>
+                            </div>
                             <div className="container">
                                 <h2>Patrick Litschel</h2>
                                 <p className="title">Founder and Developer</p>
-                                <p>TUM Information Systems Master student. Likes cats.</p>
-                                <br/>
+                                <p>TUM Information Systems Master student.</p>
+                                <p>Likes cats.</p>
                                 <p>patrick.litschel@tum.de</p>
                             </div>
                         </div>
                     </div>
                     <div className="col">
                         <div className="card">
-                            <img className="img" src="Jannis.jpg" alt="Jane"/>
+                            <div className="row justify-content-center">
+                                <img className="about-us-img" src="Jannis.jpg" alt="Jane"/>
+                            </div>
                             <div className="container">
                                 <h2>Jannis Bittlmayer</h2>
                                 <p className="title">Founder and Developer</p>
-                                <p>TUM Information Systems Master student. !Likes fixing bugs.</p>
+                                <p>TUM Information Systems Master student.</p>
+                                <p>!Likes fixing bugs.</p>
                                 <p>j.bittlmayer@tum.de</p>
                             </div>
                         </div>
                     </div>
                     <div className="col">
                         <div className="card">
-                            <img className="img" src="Florian.png" alt="Jane"/>
+                            <div className="row justify-content-center">
+                                <img className="about-us-img" src="Florian.png" alt="Jane"/>
+                            </div>
                             <div className="container">
                                 <h2>Florian Stang</h2>
                                 <p className="title">Founder and Developer</p>
-                                <p>TUM Information Systems Master student. Interested in Cloud Technology</p>
+                                <p>TUM Information Systems Master student.</p>
+                                <p>Interested in Cloud Technology</p>
                                 <p>florian.stang@tum.de</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        );
+        )
+            ;
     }
 }
 
