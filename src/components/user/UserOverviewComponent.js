@@ -27,24 +27,26 @@ export default class UserOverviewComponent extends React.Component {
                 <div className="card border border-4 rounded mb-3">
                     <Link to={"/user/profile/" + this.props.user.username}
                         style={{ textDecoration: 'none', color: "rgb(41, 118, 74)" }}>
-
                         <div className="card-body">
-                            <div className="col">
-                                <img className="rounded float-left img img-fluid" src={this.imageLink} alt="ProfilePicture" />
-                            </div>
-                            <div className="col">
-                                <div className="row">
-                                    <div className="card-text col-auto">
-                                        {this.props.user.settings.postalCode} {this.cityAndDist()}
-                                    </div>
+                            <div className="row">
+                                <div className="col-md-2">
+                                    <img className="rounded float-left img img-fluid" src={this.imageLink}
+                                         alt="ProfilePicture"/>
                                 </div>
-                                <p className="card-title">{this.props.user.settings.shortDescription}</p>
-                                <div className="row">
-                                    <div className="card-text col-auto">
-                                        {this.props.user.settings.name}
+                                <div className="col">
+                                    <div className="row">
+                                        <div className="card-text col-auto">
+                                            {this.props.user.settings.postalCode} {this.cityAndDist()}
+                                        </div>
                                     </div>
-                                    <div className="card-text col" style={{ textAlign: "right" }}>
-                                        Craftsman Rating: {this.props.rating}&#9733;
+                                    <p className="card-title">{this.props.user.settings.shortDescription}</p>
+                                    <div className="row">
+                                        <div className="card-text col-auto">
+                                            {this.props.user.settings.name}
+                                        </div>
+                                        <div className="card-text col" style={{textAlign: "right"}}>
+                                            Craftsman Rating: {this.props.rating}&#9733;
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -31,27 +31,32 @@ export default class JobOfferOverviewComponent extends React.Component {
             <div>
                 <div className="card border border-4 rounded mb-3">
                     <Link to={"/jobOffer/" + this.props.job._id}
-                        style={{ textDecoration: 'none', color: "rgb(41, 118, 74)" }}>
+                          style={{textDecoration: 'none', color: "rgb(41, 118, 74)"}}>
                         <div className="card-body">
-                        <div className="col">
-                            <img className="rounded float-left img img-fluid" src={this.imageLink != null ? this.imageLink : "hammer-icon-transparent.png"} alt="ProfilePicture" />
-                        </div>
-                            <div className="col">
-                                <div className="row">
-                                    <div className="card-text col-auto">
-                                        {this.props.job.postalCode} {this.cityAndDist()}
-                                    </div>
-                                    <div className="card-text col" style={{ textAlign: "right" }}>{this.formatDate}</div>
+                            <div className="row">
+                                <div className="col-md-2">
+                                    <img className="rounded float-left img img-fluid"
+                                         src={this.imageLink != null ? this.imageLink : "hammer-icon-transparent.png"}
+                                         alt="ProfilePicture"/>
                                 </div>
-                                <p className="card-title">{this.props.job.title}</p>
-                                <div className="row">
-                                    <div className="card-text col-auto">{this.props.job.priceExpectation === "" ?
-                                        ("No price expectation") : (`${this.props.job.priceExpectation} $`)}</div>
-                                    {this.props.ownOverview ? "" :
-                                        <div className="card-text col" style={{ textAlign: "right" }}>
-                                            Customer Rating: {this.props.rating}&#9733;
+                                <div className="col">
+                                    <div className="row">
+                                        <div className="card-text col-auto">
+                                            {this.props.job.postalCode} {this.cityAndDist()}
                                         </div>
-                                    }
+                                        <div className="card-text col"
+                                             style={{textAlign: "right"}}>{this.formatDate}</div>
+                                    </div>
+                                    <p className="card-title">{this.props.job.title}</p>
+                                    <div className="row">
+                                        <div className="card-text col-auto">{this.props.job.priceExpectation === "" ?
+                                            ("No price expectation") : (`${this.props.job.priceExpectation} $`)}</div>
+                                        {this.props.ownOverview ? "" :
+                                            <div className="card-text col" style={{textAlign: "right"}}>
+                                                Customer Rating: {this.props.rating}&#9733;
+                                            </div>
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
