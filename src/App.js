@@ -30,7 +30,7 @@ function App() {
         <NavbarComponent/>
         <Routes>
           <Route exact path='/' element={<Homepage/>} />
-          <Route exact path='/createJobOffer' element={isLoggedIn ? <Navigate to={<InsertJobOfferView/>}/> :<Login/>} />
+          <Route exact path='/createJobOffer' element={isLoggedIn ? <InsertJobOfferView/> : <Navigate to={{pathname: "/login"}}/>}/>
           <Route exact path='/user/profile/:username' element={<UserView/>}/>
           <Route exact path='/myJobOffers' element={isLoggedIn ? <MyJobOfferView/> : <Navigate to={{pathname: "/"}}/>}/>
           <Route exact path='/myJobOfferRequests' element={isLoggedIn ? <MyJobOfferRequestsView/> : <Navigate to={{pathname: "/"}}/>}/>
