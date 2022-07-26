@@ -37,7 +37,7 @@ export default class AboutUs extends Component {
                                 <h2>Daniel Testor</h2>
                                 <p className="title">Founder and Developer</p>
                                 <p>TUM Information Systems Master student. Likes the creation and development of new
-                                    vision.</p>
+                                    visions.</p>
                                 <p>daniel.testor@tum.de</p>
                             </div>
                         </div>
