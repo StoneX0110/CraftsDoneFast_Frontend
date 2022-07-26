@@ -29,9 +29,9 @@ export default class UserOverviewComponent extends React.Component {
                         style={{ textDecoration: 'none', color: "rgb(41, 118, 74)" }}>
                         <div className="card-body">
                             <div className="row">
-                                <div className="col-md-2">
+                                <div className="col-auto">
                                     <img className="rounded float-left img img-fluid" src={this.imageLink}
-                                         alt="ProfilePicture"/>
+                                         alt="ProfilePicture" style={{width: "100px"}}/>
                                 </div>
                                 <div className="col">
                                     <div className="row">
