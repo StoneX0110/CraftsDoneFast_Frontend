@@ -75,6 +75,6 @@ export const StripePaymentForm = (props) => (
         <PaymentForm handleClose={props.handleClose} contract={props.contract}
                      sendSystemMessage={props.sendSystemMessage}
                      setActiveContractStatus={props.setActiveContractStatus}
-                     profile={props.profile}/>
+                     profile={props.profile} amount={props.contract.price}/>
     </Elements>
 );

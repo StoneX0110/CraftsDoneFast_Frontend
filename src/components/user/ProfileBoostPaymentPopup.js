@@ -13,6 +13,9 @@ export function ProfileBoostPaymentPopup(props) {
         setOpen(true);
     }
     const handleClose = () => setOpen(false);
+    const contract = {
+        price: 10
+    };
 
     return (
         <div>
@@ -34,7 +37,7 @@ export function ProfileBoostPaymentPopup(props) {
                     </div>
                 </Modal.Body>
                 <Modal.Body>
-                    <StripePaymentForm handleClose={handleClose} contract={props.contract} profile={true} sendSystemMessage={props.sendSystemMessage} setActiveContractStatus={props.setActiveContractStatus}/>
+                    <StripePaymentForm handleClose={handleClose} contract={contract} profile={true} sendSystemMessage={props.sendSystemMessage} setActiveContractStatus={props.setActiveContractStatus}/>
                 </Modal.Body>
             </Modal>
         </div>
