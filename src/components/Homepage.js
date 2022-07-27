@@ -39,7 +39,7 @@ export default class Homepage extends Component {
             return Promise.all(requests).then(() => {
                 var rR = [];
                 this.results.map((e, index) => {
-                    return rR.push(<JobOfferOverviewComponent key={e._id} job={e} rating={averageCustomerRatings[index]}/>);
+                    return rR.push(<JobOfferOverviewComponent key={e._id + index} job={e} rating={averageCustomerRatings[index]}/>);
                 });
                 this.renderedResults = rR;
                 this.forceUpdate();
@@ -103,8 +103,7 @@ export default class Homepage extends Component {
                         var cityAndDist = inRange
                             ? this.state.zips_with_distance.find(elem => parseInt(elem.zip_code) === e.postalCode)
                             : {city: undefined, distance: undefined};
-                            console.log(e);
-                        return rR.push(<JobOfferOverviewComponent key={e._id} job={e}
+                        return rR.push(<JobOfferOverviewComponent key={e._id + index} job={e}
                                                                   city={cityAndDist.city}
                                                                   dist={cityAndDist.distance}
                                                                   rating={averageCustomerRatings[index]}/>)
@@ -121,11 +120,11 @@ export default class Homepage extends Component {
                 }
             }).then(res => {
                 this.results = res.data;
-                this.renderedResults = this.results.map((user) => {
+                this.renderedResults = this.results.map((user, index) => {
                     var cityAndDist = inRange
                         ? this.state.zips_with_distance.find(elem => parseInt(elem.zip_code) === user.settings.postalCode)
                         : {city: undefined, distance: undefined};
-                    return <UserOverviewComponent user={user} city={cityAndDist.city} dist={cityAndDist.distance}
+                    return <UserOverviewComponent key={user._id + index} user={user} city={cityAndDist.city} dist={cityAndDist.distance}
                                                   rating={user.averageCraftsmanRating}/>
                 });
                 this.forceUpdate();
