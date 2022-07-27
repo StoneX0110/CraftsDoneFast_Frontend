@@ -246,7 +246,7 @@ export default class Homepage extends Component {
                         </div>
                     </form>
                 </div>
-                <div className="row" style={{width: "50%", margin: "0 auto"}}>
+                <div className="row" style={{width: "70%", margin: "0 auto"}}>
                     <div className="col-auto category-wrapper border border-4 rounded" style={{marginBottom: "16px"}}>
                         <h3>Categories</h3>
                         <div style={{marginTop: "15px"}}>
