@@ -38,6 +38,9 @@ export default class UserOverviewComponent extends React.Component {
                                         <div className="card-text col-auto">
                                             {this.props.user.settings.postalCode} {this.cityAndDist()}
                                         </div>
+                                        <div className="card-text col-auto">
+                                            {this.props.user.boost && <p className="text-justify text-muted">Sponsored</p>}
+                                        </div>
                                     </div>
                                     <p className="card-title">{this.props.user.settings.shortDescription}</p>
                                     <div className="row">
