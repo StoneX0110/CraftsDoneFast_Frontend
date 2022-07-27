@@ -13,6 +13,7 @@ export default class Homepage extends Component {
         super(props);
         this.results = [];
         this.renderedResults = "";
+        this.renderedResultsBoost = "";
         this.state = {
             searchJobs: true,
             searchCraftsmen: false,
@@ -29,6 +30,7 @@ export default class Homepage extends Component {
         this.handleSort = this.handleSort.bind(this);
         this.getAverageCustomerRatings = this.getAverageCustomerRatings.bind(this);
         this.categorySelection = this.categorySelection.bind(this);
+        this.getBoostedItems = this.getBoostedItems.bind(this);
     }
 
     componentDidMount() {
@@ -41,6 +43,8 @@ export default class Homepage extends Component {
                 this.results.map((e, index) => {
                     return rR.push(<JobOfferOverviewComponent key={e._id + index} job={e} rating={averageCustomerRatings[index]}/>);
                 });
+                var rRB = this.getBoostedItems(rR);
+                this.renderedResultsBoost = rRB;
                 this.renderedResults = rR;
                 this.forceUpdate();
             })
@@ -108,6 +112,8 @@ export default class Homepage extends Component {
                                                                   dist={cityAndDist.distance}
                                                                   rating={averageCustomerRatings[index]}/>)
                     })
+                    var rRB = this.getBoostedItems(rR);
+                    this.renderedResultsBoost = rRB;
                     this.renderedResults = rR;
                     this.forceUpdate();
                 })
@@ -120,13 +126,16 @@ export default class Homepage extends Component {
                 }
             }).then(res => {
                 this.results = res.data;
-                this.renderedResults = this.results.map((user, index) => {
+                var rR = this.results.map((user, index) => {
                     var cityAndDist = inRange
                         ? this.state.zips_with_distance.find(elem => parseInt(elem.zip_code) === user.settings.postalCode)
                         : {city: undefined, distance: undefined};
                     return <UserOverviewComponent key={user._id + index} user={user} city={cityAndDist.city} dist={cityAndDist.distance}
                                                   rating={user.averageCraftsmanRating}/>
                 });
+                var rRB = this.getBoostedItems(rR);
+                this.renderedResultsBoost = rRB;
+                this.renderedResults = rR;
                 this.forceUpdate();
 
             })
@@ -178,6 +187,26 @@ export default class Homepage extends Component {
             const inRange = this.state.postalCode !== "" && this.state.range !== "" && this.state.range !== "Any";
             this.createResults(inRange);
         }
+    }
+
+    getBoostedItems(rR) {
+        var rRB = [];
+        if (this.state.searchJobs) {
+            for (let i = 0; i < rR.length && i < 3; i++) {
+                if (rR[i].props.job.boost) {
+                    rRB.push(rR.shift());
+                }
+            }
+        }
+        if (this.state.searchCraftsmen) {
+            for (let i = 0; i < rR.length && i < 3; i++) {
+                console.log(rR[i])
+                if (rR[i].props.user.boost) {
+                    rRB.push(rR.shift());
+                }
+            }
+        }
+        return rRB;
     }
 
     render() {
@@ -289,7 +318,12 @@ export default class Homepage extends Component {
                                 </DropdownButton>
                             </div>
                         </div>
-                        <div>{this.renderedResults}</div>
+                        <div>
+                            {this.renderedResultsBoost}
+                        </div>
+                        <div>
+                            {this.renderedResults}
+                        </div>
                     </div>
                 </div>
             </div>
