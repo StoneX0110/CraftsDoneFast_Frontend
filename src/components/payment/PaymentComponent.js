@@ -62,10 +62,6 @@ const PaymentForm = (props) => {
             <CardElement options={{hidePostalCode: true}}/>
             <div className="popupButtonContainer">
                 <button type="cancel" className="btn popupButtonCancel" onClick={props.handleClose}>Cancel</button>
-                <button type="button" className="btn popupButton" onClick={() => {
-                    sendToServer(props)
-                }}>Test Pay
-                </button>
                 <button type="button" className="btn popupButton" onClick={handleSubmit(stripe, elements, props)}>Pay
                     with Stripe
                 </button>
