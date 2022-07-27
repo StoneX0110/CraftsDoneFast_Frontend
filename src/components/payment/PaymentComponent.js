@@ -27,10 +27,19 @@ const handleSubmit = (stripe, elements, props) => async () => {
 };
 
 function confirm(paymentMethod, props) {
-    sendToServer(props);
+    sendToServer(props, paymentMethod);
 }
 
-function sendToServer(props) {
+function sendToServer(props, paymentMethod) {
+    if(props.profile) {
+        axios.post('/api/user/payProfile', paymentMethod)
+        .then(res => {
+            alert(res.data);
+            props.handleClose();
+            window.location.reload();
+        })
+        return;
+    }
     let state = JSON.parse(JSON.stringify(props.contract));
     state.paymentStatus = 'paymentDone';
     axios.post('/api/chat/updateContract', state)
@@ -69,6 +78,7 @@ export const StripePaymentForm = (props) => (
     <Elements stripe={stripePromise}>
         <PaymentForm handleClose={props.handleClose} contract={props.contract}
                      sendSystemMessage={props.sendSystemMessage}
-                     setActiveContractStatus={props.setActiveContractStatus}/>
+                     setActiveContractStatus={props.setActiveContractStatus}
+                     profile={props.profile}/>
     </Elements>
 );
