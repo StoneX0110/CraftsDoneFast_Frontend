@@ -144,7 +144,6 @@ export default class Homepage extends Component {
 
     getAverageCustomerRatings(res) {
         this.results = res.data;
-        this.renderedResults = [];
         var averageCustomerRatings = [];
 
         const requests = this.results.map((e) => {
@@ -200,7 +199,6 @@ export default class Homepage extends Component {
         }
         if (this.state.searchCraftsmen) {
             for (let i = 0; i < rR.length && i < 3; i++) {
-                console.log(rR[i])
                 if (rR[i].props.user.boost) {
                     rRB.push(rR.shift());
                 }
