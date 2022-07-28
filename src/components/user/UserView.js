@@ -58,11 +58,11 @@ export default class UserView extends Component {
         axios.get('/api/user/profile/' + this.username).then(res => {
             this.setState(res.data.settings);
             this.setState({profileBoost: res.data.profileBoost})
+            this.setState({username: res.data.username})
             this.customerRatings = res.data.customerRatings;
             this.craftsmanRatings = res.data.craftsmanRatings;
             this.averageCustomerRating = res.data.averageCustomerRating;
             this.averageCraftsmanRating = res.data.averageCraftsmanRating;
-
             if (res.data.profilePicture !== undefined) {
                 this.state.profilePicture = ("data:image/jpeg;base64," + btoa(String.fromCharCode(...new Uint8Array(res.data.profilePicture.data.data))).substring(20));
                 const myPictureArray = this.state.profilePicture.split(",");
@@ -81,6 +81,13 @@ export default class UserView extends Component {
 
         //fill options
         this.options = Category.returnOptions();
+        var us = sessionStorage.getItem('userData');
+        if (us != null) {
+            let parse = JSON.parse(us);
+            if (parse !== null) {
+                this.user = parse.username;
+            }
+        }
     }
 
     createRatings() {
@@ -204,7 +211,7 @@ export default class UserView extends Component {
         return (
             <div className="search-wrapper category-wrapper border-4 border rounded">
                 <h3 style={{marginTop: "5px"}}>Profile</h3>
-                <div>{!this.state.profileBoost &&
+                <div>{!this.state.profileBoost && this.state.username === this.user &&
                 <ProfileBoostPaymentPopup/>}
                     {this.state.profileBoost && <p class="text-justify">Profile boost activated.</p>}
                     {this.user === this.username && !this.state.edit &&
