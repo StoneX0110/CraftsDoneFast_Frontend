@@ -18,19 +18,6 @@ export function PaymentPopup(props) {
     }
     const handleClose = () => setOpen(false);
 
-    function conductPayment() {
-        let state = JSON.parse(JSON.stringify(props.contract));
-        state.paymentStatus = 'paymentDone';
-        axios.post('/api/chat/updateContract', state)
-            .then(res => {
-                props.sendSystemMessage('<Message.CustomContent>' +
-                    '<strong>Conducted Payment:</strong><br />' +
-                    'payed price: ' +
-                    '<span style="color:darkred">' + price + '</span><br />' +
-                    '</Message.CustomContent>');
-            })
-    }
-
     return (
         <div>
             <Button border onClick={handleOpen}>
