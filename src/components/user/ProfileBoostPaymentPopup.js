@@ -19,7 +19,7 @@ export function ProfileBoostPaymentPopup(props) {
 
     return (
         <div>
-            <Button border onClick={handleOpen} className="btn">
+            <Button border onClick={handleOpen} className="btn" style={{marginBottom: "10px"}}>
                 Buy Profile Boost
             </Button>
             <Modal show={open} onHide={handleClose}>
