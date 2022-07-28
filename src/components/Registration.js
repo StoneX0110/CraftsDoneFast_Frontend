@@ -51,7 +51,7 @@ export default class Registration extends Component {
                                                     <div className="form-outline">
                                                         <input type="text" name="username" value={this.state.username}
                                                                onChange={this.handleChange}
-                                                               className="form-control form-control-lg"/>
+                                                               className="form-control form-control-lg" required/>
                                                         <label className="form-label">Enter Username</label>
                                                     </div>
 
