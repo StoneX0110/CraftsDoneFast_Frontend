@@ -12,7 +12,7 @@ export default class Category {
     ]
 
     static returnSelection() {
-        return this.categories.map((e) => <option>{e}</option>)
+        return this.categories.map((e) => <option key={e}>{e}</option>)
     }
 
     static returnOptions() {
@@ -25,7 +25,7 @@ export default class Category {
 
     static returnRadioButtons() {
         return this.categories.map(c =>
-            <div className="form-check">
+            <div className="form-check" key={c}>
                 <label>
                     <input className="form-check-input" type="radio" name="categorySelection" value={c}/>
                     {c}
