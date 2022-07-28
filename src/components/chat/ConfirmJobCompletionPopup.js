@@ -37,7 +37,7 @@ export function ConfirmJobCompletionPopup(props) {
                 <Modal.Header>
                 </Modal.Header>
                 <Modal.Body className="popupMainContainer">
-                    <Modal.Title>Do you wish to confirm the job Completion?</Modal.Title>
+                    <Modal.Title>Do you wish to confirm the job completion?</Modal.Title>
                 </Modal.Body>
                 <Modal.Footer>
                     <button type="cancel" className="btn popupButtonCancel" onClick={handleClose}>Cancel</button>
