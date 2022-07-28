@@ -41,8 +41,8 @@ export default class Homepage extends Component {
             return Promise.all(requests).then(() => {
                 var rR = [];
                 this.results.map((e, index) => {
-                    return rR.push(<JobOfferOverviewComponent key={e._id + index} job={e} rating={averageCustomerRatings[index]}/>);
-                });
+                    return rR.push(<JobOfferOverviewComponent key={e._id + index} job={e} rating={averageCustomerRatings.find(crating => crating.author === e.author).rating}/>);
+                })
                 var rRB = this.getBoostedItems(rR);
                 this.renderedResultsBoost = rRB;
                 this.renderedResults = rR;
@@ -110,7 +110,7 @@ export default class Homepage extends Component {
                         return rR.push(<JobOfferOverviewComponent key={e._id + index} job={e}
                                                                   city={cityAndDist.city}
                                                                   dist={cityAndDist.distance}
-                                                                  rating={averageCustomerRatings[index]}/>)
+                                                                  rating={averageCustomerRatings.find(crating => crating.author === e.author).rating}/>)
                     })
                     var rRB = this.getBoostedItems(rR);
                     this.renderedResultsBoost = rRB;
@@ -146,9 +146,9 @@ export default class Homepage extends Component {
         this.results = res.data;
         var averageCustomerRatings = [];
 
-        const requests = this.results.map((e) => {
-            return axios.get('/api/user/getAverageCustomerRating', {params: {id: e.author}}).then(res => {
-                averageCustomerRatings.push(res.data.averageCustomerRating);
+        const requests = this.results.map(async (e) => {
+            return await axios.get('/api/user/getAverageCustomerRating', {params: {id: e.author}}).then(res => {
+                averageCustomerRatings.push({rating: res.data.averageCustomerRating, author: e.author});
             })
         });
         return {averageCustomerRatings, requests};
