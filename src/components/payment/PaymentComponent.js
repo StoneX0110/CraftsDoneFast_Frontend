@@ -27,7 +27,6 @@ const confirmPayment = (stripe, elements, clientSecret, props, setPayed) => {
             card: elements.getElement(CardElement),
         }
     }).then(res => {
-        console.log(res)
         if (res.error) {
             setPayed(false);
             console.log('[error]', res.error);
