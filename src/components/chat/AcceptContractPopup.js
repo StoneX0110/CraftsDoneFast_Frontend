@@ -71,7 +71,7 @@ export function AcceptContractPopup(props) {
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <Modal.Header>
-                    <Modal.Title>Do you wish to accept the Contract Details?</Modal.Title>
+                    <Modal.Title>Do you wish to accept the contract details?</Modal.Title>
                 </Modal.Header>
                 <form onSubmit={handleSubmit}>
                     <Modal.Body className="popupMainContainer">
