@@ -65,7 +65,7 @@ export function ContractPopup(props) {
                     <Modal.Body className="popupMainContainer">
                         <div className="form-group popupInputContainer">
                             <label>Price</label>
-                            <input required type="number" name="price" className="form-control"
+                            <input required type="number" min="0" name="price" className="form-control"
                                    value={price} onChange={handleChangePrice}
                                    id="priceInput"
                                    placeholder="Insert Price in Dollar"/>
