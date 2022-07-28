@@ -30,7 +30,7 @@ export default class UserView extends Component {
             profilePicture: '',
             customerRatings: true,
             craftsmanRatings: false,
-            stripeID: '',
+            IBAN: '',
         }
         this.options = [];
         this.jobs = [];
@@ -291,10 +291,10 @@ export default class UserView extends Component {
                         </div>
                         {this.user === this.username &&
                         <div className="form-row row" style={{padding: "23px"}}>
-                            <label>StripeID</label>
-                            <input name="stripeID" type="text" readOnly={!this.state.edit}
+                            <label>IBAN</label>
+                            <input name="IBAN" type="text" readOnly={!this.state.edit}
                                    className="form-control-plaintext border-2 border rounded p-2"
-                                   value={this.state.stripeID} onChange={this.handleChange}/>
+                                   value={this.state.IBAN} onChange={this.handleChange}/>
                         </div>
                         }
                         <div className="form-row row justify-content-center" style={{marginTop: "20px"}}>

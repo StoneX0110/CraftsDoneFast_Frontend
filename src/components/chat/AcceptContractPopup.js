@@ -6,16 +6,16 @@ import Moment from "moment";
 
 export function AcceptContractPopup(props) {
     let user = '';
-    let currentStripeID = '';
+    let currentIBAN = '';
     if (sessionStorage.getItem('userData') && JSON.parse(sessionStorage.getItem('userData')) !== null) {
         user = JSON.parse(sessionStorage.getItem('userData')).username;
-        currentStripeID = JSON.parse(sessionStorage.getItem('userData')).settings.stripeID;
+        currentIBAN = JSON.parse(sessionStorage.getItem('userData')).settings.IBAN;
     }
 
     const [open, setOpen] = useState(false);
     const [price, setPrice] = useState("");
     const [startingDate, setStartingDate] = useState("");
-    const [stripeID, setStripeID] = useState("");
+    const [IBAN, setIBAN] = useState("");
     const handleOpen = () => {
         setOpen(true);
         setPrice(props.contract.price)
@@ -23,23 +23,23 @@ export function AcceptContractPopup(props) {
     }
     const handleClose = () => setOpen(false);
 
-    function handleChangeStripeID(event) {
-        setStripeID(event.target.value);
+    function handleChangeIBAN(event) {
+        setIBAN(event.target.value);
     }
 
     function acceptContract() {
         let state = JSON.parse(JSON.stringify(props.contract));
         state.paymentStatus = 'contractEstablished';
-        if (stripeID !== "") {
+        if (IBAN !== "") {
             user = {
-                stripeID : stripeID,
+                IBAN : IBAN,
                 id: JSON.parse(sessionStorage.getItem('userData')).id,
             }
-            axios.post('/api/user/updateUserStripeID', user)
+            axios.post('/api/user/updateUserIBAN', user)
             let sessionData = sessionStorage.getItem('userData');
-            let stringArray = sessionData.split('"stripeID":');
-            sessionData = stringArray[0] + '"stripeID":';
-            let tempData = JSON.parse(JSON.stringify(stripeID));
+            let stringArray = sessionData.split('"IBAN":');
+            sessionData = stringArray[0] + '"IBAN":';
+            let tempData = JSON.parse(JSON.stringify(IBAN));
             sessionData += JSON.stringify(tempData) + '}}';
             sessionStorage.setItem('userData', sessionData);
         }
@@ -82,12 +82,12 @@ export function AcceptContractPopup(props) {
                             <div className="card-text col-auto text-center">
                                 <label>Price: {price}$</label>
                             </div>
-                            {currentStripeID === "" &&
+                            {currentIBAN === "" &&
                             <label>Payment Destination</label> &&
-                            <input required type="string" name="stripeID" className="form-control"
-                                   value={stripeID} onChange={handleChangeStripeID}
-                                   id="stripeInput"
-                                   placeholder="Insert your StripeID"/>
+                            <input required type="string" name="IBAN" className="form-control"
+                                   value={IBAN} onChange={handleChangeIBAN}
+                                   id="ibanInput"
+                                   placeholder="Insert your IBAN"/>
                             }
                         </div>
                     </Modal.Body>
